@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "925163827056",
+    "project_id": "picklocations",
+    "storage_bucket": "picklocations.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925163827056:android:6a69488dd5dbf8fefce9b5",
+        "android_client_info": {
+          "package_name": "com.example.dio_http"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmA_TIndaodWUyoI-0PCTSdX5j1lGBPZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

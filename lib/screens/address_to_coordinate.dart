@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:dio_http/custom_widget/custom_drawer.dart';
-// import 'package:dio_http/custom_widget/custom_map.dart';
+import 'package:dio_http/model/locations_marker_model.dart';
 import 'package:dio_http/network/remote/dio_network_repos.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -23,28 +23,48 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double latitude = 0.0, longitude = 0.0;
   var pickMarkers = HashSet<Marker>();
-  // final List<Marker> markers = <Marker>[];
   late Future getLocs;
+  final TextEditingController addressController = TextEditingController();
+  // List<LocationsMarkerModel> addressList = [];
+
+  @override
+  void dispose() {
+    // Dispose the controller when the widget is disposed
+    addressController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
-
-    getLocs = DioNetworkRepos().getLoc();
-    getLocs.then((value) => debugPrint("FUTUTRE: $value[0].['address']"));
-
-    getLocs.then((value) => debugPrint(value.toString()));
-    // getLocs = UsersDioRepos().getUsers();
-
-    getLocs.then((value) {
-      value.forEach((element) {
-        address = element['address'];
-        _getCoordinatesFromAddress(address);
-    
-      });
+    setState(() {
+      getLocs = DioNetworkRepos().getLoc();
     });
+    getLocs.then((value) => debugPrint(value.toString()));
 
     // _getCoordinatesFromAddress(address); // Convert on startup
+
+
+    // getLocs = DioNetworkRepos().getLoc();
+
+    // getLocs.then((value) => debugPrint("FUTUTRE: $value[0].['address']"));
+
+
+    // getLocs.then((value) {
+      // if (value.isEmpty) {
+      //   return Timer(
+      //     const Duration(seconds: 10),
+      //     () => getLocs = DioNetworkRepos().getLoc(),
+      //   );
+      // }
+    //   value.forEach((element) {
+    //     address = element['address'];
+    //     _getCoordinatesFromAddress(address);
+    //   });
+    // }).catchError((e) {
+    //   return e + "List is empty";
+    // });
+
     // debugPrint(address);
   }
 
@@ -58,8 +78,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             "${locations.first.latitude}, ${locations.first.longitude}";
         latitude = locations.first.latitude;
         longitude = locations.first.longitude;
+
+        // addressList.add(
+        //   LocationsMarkerModel(
+        //       address: address, latitude: latitude, longitude: longitude),
+        // );
         //
-         pickMarkers.add(
+        pickMarkers.add(
           Marker(
             markerId: MarkerId(address),
             position: LatLng(latitude, longitude),
@@ -67,20 +92,29 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
               title: address,
               snippet: coordinates,
             ),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen),
           ),
         );
-       //
-     // call the function to update locations in database
-        DioNetworkRepos().updateLoc(address, latitude, longitude);
-        //
+        // //
+        // // call the function to update locations in database
+        // DioNetworkRepos().updateLoc(address, latitude, longitude);
+        // //update Locations list after getting coordinates
+        // getLocs =  DioNetworkRepos().getLoc();
+        // //
         debugPrint(address);
         debugPrint(coordinates);
         debugPrint(latitude.toString());
         debugPrint(longitude.toString());
         //
+      });
+    //  call the function to update locations in database
+       DioNetworkRepos().updateLoc(address, latitude, longitude);
 
+      // //update Locations list after getting coordinates
+
+      setState(() {
+        getLocs = DioNetworkRepos().getLoc();
       });
     } catch (e) {
       setState(() {
@@ -105,17 +139,20 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       body: Stack(
         children: [
           // Google Map
+          // pickMarkers.isEmpty
+          //     ? const Center(
+          //         child: CircularProgressIndicator(),
+          //       )
+          //     :
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: alexandriaCoordinates,
-              zoom: 11.4746,
+              zoom: 10.4746,
             ),
-            onMapCreated:
-                (GoogleMapController controller) {
+            onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               setState(
                 () {
-                  
                   // pickMarkers.add(
                   //   Marker(
                   //     markerId: MarkerId(coordinates),
@@ -134,9 +171,106 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             markers: pickMarkers,
             zoomControlsEnabled: true,
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      constraints: BoxConstraints(
+                        maxHeight: 70,
+                        minWidth: 200,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                      hintText: "Enter Address",
+                      hintStyle: TextStyle(
+                        color: Colors.indigo,
+                        fontSize: 11,
+                      ),
+                    ),
+                    controller:
+                        addressController, // set the controller to get address input
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.indigo,
+                    ),
+                    cursorColor: Colors.amber,
+                    keyboardType: TextInputType.text,
+                    maxLength: 250,
+                  ),
+                ),
+                IconButton(
+                  constraints: const BoxConstraints.tightFor(
+                    width: 20,
+                    height: 50,
+                  ),
+                  onPressed: () async {
+                    if (addressController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text("Please enter address"),
+                          backgroundColor: Colors.indigo.shade300,
+                        ),
+                      );
+                    }
+                    setState(() {
+                      pickMarkers.clear();
+                    });
+                    address = addressController.text;
+                    _getCoordinatesFromAddress(address);
+             
+                  
+                    // call the function to update locations in database
+                    // DioNetworkRepos().updateLoc(
+                    //   addressController.text,
+                    //   latitude,
+                    //   longitude,
+                    // );
+
+                    //update Locations list after getting coordinates
+                    // setState(() {
+                    //   getLocs = DioNetworkRepos().getLoc();
+                    // });
+                  },
+                  icon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.indigo,
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
-      drawer: CustomDrawer(getLocs: getLocs),
+      drawer: CustomDrawer(
+        getLocs: getLocs,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // pickMarkers.clear();
+          setState(() {
+            getLocs = DioNetworkRepos().getLoc();
+            // _getCoordinatesFromAddress(address);
+          });
+        },
+        mini: true,
+        child: const Icon(Icons.refresh),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }
+
+// Retrieve the copied text from the clipboard
+// ClipboardData? data = await Clipboard.getData('text/plain');
+// // Paste the text into the TextField
+// if (data != null && data.text != null) {
+//   debugPrint("Pasted text: ${data.text}");
+// }

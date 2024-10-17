@@ -16,12 +16,11 @@ class MyApp extends StatelessWidget {
       title: 'PickLocations',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        useMaterial3: true,
+        primarySwatch: Colors.indigo,
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        // useMaterial3: true,
       ),
-      // home: const HomeScreen(),
       home: const AddressToCoordinates(),
     );
   }
 }
-

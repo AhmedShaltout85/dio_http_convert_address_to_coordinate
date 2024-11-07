@@ -1,4 +1,4 @@
-import 'package:dio_http/network/remote/dio_network_repos.dart';
+import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

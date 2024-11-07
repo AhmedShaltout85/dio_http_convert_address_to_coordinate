@@ -1,5 +1,4 @@
-import 'package:dio_http/screens/address_to_coordinate.dart';
-// import 'package:dio_http/screens/home_screen.dart';
+import 'package:pick_location/screens/address_to_coordinate.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +15,13 @@ class MyApp extends StatelessWidget {
       title: 'PickLocations',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.indigo,
+          foregroundColor: Colors.white,
+        ),
+        primaryColor: Colors.indigo,
         primarySwatch: Colors.indigo,
+    
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         // useMaterial3: true,
       ),

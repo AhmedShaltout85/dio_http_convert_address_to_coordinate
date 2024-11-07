@@ -4,7 +4,7 @@
 
 
     <application
-        android:label="dio_http"
+        android:label="pick_location"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data

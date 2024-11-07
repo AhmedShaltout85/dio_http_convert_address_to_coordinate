@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:dio_http/custom_widget/custom_drawer.dart';
-import 'package:dio_http/model/locations_marker_model.dart';
-import 'package:dio_http/network/remote/dio_network_repos.dart';
+import 'package:pick_location/custom_widget/custom_drawer.dart';
+import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -44,19 +43,17 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
 
     // _getCoordinatesFromAddress(address); // Convert on startup
 
-
     // getLocs = DioNetworkRepos().getLoc();
 
     // getLocs.then((value) => debugPrint("FUTUTRE: $value[0].['address']"));
 
-
     // getLocs.then((value) {
-      // if (value.isEmpty) {
-      //   return Timer(
-      //     const Duration(seconds: 10),
-      //     () => getLocs = DioNetworkRepos().getLoc(),
-      //   );
-      // }
+    // if (value.isEmpty) {
+    //   return Timer(
+    //     const Duration(seconds: 10),
+    //     () => getLocs = DioNetworkRepos().getLoc(),
+    //   );
+    // }
     //   value.forEach((element) {
     //     address = element['address'];
     //     _getCoordinatesFromAddress(address);
@@ -108,8 +105,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         debugPrint(longitude.toString());
         //
       });
-    //  call the function to update locations in database
-       DioNetworkRepos().updateLoc(address, latitude, longitude);
+      //  call the function to update locations in database
+      DioNetworkRepos().updateLoc(address, latitude, longitude);
 
       // //update Locations list after getting coordinates
 
@@ -138,12 +135,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       ),
       body: Stack(
         children: [
-          // Google Map
-          // pickMarkers.isEmpty
-          //     ? const Center(
-          //         child: CircularProgressIndicator(),
-          //       )
-          //     :
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: alexandriaCoordinates,
@@ -225,19 +216,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     });
                     address = addressController.text;
                     _getCoordinatesFromAddress(address);
-             
-                  
-                    // call the function to update locations in database
-                    // DioNetworkRepos().updateLoc(
-                    //   addressController.text,
-                    //   latitude,
-                    //   longitude,
-                    // );
 
-                    //update Locations list after getting coordinates
-                    // setState(() {
-                    //   getLocs = DioNetworkRepos().getLoc();
-                    // });
+                    addressController.clear();
                   },
                   icon: const Icon(
                     Icons.search_outlined,
@@ -253,6 +233,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         getLocs: getLocs,
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.indigo,
         onPressed: () {
           // pickMarkers.clear();
           setState(() {
@@ -261,7 +242,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           });
         },
         mini: true,
-        child: const Icon(Icons.refresh),
+        child: const Icon(
+          Icons.refresh,
+          color: Colors.white,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );

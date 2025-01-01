@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dio Http', style: TextStyle(color: Colors.white)),
+        title: const Text('Address to Coordinate', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         elevation: 0,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

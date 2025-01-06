@@ -1,6 +1,38 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<!-- permission for agora video call -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- The Agora SDK requires Bluetooth permissions in case users are using Bluetooth devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- For Android 12 and above devices, the following permission is also required. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Provide
+    required visibility configuration for API level 30 and above url_launcher-->
+    <queries>
+        <!-- If your app checks for SMS support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="sms" />
+        </intent>
+        <!-- If your app checks for call support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+        <!-- If your application checks for inAppBrowserView launch mode support -->
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService" />
+        </intent>
+    </queries>
 
 
     <application

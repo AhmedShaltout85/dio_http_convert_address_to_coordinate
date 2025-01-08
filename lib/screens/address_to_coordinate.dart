@@ -217,6 +217,25 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     address = addressController.text;
                     _getCoordinatesFromAddress(address);
 
+                    //CALL GIS API to get map link
+                    String mapLink =
+                        await DioNetworkRepos().createNewGisPointAndGetMapLink(
+                      13,
+                      latitude.toString(),
+                      longitude.toString(),
+                    );
+                    debugPrint("GIS MAP LINK :>> $mapLink");
+
+                    //update Locations list after getting coordinates and url
+                    // _getCoordinatesFromAddress(address);
+                   await DioNetworkRepos().updateLocations(
+                      address,
+                      latitude,
+                      longitude,
+                      mapLink,
+                    );
+
+                    //
                     addressController.clear();
                   },
                   icon: const Icon(

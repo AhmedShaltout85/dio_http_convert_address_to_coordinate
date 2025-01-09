@@ -37,14 +37,14 @@ class DioNetworkRepos {
   }
 
 //update locations
-  Future updateLoc(String address, double latitude, double longitude) async {
+  Future updateLoc(String address, double longitude, double latitude) async {
     var dio = Dio();
     try {
       final response = await dio.put(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
           data: {
-            "latitude": latitude,
             "longitude": longitude,
+            "latitude": latitude,
             "flag": 1,
           });
       return response.data;
@@ -56,14 +56,14 @@ class DioNetworkRepos {
 
 //update locations(wiht-url)
   Future<void> updateLocations(
-      String address, double latitude, double longitude, String url) async {
+      String address, double longitude, double latitude,  String url) async {
     var dio = Dio();
     try {
       var response = await dio.put(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
           data: {
-            "latitude": latitude,
             "longitude": longitude,
+            "latitude": latitude,
             "flag": 1,
             "gis_url": url
           });
@@ -76,7 +76,7 @@ class DioNetworkRepos {
 
   //POST in GIS Server and GET MAP Link
   Future<String> createNewGisPointAndGetMapLink(
-      int id, String latitude, String longitude) async {
+      int id, String longitude, String latitude) async {
     var dio = Dio();
     // Encode credentials to Base64
     final basicAuth =
@@ -87,8 +87,8 @@ class DioNetworkRepos {
           .post(gisUrl,
               data: {
                 "uid": id,
-                "x": latitude,
-                "y": longitude,
+                "x": longitude,
+                "y": latitude,
               },
               options: Options(
                 headers: {
@@ -109,7 +109,8 @@ class DioNetworkRepos {
   //POST in GIS Server and GET MAP Link
 //TODO:GET GIS map LINK (22-12-2024-NOT-TEST)
   Future createNewGisPointAndGetMap(
-      String latitude, String longitude, int id) async {
+      String longitude,
+      String latitude, int id) async {
 // Future createNewGisPointAndGetMap(
 //       LocationsMarkerModel locationsMarkerModel) async{
 
@@ -117,9 +118,9 @@ class DioNetworkRepos {
     try {
       final response = await dio
           .post("http://192.168.17.250:8000/pick-location/api/", data: {
-        "x": latitude,
-        "y": longitude,
         "uid": id,
+        "x": longitude,
+        "y": latitude,
       });
       if (response.statusCode == 201) {
         return response.data;
@@ -140,8 +141,8 @@ class DioNetworkRepos {
       final response = await dio.put(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$locationsMarkerModel.address",
           data: {
-            "latitude": locationsMarkerModel.latitude,
             "longitude": locationsMarkerModel.longitude,
+            "latitude": locationsMarkerModel.latitude,
             "gis_url": locationsMarkerModel.url
           });
       return response.data;
@@ -165,10 +166,10 @@ class DioNetworkRepos {
         final response = await dio.put(
             "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$id",
             data: {
-              "latitude": locationsMarkerModel.latitude,
               "longitude": locationsMarkerModel.longitude,
+              "latitude": locationsMarkerModel.latitude,
               "flag": 1,
-              "real_address": locationsMarkerModel.address
+              "gis_url": locationsMarkerModel.url
             });
         locationsList[locationIndex] = locationsMarkerModel;
         return response.data;
@@ -189,8 +190,8 @@ class DioNetworkRepos {
 //     final response = await dio.post(
 //         "http://192.168.17.250:8000/pick-location/api/",
 //         data: {
-//           "x": locationsMarkerModel.latitude,
 //           "y": locationsMarkerModel.longitude,
+//           "x": locationsMarkerModel.latitude,
 //           "uid": locationsMarkerModel.id,
 //         });
 //     return response.data;

@@ -17,14 +17,16 @@ class GisMap extends StatelessWidget {
           ElevatedButton(
             child: const Text('Open GIS Map IN Browser'),
             onPressed: () {
-              const url = 'http://196.219.231.3:8000/lab-api/lab-marker/10';
+              const url = 'http://196.219.231.3:8000/lab-api/lab-marker/24';
+              // const url = 'https://www.google.com/';
               CustomBrowserRedirect.openInBrowser(url); // Open in browser
             },
           ),
           ElevatedButton(
             child: const Text('Open GIS Map IN WebView'),
             onPressed: () {
-              const url = 'http://196.219.231.3:8000/lab-api/lab-marker/10';
+              const url = 'http://196.219.231.3:8000/lab-api/lab-marker/24';
+              // const url = 'https://www.google.com/';
               Navigator.push(
                   context,
                   MaterialPageRoute(

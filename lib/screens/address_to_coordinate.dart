@@ -73,8 +73,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       setState(() {
         coordinates =
             "${locations.first.latitude}, ${locations.first.longitude}";
-        latitude = locations.first.latitude;
-        longitude = locations.first.longitude;
+        latitude = locations.first.latitude; // latitude=y
+        longitude = locations.first.longitude;// longitude=x
 
         // addressList.add(
         //   LocationsMarkerModel(
@@ -101,12 +101,31 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         // //
         debugPrint(address);
         debugPrint(coordinates);
-        debugPrint(latitude.toString());
         debugPrint(longitude.toString());
+        debugPrint(latitude.toString());
         //
       });
       //  call the function to update locations in database
       DioNetworkRepos().updateLoc(address, latitude, longitude);
+      //
+      // //create new gis point
+        String mapLink = await DioNetworkRepos().createNewGisPointAndGetMapLink(
+        24,
+        longitude.toString(),
+        latitude.toString(),
+      );
+      debugPrint("gis_longitude :>> $longitude");
+      debugPrint("gis_latitude :>> $latitude");
+      debugPrint("GIS MAP LINK :>> $mapLink");
+
+    //update Locations list after getting coordinates and gis link
+         await DioNetworkRepos().updateLocations(
+        address,
+        longitude,
+        latitude,
+        mapLink,
+      );
+
 
       // //update Locations list after getting coordinates
 
@@ -206,7 +225,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     if (addressController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: const Text("Please enter address"),
+                          content: const Text("فضلا أدخل العنوان"),
                           backgroundColor: Colors.indigo.shade300,
                         ),
                       );
@@ -218,22 +237,24 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     _getCoordinatesFromAddress(address);
 
                     //CALL GIS API to get map link
-                    String mapLink =
-                        await DioNetworkRepos().createNewGisPointAndGetMapLink(
-                      13,
-                      latitude.toString(),
-                      longitude.toString(),
-                    );
-                    debugPrint("GIS MAP LINK :>> $mapLink");
+                    // String mapLink =
+                    //     await DioNetworkRepos().createNewGisPointAndGetMapLink(
+                    //   23,
+                    //   longitude.toString(),
+                    //   latitude.toString(),
+                    // );
+                    // debugPrint("longitude :>> $longitude");
+                    // debugPrint("latitude :>> $latitude");
+                    // debugPrint("GIS MAP LINK :>> $mapLink");
 
                     //update Locations list after getting coordinates and url
                     // _getCoordinatesFromAddress(address);
-                   await DioNetworkRepos().updateLocations(
-                      address,
-                      latitude,
-                      longitude,
-                      mapLink,
-                    );
+                  //  await DioNetworkRepos().updateLocations(
+                  //     address,
+                  //     longitude,
+                  //     latitude,
+                  //     mapLink,
+                  //   );
 
                     //
                     addressController.clear();

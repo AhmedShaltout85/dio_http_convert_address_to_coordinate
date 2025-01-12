@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:pick_location/model/locations_marker_model.dart';
+// import 'package:pick_location/model/locations_marker_model.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
@@ -56,7 +56,7 @@ class DioNetworkRepos {
 
 //update locations(wiht-url)
   Future<void> updateLocations(
-      String address, double longitude, double latitude,  String url) async {
+      String address, double longitude, double latitude, String url) async {
     var dio = Dio();
     try {
       var response = await dio.put(
@@ -106,81 +106,146 @@ class DioNetworkRepos {
     }
   }
 
-  //POST in GIS Server and GET MAP Link
-//TODO:GET GIS map LINK (22-12-2024-NOT-TEST)
-  Future createNewGisPointAndGetMap(
-      String longitude,
-      String latitude, int id) async {
-// Future createNewGisPointAndGetMap(
-//       LocationsMarkerModel locationsMarkerModel) async{
-
+  //GET USERNAME AND PASSWORD
+  //Login User using username and password(working)
+  Future<bool> loginByUsernameAndPassword(
+      String username, String password) async {
     var dio = Dio();
     try {
-      final response = await dio
-          .post("http://192.168.17.250:8000/pick-location/api/", data: {
-        "uid": id,
-        "x": longitude,
-        "y": latitude,
-      });
-      if (response.statusCode == 201) {
-        return response.data;
+      final response = await dio.get(
+          "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
+      if (response.statusCode == 200) {
+        debugPrint("${response.data} from loginByUsernameAndPassword");
+        final usernameResponse = response.data['username'];
+        final passwordResponse = response.data['password'];
+        debugPrint(
+            'Login successful! Username: $usernameResponse, Password: $passwordResponse');
+        return true;
       } else {
-        throw Exception('Failed to post data');
+        debugPrint('Login failed: ${response.data}');
+        return false;
       }
+    } on DioException catch (e) {
+      debugPrint('Error: ${e.response?.data ?? e.message}');
+      return false;
     } catch (e) {
-      debugPrint(e.toString());
-      throw Exception(e);
+      debugPrint('Unexpected error: $e');
+      return false;
     }
   }
+
+//Login User using username and password(working)
+  Future<Map<String, dynamic>> login(String username, String password) async {
+    // Replace with your API endpoint
+    var dio = Dio();
+
+    try {
+      // Sending GET request with query parameters
+      Response response = await dio.get(
+          "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
+
+      if (response.statusCode == 200) {
+        // Assuming the API returns JSON data
+        return {
+          'success': true,
+          'data': response.data,
+        };
+      } else {
+        return {
+          'success': false,
+          'message': 'Invalid status code: ${response.statusCode}',
+        };
+      }
+    } catch (e) {
+      // Handling Dio errors
+      if (e is DioError) {
+        return {
+          'success': false,
+          'message': e.response?.data['message'] ?? e.message,
+        };
+      } else {
+        return {
+          'success': false,
+          'message': 'An unexpected error occurred',
+        };
+      }
+    }
+  }
+  //POST in GIS Server and GET MAP Link
+//TODO:GET GIS map LINK (22-12-2024-NOT-TEST)
+//   Future createNewGisPointAndGetMap(
+//       String longitude,
+//       String latitude, int id) async {
+// // Future createNewGisPointAndGetMap(
+// //       LocationsMarkerModel locationsMarkerModel) async{
+
+//     var dio = Dio();
+//     try {
+//       final response = await dio
+//           .post("http://192.168.17.250:8000/pick-location/api/", data: {
+//         "uid": id,
+//         "x": longitude,
+//         "y": latitude,
+//       });
+//       if (response.statusCode == 201) {
+//         return response.data;
+//       } else {
+//         throw Exception('Failed to post data');
+//       }
+//     } catch (e) {
+//       debugPrint(e.toString());
+//       throw Exception(e);
+//     }
+//   }
 
 //update locations using Constructor
 //TODO: update locations using Constructor NOT TESTED(27-10-2024)
-  Future updateLocs(LocationsMarkerModel locationsMarkerModel) async {
-    var dio = Dio();
-    try {
-      final response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$locationsMarkerModel.address",
-          data: {
-            "longitude": locationsMarkerModel.longitude,
-            "latitude": locationsMarkerModel.latitude,
-            "gis_url": locationsMarkerModel.url
-          });
-      return response.data;
-    } catch (e) {
-      debugPrint(e.toString());
-      throw Exception(e);
-    }
-  }
+  // Future updateLocs(LocationsMarkerModel locationsMarkerModel) async {
+  //   var dio = Dio();
+  //   try {
+  //     final response = await dio.put(
+  //         "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$locationsMarkerModel.address",
+  //         data: {
+  //           "longitude": locationsMarkerModel.longitude,
+  //           "latitude": locationsMarkerModel.latitude,
+  //           "gis_url": locationsMarkerModel.url
+  //         });
+  //     return response.data;
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     throw Exception(e);
+  //   }
+  // }
 
   //update locations using id
   //TODO: update locations using id NOT TESTED(27-10-2024)
-  Future updateLocationsById(
-      int id, LocationsMarkerModel locationsMarkerModel) async {
-    try {
-      List<LocationsMarkerModel> locationsList = [];
-      final locationIndex =
-          locationsList.indexWhere((element) => element.id == id);
-      var dio = Dio();
+  // Future updateLocationsById(
+  //     int id, LocationsMarkerModel locationsMarkerModel) async {
+  //   try {
+  //     List<LocationsMarkerModel> locationsList = [];
+  //     final locationIndex =
+  //         locationsList.indexWhere((element) => element.id == id);
+  //     var dio = Dio();
 
-      if (locationIndex >= 0) {
-        final response = await dio.put(
-            "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$id",
-            data: {
-              "longitude": locationsMarkerModel.longitude,
-              "latitude": locationsMarkerModel.latitude,
-              "flag": 1,
-              "gis_url": locationsMarkerModel.url
-            });
-        locationsList[locationIndex] = locationsMarkerModel;
-        return response.data;
-      } else {
-        throw Exception('Location not found');
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      throw Exception(e);
-    }
-  }
+  //     if (locationIndex >= 0) {
+  //       final response = await dio.put(
+  //           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$id",
+  //           data: {
+  //             "longitude": locationsMarkerModel.longitude,
+  //             "latitude": locationsMarkerModel.latitude,
+  //             "flag": 1,
+  //             "gis_url": locationsMarkerModel.url
+  //           });
+  //       locationsList[locationIndex] = locationsMarkerModel;
+  //       return response.data;
+  //     } else {
+  //       throw Exception('Location not found');
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     throw Exception(e);
+  //   }
+  // }
 
 //POST in GIS Server
 //TODO:POST in GIS Server (22-12-2024-NOT-TEST)

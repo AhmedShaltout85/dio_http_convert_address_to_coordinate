@@ -158,7 +158,7 @@ class DioNetworkRepos {
       }
     } catch (e) {
       // Handling Dio errors
-      if (e is DioError) {
+      if (e is DioException) {
         return {
           'success': false,
           'message': e.response?.data['message'] ?? e.message,

@@ -1,4 +1,4 @@
-const String url = "https://jsonplaceholder.typicode.com/users";
+// const String url = "https://jsonplaceholder.typicode.com/users";
 const String url2 =
     "http://192.168.17.250:9999/pick-location/api/v1/get-loc/filter";
 const String urlGet =
@@ -16,9 +16,9 @@ const String apiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
 
 
 //Agora Constants for Video Call
-// const appId = "<-- Insert App Id -->";
-// const token = "";
-// const channel = "<-- Insert Channel Name -->";
+const appId = "ffd898c8ae5d4d96be499de1166e6229";
+const token = "";
+const channel = "pick_location";
 
 // Basic Authentication credentials
 const username = 'gis';

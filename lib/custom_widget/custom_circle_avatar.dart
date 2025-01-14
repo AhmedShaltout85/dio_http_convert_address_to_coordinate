@@ -21,12 +21,12 @@ class CustomCircleAvatar extends StatelessWidget {
     return CircleAvatar(
       radius: radius,
       backgroundImage: AssetImage(imgString),
-      // child: Image.asset(
-      //   imgString,
-      //   width: width,
-      //   height: height,
-      //   fit: fit,
-      // ),
+      child: Image.asset(
+        imgString,
+        width: width,
+        height: height,
+        fit: fit,
+      ),
     );
   }
 }

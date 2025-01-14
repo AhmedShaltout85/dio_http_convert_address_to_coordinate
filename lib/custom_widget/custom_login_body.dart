@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-// import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
+import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
 // import 'package:pick_location/screens/gis_map.dart';
@@ -61,14 +61,14 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       child: Column(
         children: [
           const SizedBox(
-            height: 30.0,
+            height: 40.0,
           ),
-          // const CustomCircleAvatar(
-          //   imgString: 'assets/logo.png',
-          //   width: 65,
-          //   height: 65,
-          //   radius: 50,
-          // ),
+          const CustomCircleAvatar(
+            imgString: 'assets/logo.png',
+            width: 70,
+            height: 70,
+            radius: 70,
+          ),
           const SizedBox(
             height: 10.0,
           ),

@@ -14,7 +14,7 @@ class GisMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GIS Map'),
+        title: const Text('GIS Map View'),
       ),
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -22,7 +22,6 @@ class GisMap extends StatelessWidget {
             child: const Text('Open GIS Map IN Browser'),
             onPressed: () {
               const url = 'http://196.219.231.3:8000/lab-api/lab-marker/24';
-              // const url = 'https://www.google.com/';
               CustomBrowserRedirect.openInBrowser(url); // Open in browser
             },
           ),
@@ -30,7 +29,6 @@ class GisMap extends StatelessWidget {
             child: const Text('Open GIS Map IN WebView'),
             onPressed: () {
               const url = 'http://196.219.231.3:8000/lab-api/lab-marker/24';
-              // const url = 'https://www.google.com/';
                 Navigator.push(
                     context,
                     MaterialPageRoute(

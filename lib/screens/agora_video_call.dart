@@ -28,7 +28,6 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
 
   Future<void> initAgora() async {
     // retrieve permissions
-    // if(Platform.isAndroid) {
       
     await [Permission.microphone, Permission.camera].request();
     // }

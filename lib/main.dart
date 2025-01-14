@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pick_location/screens/agora_video_call.dart';
+// import 'package:pick_location/screens/agora_video_call.dart';
+import 'package:pick_location/screens/landing_screen.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_web/webview_flutter_web.dart';
 // import 'package:pick_location/screens/address_to_coordinate.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
       // home: const AddressToCoordinates(), //TESTED (WORKING)
       // home: const GisMap(), //TESTED (WORKING-OPEN IN BROWSER & WEBVIEW)
       // home: const LoginScreen(),//TESTED (WORKING)
-      home: const AgoraVideoCall(),//TESTED (WORKING)
+      // home: const AgoraVideoCall(),//TESTED (WORKING)
+      home: const LandingScreen(),//TESTED (WORKING)
     );
   }
 }

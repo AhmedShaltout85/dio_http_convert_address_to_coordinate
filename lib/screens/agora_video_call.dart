@@ -97,7 +97,7 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agora Video Call'),
+        title: const Text('Making a Video Call'),
       ),
       body: Stack(
         children: [

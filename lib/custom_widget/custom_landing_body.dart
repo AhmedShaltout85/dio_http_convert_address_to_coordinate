@@ -17,16 +17,54 @@ class CustomLandingBody extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(38.0),
-            child: Text(
-              "Landing Page",
-              style: TextStyle(
-                color: AppTheme.primTextColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 23,
-              ),
+          Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Expanded(
+                  flex: 5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "شركة مياه الشرب بالاسكندرية ",
+                        style: TextStyle(
+                          color: AppTheme.primTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Text(
+                        "قطاع التكنولوجيا والخدمات الرقمية",
+                        style: TextStyle(
+                          color: AppTheme.primTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      Text(
+                        "إدراة البرمجيات",
+                        style: TextStyle(
+                          color: AppTheme.primTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Image.asset('assets/aw_logo.png'),
+                ),
+              ],
             ),
+          ),
+          const SizedBox(
+            height: 30,
           ),
           CarouselSlider(
             options: CarouselOptions(
@@ -58,7 +96,8 @@ class CustomLandingBody extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(AppTheme.primColor),),
+                  backgroundColor: WidgetStatePropertyAll(AppTheme.primColor),
+                ),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const LoginScreen()));
@@ -70,30 +109,6 @@ class CustomLandingBody extends StatelessWidget {
               ),
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: SizedBox(
-          //     width: 250,
-          //     height: 50,
-          //     child: ElevatedButton(
-          //        style: const ButtonStyle(
-          //         backgroundColor: MaterialStatePropertyAll(AppTheme.primColor),
-          //       ),
-          //       onPressed: () {
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (_) => const LoginScreen(),
-          //           ),
-          //         );
-          //       },
-          //       child: const Text(
-          //         'Register Screen',
-          //         style: TextStyle(color: AppTheme.txtColor),
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

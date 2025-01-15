@@ -11,7 +11,9 @@ void main() {
   // WebViewPlatform.instance =
   //     WebWebViewPlatform(); // Initialize for web platform
 
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,22 +22,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'PickLocations',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.indigo,
-          foregroundColor: Colors.white,
-        ),
-        primaryColor: Colors.indigo,
-        primarySwatch: Colors.indigo,
-      ),
+      // theme: ThemeData(
+      //   appBarTheme: const AppBarTheme(
+      //     backgroundColor: Colors.indigo,
+      //     foregroundColor: Colors.white,
+      //   ),
+      //   primaryColor: Colors.indigo,
+      //   primarySwatch: Colors.indigo,
+      // ),
       // home: const AddressToCoordinates(), //TESTED (WORKING)
       // home: const GisMap(), //TESTED (WORKING-OPEN IN BROWSER & WEBVIEW)
       // home: const LoginScreen(),//TESTED (WORKING)
       // home: const AgoraVideoCall(),//TESTED (WORKING)
-      home: const LandingScreen(),//TESTED (WORKING)
+      home: LandingScreen(), //TESTED (WORKING)
     );
   }
 }

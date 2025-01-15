@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
+import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/gis_map.dart';
 
 import '../network/remote/dio_network_repos.dart';
@@ -46,7 +47,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to another screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const GisMap()),
+        MaterialPageRoute(builder: (context) => const AgoraVideoCall()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +62,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       child: Column(
         children: [
           const SizedBox(
-            height: 40.0,
+            height: 60.0,
           ),
           const CustomCircleAvatar(
             imgString: 'assets/logo.png',
@@ -105,8 +106,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                     CustomTextField(
                         controller: usernameController,
                         keyboardType: TextInputType.text,
-                        lableText: 'username',
-                        hintText: 'enter_user_name',
+                        lableText: 'Username',
+                        hintText: 'Enter Username',
                         prefixIcon: const Icon(Icons.verified_user_outlined),
                         suffixIcon: const SizedBox(),
                         obscureText: false,
@@ -117,8 +118,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                     CustomTextField(
                       controller: passwordController,
                       keyboardType: TextInputType.text,
-                      lableText: 'password',
-                      hintText: 'enter_password',
+                      lableText: 'Password',
+                      hintText: 'Enter Password',
                       prefixIcon: const Icon(Icons.password),
                       suffixIcon: const Icon(Icons.visibility),
                       obscureText: true,
@@ -135,7 +136,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                             passwordController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Please enter username & password'),
+                              content: Text('Please Enter Username & Password'),
                             ),
                           );
                         } else {
@@ -169,7 +170,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const GisMap()),
+        MaterialPageRoute(builder: (_) => const AgoraVideoCall()),
       );
     } else {
       // Show error

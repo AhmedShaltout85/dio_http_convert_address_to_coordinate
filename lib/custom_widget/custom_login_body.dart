@@ -8,7 +8,7 @@ import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/gis_map.dart';
 
 import '../network/remote/dio_network_repos.dart';
-import '../screens/gis_map.dart';
+// import '../screens/gis_map.dart';
 import '../themes/themes.dart';
 
 class CustomizLoginScreenBody extends StatefulWidget {
@@ -47,7 +47,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to another screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AgoraVideoCall()),
+        MaterialPageRoute(builder: (context) => const VideoCallScreen()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -170,7 +170,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const AgoraVideoCall()),
+        MaterialPageRoute(builder: (_) => const VideoCallScreen()),
       );
     } else {
       // Show error

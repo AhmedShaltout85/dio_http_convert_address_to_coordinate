@@ -47,7 +47,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to another screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const VideoCallScreen()),
+        MaterialPageRoute(builder: (context) => const AgoraVideoCall()),
+        // MaterialPageRoute(builder: (context) => const VideoCallScreen()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -170,7 +171,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const VideoCallScreen()),
+        MaterialPageRoute(builder: (_) => const AgoraVideoCall()),
+        // MaterialPageRoute(builder: (_) => const VideoCallScreen()),
       );
     } else {
       // Show error

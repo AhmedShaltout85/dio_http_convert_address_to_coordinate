@@ -118,18 +118,21 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
             padding: const EdgeInsets.all(8.0),
             child: Align(
               alignment: Alignment.topLeft,
-              child: SizedBox(
-                width: 100,
-                height: 150,
-                child: Center(
-                  child: _localUserJoined
-                      ? AgoraVideoView(
-                          controller: VideoViewController(
-                            rtcEngine: _engine,
-                            canvas: const VideoCanvas(uid: 0),
-                          ),
-                        )
-                      : const CircularProgressIndicator(),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: SizedBox(
+                  width: 100,
+                  height: 150,
+                  child: Center(
+                    child: _localUserJoined
+                        ? AgoraVideoView(
+                            controller: VideoViewController(
+                              rtcEngine: _engine,
+                              canvas: const VideoCanvas(uid: 0),
+                            ),
+                          )
+                        : const CircularProgressIndicator(),
+                  ),
                 ),
               ),
             ),

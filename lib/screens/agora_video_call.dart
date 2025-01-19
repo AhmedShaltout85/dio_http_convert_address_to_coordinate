@@ -103,7 +103,8 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
         foregroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop(true); //back to previous screen
+
             // _dispose();
           },
           icon: const Icon(Icons.arrow_back),
@@ -134,6 +135,24 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
                         : const CircularProgressIndicator(),
                   ),
                 ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 25.0, right: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                    icon: const Icon(Icons.call_end),
+                    color: Colors.red,
+                  ),
+                ],
               ),
             ),
           ),

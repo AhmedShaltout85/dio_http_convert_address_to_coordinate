@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:flutter/services.dart';
 import 'package:pick_location/custom_widget/custom_drawer.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
+
+import '../custom_widget/custom_draggable_scrollable_sheet.dart';
 
 class AddressToCoordinates extends StatefulWidget {
   const AddressToCoordinates({super.key});
@@ -74,7 +78,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         coordinates =
             "${locations.first.latitude}, ${locations.first.longitude}";
         latitude = locations.first.latitude; // latitude=y
-        longitude = locations.first.longitude;// longitude=x
+        longitude = locations.first.longitude; // longitude=x
 
         // addressList.add(
         //   LocationsMarkerModel(
@@ -109,7 +113,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       DioNetworkRepos().updateLoc(address, latitude, longitude);
       //
       // //create new gis point
-        String mapLink = await DioNetworkRepos().createNewGisPointAndGetMapLink(
+      String mapLink = await DioNetworkRepos().createNewGisPointAndGetMapLink(
         24,
         longitude.toString(),
         latitude.toString(),
@@ -118,14 +122,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       debugPrint("gis_latitude :>> $latitude");
       debugPrint("GIS MAP LINK :>> $mapLink");
 
-    //update Locations list after getting coordinates and gis link
-         await DioNetworkRepos().updateLocations(
+      //update Locations list after getting coordinates and gis link
+      await DioNetworkRepos().updateLocations(
         address,
         longitude,
         latitude,
         mapLink,
       );
-
 
       // //update Locations list after getting coordinates
 
@@ -161,22 +164,22 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-              setState(
-                () {
-                  // pickMarkers.add(
-                  //   Marker(
-                  //     markerId: MarkerId(coordinates),
-                  //     position: LatLng(latitude, longitude),
-                  //     icon: BitmapDescriptor.defaultMarkerWithHue(
-                  //         BitmapDescriptor.hueGreen),
-                  //     infoWindow: InfoWindow(
-                  //       title: address,
-                  //       snippet: coordinates,
-                  //     ),
-                  //   ),
-                  // );
-                },
-              );
+              // setState(
+              //   () {
+              //     // pickMarkers.add(
+              //     //   Marker(
+              //     //     markerId: MarkerId(coordinates),
+              //     //     position: LatLng(latitude, longitude),
+              //     //     icon: BitmapDescriptor.defaultMarkerWithHue(
+              //     //         BitmapDescriptor.hueGreen),
+              //     //     infoWindow: InfoWindow(
+              //     //       title: address,
+              //     //       snippet: coordinates,
+              //     //     ),
+              //     //   ),
+              //     // );
+              //   },
+              // );
             },
             markers: pickMarkers,
             zoomControlsEnabled: true,
@@ -249,12 +252,12 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
 
                     //update Locations list after getting coordinates and url
                     // _getCoordinatesFromAddress(address);
-                  //  await DioNetworkRepos().updateLocations(
-                  //     address,
-                  //     longitude,
-                  //     latitude,
-                  //     mapLink,
-                  //   );
+                    //  await DioNetworkRepos().updateLocations(
+                    //     address,
+                    //     longitude,
+                    //     latitude,
+                    //     mapLink,
+                    //   );
 
                     //
                     addressController.clear();
@@ -266,7 +269,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                 ),
               ],
             ),
-          )
+          ),
+          //CustomDraggableSheet
+          const DraggableScrollableSheetScreen(), //call draggable sheet
+          //CustomDraggableSheet
         ],
       ),
       drawer: CustomDrawer(

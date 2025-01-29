@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:flutter/services.dart';
+import 'package:dio/dio.dart';
 import 'package:pick_location/custom_widget/custom_drawer.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
-
-import '../custom_widget/custom_draggable_scrollable_sheet.dart';
+import 'package:pick_location/utils/dio_http_constants.dart';
 
 class AddressToCoordinates extends StatefulWidget {
   const AddressToCoordinates({super.key});
@@ -28,6 +27,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   var pickMarkers = HashSet<Marker>();
   late Future getLocs;
   final TextEditingController addressController = TextEditingController();
+  // String mapLink = "";
   // List<LocationsMarkerModel> addressList = [];
 
   @override
@@ -109,28 +109,75 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         debugPrint(latitude.toString());
         //
       });
-      //  call the function to update locations in database
-      DioNetworkRepos().updateLoc(address, latitude, longitude);
+
+      //get last gis record from GIS server
+      int lastRecordNumber = await DioNetworkRepos().getLastRecordNumber();
+      debugPrint("lastRecordNumber :>> $lastRecordNumber");
+      int newRecordNumber = lastRecordNumber + 1;
+      debugPrint("newRecordNumber :>> $newRecordNumber");
       //
-      // //create new gis point
+      //create new gis point
       String mapLink = await DioNetworkRepos().createNewGisPointAndGetMapLink(
-        24,
+        newRecordNumber,
         longitude.toString(),
         latitude.toString(),
       );
       debugPrint("gis_longitude :>> $longitude");
       debugPrint("gis_latitude :>> $latitude");
       debugPrint("GIS MAP LINK :>> $mapLink");
+      //
+      // check if address already exist(UPDATED-IN-29-01-2025)
+      var addressInList = await DioNetworkRepos().checkAddressExists(address);
+      String addressInListString = addressInList['address'];
+      debugPrint(
+          "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)} ");
+      debugPrint("PRINTED BY USING VAR: $addressInList");
+      debugPrint("PRINTED BY USING STRING: $addressInListString");
+      //
+      //
+      if (addressInListString == address) {
+        //  call the function to update locations in database
+        debugPrint("address already exist >>>>>> $addressInListString");
 
-      //update Locations list after getting coordinates and gis link
-      await DioNetworkRepos().updateLocations(
-        address,
-        longitude,
-        latitude,
-        mapLink,
-      );
+        //  call the function to update locations in database
+        //update Locations list after getting coordinates and gis link
+        await DioNetworkRepos().updateLocations(
+          address,
+          longitude,
+          latitude,
+          mapLink,
+        );
+      } else {
+        //  call the function to post locations in database
+        debugPrint("address not exist >>>>>>>>> $addressInListString");
 
-      // //update Locations list after getting coordinates
+        //  call the function to post locations in database
+        await DioNetworkRepos()
+            .createNewLocation(address, longitude, latitude, mapLink);
+      }
+
+      // //  call the function to update locations in database
+      // DioNetworkRepos().updateLoc(address, latitude, longitude);
+      // //
+      // // //create new gis point
+      // String mapLink = await DioNetworkRepos().createNewGisPointAndGetMapLink(
+      //   24,
+      //   longitude.toString(),
+      //   latitude.toString(),
+      // );
+      // debugPrint("gis_longitude :>> $longitude");
+      // debugPrint("gis_latitude :>> $latitude");
+      // debugPrint("GIS MAP LINK :>> $mapLink");
+
+      // //update Locations list after getting coordinates and gis link
+      // await DioNetworkRepos().updateLocations(
+      //   address,
+      //   longitude,
+      //   latitude,
+      //   mapLink,
+      // );
+
+      //update Locations list after getting coordinates
 
       setState(() {
         getLocs = DioNetworkRepos().getLoc();
@@ -153,7 +200,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.indigo,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white, size: 17),
       ),
       body: Stack(
         children: [
@@ -276,6 +323,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         ],
       ),
       drawer: CustomDrawer(
+        getLocs: getLocs,
+      ),
+      endDrawer: CustomDrawer(
         getLocs: getLocs,
       ),
       floatingActionButton: FloatingActionButton(

@@ -65,7 +65,7 @@ class CustomDrawer extends StatelessWidget {
                                   backgroundColor: Colors.black26,
                                   content: Center(
                                     child: Text(
-                                      'Text copied to clipboard!',
+                                      'تم نسخ العنوان بنجاح',
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),

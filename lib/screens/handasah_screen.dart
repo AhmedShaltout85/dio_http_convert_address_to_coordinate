@@ -13,7 +13,7 @@ class HandasahScreen extends StatefulWidget {
 
 class _HandasahScreenState extends State<HandasahScreen> {
   late Future getLocs;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // final scaffoldState = GlobalKey<ScaffoldState>();
 
   @override
@@ -28,14 +28,14 @@ class _HandasahScreenState extends State<HandasahScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      // key: _scaffoldKey,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white, size: 17),
         backgroundColor: Colors.indigo,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_drop_down_circle),
-          onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_drop_down_circle),
+        //   onPressed: () => _scaffoldKey.currentState!.openDrawer(),
+        // ),
         centerTitle: true,
         title: const Text(
           'Handasah Screen',
@@ -53,40 +53,9 @@ class _HandasahScreenState extends State<HandasahScreen> {
       //   drawer:  CustomDrawer(
       //     getLocs: getLocs,
       //   ),
-      // bottomSheet: _showBottomSheet(context),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.indigo,
-      //   child: const Icon(Icons.refresh),
-      //   onPressed: () {
-      //     setState(() {
-      //       _showBottomSheet(context);
-      //     });
-      //   },
-      // ),
+    
     );
   }
 
-  // _showBottomSheet(BuildContext context) {
-  //   return _scaffoldKey.currentState?.showBottomSheet((context) {
-  //     return const Column(
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       mainAxisSize: MainAxisSize.min,
-  //       children: [
-  //         Text('Bottom Sheet'),
-  //         ListTile(
-  //           title: Text('Item 1'),
-  //         ),
-  //         ListTile(
-  //           title: Text('Item 2'),
-  //         ),
-  //         ListTile(
-  //           title: Text('Item 3'),
-  //         ),
-  //         ListTile(
-  //           title: Text('Item 4'),
-  //         ),
-  //       ],
-  //     );
-  //   });
-  // }
+
 }

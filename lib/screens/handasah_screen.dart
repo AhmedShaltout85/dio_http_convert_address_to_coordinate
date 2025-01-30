@@ -12,18 +12,18 @@ class HandasahScreen extends StatefulWidget {
 }
 
 class _HandasahScreenState extends State<HandasahScreen> {
-  late Future getLocs;
+  // late Future getLocs;
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // final scaffoldState = GlobalKey<ScaffoldState>();
 
   @override
-  void initState() {
-    super.initState();
-    setState(() {
-      getLocs = DioNetworkRepos().getLoc();
-    });
-    getLocs.then((value) => debugPrint(value.toString()));
-  }
+  // void initState() {
+  //   super.initState();
+  //   setState(() {
+  //     getLocs = DioNetworkRepos().getLoc();
+  //   });
+  //   getLocs.then((value) => debugPrint(value.toString()));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +42,36 @@ class _HandasahScreenState extends State<HandasahScreen> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: const IframeScreen(
-          url: 'http://196.219.231.3:8000/lab-api/lab-marker/24'),
+      body:
+          // Stack(children: [
+          const IframeScreen(
+              url: 'http://196.219.231.3:8000/lab-api/lab-marker/24'),
       // body: const IframeScreen(url: 'https://flutter.dev/'),
-      endDrawer: const Drawer(),
-      drawer: const Drawer(),
-      //   endDrawer:  CustomDrawer(
-      //     getLocs: getLocs,
+      // Align(
+      //   alignment: Alignment.topLeft,
+      //   child: Container(
+      //     margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 50),
+      //     width: 250,
+      //     height: MediaQuery.of(context).size.height,
+      //     color: Colors.black45,
       //   ),
-      //   drawer:  CustomDrawer(
-      //     getLocs: getLocs,
+      // ),
+      // Align(
+      //   alignment: Alignment.topRight,
+      //   child: Container(
+      //     margin: const EdgeInsets.all(8),
+      //     width: 250,
+      //     height: MediaQuery.of(context).size.height,
+      //     color: Colors.black45,
       //   ),
-    
+      // ),
+      // ]),
+      endDrawer: const Drawer(
+        backgroundColor: Colors.black45,
+      ),
+      drawer: const Drawer(
+        backgroundColor: Colors.black45,
+      ),
     );
   }
-
-
 }

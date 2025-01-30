@@ -18,9 +18,10 @@ class DioNetworkRepos {
   //   }
   // }
 
+final dio = Dio();
 //get locations(GET by flag 0 (address not set yet))
   Future getLoc() async {
-    var dio = Dio();
+    // var dio = Dio();
     try {
       var response = await dio.get(urlGet);
       if (response.statusCode == 200) {
@@ -38,7 +39,7 @@ class DioNetworkRepos {
 
 //update locations
   Future updateLoc(String address, double longitude, double latitude) async {
-    var dio = Dio();
+    // var dio = Dio();
     try {
       final response = await dio.put(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
@@ -57,7 +58,7 @@ class DioNetworkRepos {
 //update locations(wiht-url)
   Future<void> updateLocations(
       String address, double longitude, double latitude, String url) async {
-    var dio = Dio();
+    // var dio = Dio();
     try {
       var response = await dio.put(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
@@ -77,7 +78,7 @@ class DioNetworkRepos {
   //POST in GIS Server and GET MAP Link
   Future<String> createNewGisPointAndGetMapLink(
       int id, String longitude, String latitude) async {
-    var dio = Dio();
+    // var dio = Dio();
     // Encode credentials to Base64
     final basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
@@ -108,7 +109,7 @@ class DioNetworkRepos {
   //Login User using username and password(working)
   Future<bool> loginByUsernameAndPassword(
       String username, String password) async {
-    var dio = Dio();
+    // var dio = Dio();
     try {
       final response = await dio.get(
           "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
@@ -135,7 +136,7 @@ class DioNetworkRepos {
 //Login User using username and password(working)
   Future<Map<String, dynamic>> login(String username, String password) async {
     // Replace with your API endpoint
-    var dio = Dio();
+    // var dio = Dio();
 
     try {
       // Sending GET request with query parameters
@@ -170,31 +171,32 @@ class DioNetworkRepos {
     }
   }
 
-// check if address exists or not on locations table
-  Future checkAddressExists(String address) async {
-    var dio = Dio();
-    var getAddressUrl =
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$address';
+  //check if address exists
+   Future<bool> checkAddressExists(String address) async {
+    String encodedAddress = Uri.encodeComponent(address);
+    String getAddressUrl = 'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress';
+
     try {
       var response = await dio.get(getAddressUrl);
-      if (response.statusCode == 200) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
 
-        return response.data;
+      if (response.statusCode == 200) {
+        debugPrint("PRINTED DATA FROM API: ${response.data}");
+        return true;
       } else {
-        debugPrint('List is empty');
-        return [];
-        // throw Exception('List is empty');
+        debugPrint('Address not found');
+        return false;
       }
+    } on DioException catch (e) {
+      debugPrint("Dio error: ${e.response?.statusCode} - ${e.message}");
+      return false;
     } catch (e) {
-      debugPrint(e.toString());
-      // throw Exception(e);
+      debugPrint("Unexpected error: $e");
+      return false;
     }
   }
 
   //post locations(wiht-url)
-  Future<void> createNewLocation(
+  Future createNewLocation(
       String address, double longitude, double latitude, String url) async {
     var dio = Dio();
     try {
@@ -207,7 +209,11 @@ class DioNetworkRepos {
             "flag": 1,
             "gis_url": url
           });
-      return response.data;
+      if (response.statusCode == 201) {
+        return response.data;
+      } else {
+        throw Exception('Failed to post data');
+      }
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
@@ -246,9 +252,7 @@ class DioNetworkRepos {
     try {
       var response = await dio.get(
         getLastRecordUrl,
-        data: {
-          "category":"gis_lab_api"
-          },
+        data: {"category": "gis_lab_api"},
         options: Options(
           headers: {
             'authorization': basicAuth,

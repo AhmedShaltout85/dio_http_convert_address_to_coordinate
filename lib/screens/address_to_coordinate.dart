@@ -108,6 +108,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         debugPrint(longitude.toString());
         debugPrint(latitude.toString());
         //
+        getLocs = DioNetworkRepos().getLoc();
       });
 
       //get last gis record from GIS server
@@ -125,19 +126,18 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       debugPrint("gis_longitude :>> $longitude");
       debugPrint("gis_latitude :>> $latitude");
       debugPrint("GIS MAP LINK :>> $mapLink");
-      //
+      
       // check if address already exist(UPDATED-IN-29-01-2025)
       var addressInList = await DioNetworkRepos().checkAddressExists(address);
-      String addressInListString = addressInList['address'];
       debugPrint(
-          "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)} ");
+          "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)}");
       debugPrint("PRINTED BY USING VAR: $addressInList");
-      debugPrint("PRINTED BY USING STRING: $addressInListString");
+      // debugPrint("PRINTED BY USING STRING: $addressInListString");
       //
       //
-      if (addressInListString == address) {
+      if (addressInList==true) {
         //  call the function to update locations in database
-        debugPrint("address already exist >>>>>> $addressInListString");
+        debugPrint("address already exist >>>>>> $addressInList");
 
         //  call the function to update locations in database
         //update Locations list after getting coordinates and gis link
@@ -147,13 +147,23 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           latitude,
           mapLink,
         );
+        //
+        debugPrint(
+            "updated Locations list after getting coordinates and gis link");
       } else {
-        //  call the function to post locations in database
-        debugPrint("address not exist >>>>>>>>> $addressInListString");
+      //  call the function to post locations in database
+      debugPrint("address not exist >>>>>>>>> $addressInList");
 
-        //  call the function to post locations in database
-        await DioNetworkRepos()
-            .createNewLocation(address, longitude, latitude, mapLink);
+      //  call the function to post locations in database
+      await DioNetworkRepos().createNewLocation(
+        address,
+        longitude,
+        latitude,
+        mapLink,
+      );
+      //
+      debugPrint(
+          "POSTED new Location In Locations list after getting coordinates and gis link");
       }
 
       // //  call the function to update locations in database

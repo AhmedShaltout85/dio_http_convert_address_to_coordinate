@@ -10,6 +10,7 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
+        backgroundColor: Colors.black45,
         child: ListView(
           shrinkWrap: true,
           children: [

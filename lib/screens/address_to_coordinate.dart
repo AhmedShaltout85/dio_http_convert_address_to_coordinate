@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:dio/dio.dart';
 import 'package:pick_location/custom_widget/custom_drawer.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
-import 'package:pick_location/utils/dio_http_constants.dart';
 
 class AddressToCoordinates extends StatefulWidget {
   const AddressToCoordinates({super.key});
@@ -126,7 +124,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       debugPrint("gis_longitude :>> $longitude");
       debugPrint("gis_latitude :>> $latitude");
       debugPrint("GIS MAP LINK :>> $mapLink");
-      
+
       // check if address already exist(UPDATED-IN-29-01-2025)
       var addressInList = await DioNetworkRepos().checkAddressExists(address);
       debugPrint(
@@ -135,7 +133,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       // debugPrint("PRINTED BY USING STRING: $addressInListString");
       //
       //
-      if (addressInList==true) {
+      if (addressInList == true) {
         //  call the function to update locations in database
         debugPrint("address already exist >>>>>> $addressInList");
 
@@ -151,19 +149,19 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         debugPrint(
             "updated Locations list after getting coordinates and gis link");
       } else {
-      //  call the function to post locations in database
-      debugPrint("address not exist >>>>>>>>> $addressInList");
+        //  call the function to post locations in database
+        debugPrint("address not exist >>>>>>>>> $addressInList");
 
-      //  call the function to post locations in database
-      await DioNetworkRepos().createNewLocation(
-        address,
-        longitude,
-        latitude,
-        mapLink,
-      );
-      //
-      debugPrint(
-          "POSTED new Location In Locations list after getting coordinates and gis link");
+        //  call the function to post locations in database
+        await DioNetworkRepos().createNewLocation(
+          address,
+          longitude,
+          latitude,
+          mapLink,
+        );
+        //
+        debugPrint(
+            "POSTED new Location In Locations list after getting coordinates and gis link");
       }
 
       // //  call the function to update locations in database
@@ -295,28 +293,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     });
                     address = addressController.text;
                     _getCoordinatesFromAddress(address);
-
-                    //CALL GIS API to get map link
-                    // String mapLink =
-                    //     await DioNetworkRepos().createNewGisPointAndGetMapLink(
-                    //   23,
-                    //   longitude.toString(),
-                    //   latitude.toString(),
-                    // );
-                    // debugPrint("longitude :>> $longitude");
-                    // debugPrint("latitude :>> $latitude");
-                    // debugPrint("GIS MAP LINK :>> $mapLink");
-
-                    //update Locations list after getting coordinates and url
-                    // _getCoordinatesFromAddress(address);
-                    //  await DioNetworkRepos().updateLocations(
-                    //     address,
-                    //     longitude,
-                    //     latitude,
-                    //     mapLink,
-                    //   );
-
-                    //
                     addressController.clear();
                   },
                   icon: const Icon(
@@ -328,7 +304,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             ),
           ),
           //CustomDraggableSheet
-          const DraggableScrollableSheetScreen(), //call draggable sheet
+          DraggableScrollableSheetScreen(
+            getLocs: getLocs,
+          ), //call draggable sheet
           //CustomDraggableSheet
         ],
       ),

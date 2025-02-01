@@ -235,11 +235,10 @@ final dio = Dio();
       } else {
         debugPrint('List is empty');
         return [];
-        // throw Exception('List is empty');
       }
     } catch (e) {
       debugPrint(e.toString());
-      // throw Exception(e);
+      throw Exception(e);
     }
   }
 

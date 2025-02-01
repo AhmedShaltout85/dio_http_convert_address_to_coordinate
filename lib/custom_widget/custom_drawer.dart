@@ -20,7 +20,7 @@ class CustomDrawer extends StatelessWidget {
                   color: Colors.indigo,
                 ),
                 child: Text(
-                  'Pick an Address',
+                  'HotLine addresses',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 13,

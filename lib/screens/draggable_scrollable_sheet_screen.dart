@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/tracking.dart';
 
-import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_draggable_scrollable_sheet.dart';
 import '../custom_widget/custom_web_view.dart';
 
@@ -33,15 +31,7 @@ class _DraggableScrollableSheetScreenState
 
   @override
   Widget build(BuildContext context) {
-    return
-        //  Scaffold(
-        // body:
-        // Stack(
-        //   children: [
-        // const Center(
-        //   child: Text('Google Map | Gis Map'),
-        // ),
-        CustomDraggableScrollableSheet(
+    return CustomDraggableScrollableSheet(
       minExtent: 0.2,
       maxExtent: 0.8,
       builder: (context, extent) {
@@ -79,6 +69,18 @@ class _DraggableScrollableSheetScreenState
                                           onPressed: () {
                                             debugPrint(
                                                 "Start Gis Map ${snapshot.data![index]['gis_url']}");
+                                            //open in iframe webview in web app
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         IframeScreen(
+                                            //             url: snapshot
+                                            //                     .data![index]
+                                            //                 ['gis_url']),
+                                            //   ),
+                                            // );
+
                                             //open in browser
                                             // CustomBrowserRedirect.openInBrowser(
                                             //   snapshot.data![index]['gis_url'],
@@ -143,13 +145,13 @@ class _DraggableScrollableSheetScreenState
                             onTap: () {
                               debugPrint("${snapshot.data[index]['id']}");
                               // open address details
-                               Navigator.push(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const AddressDetails(),
                                 ),
                               );
-                          
+
                               //CALL API TO UPDATE LOCATION
                               // id = widget.data[index]['id'];
                               //copy to clipboard
@@ -182,9 +184,6 @@ class _DraggableScrollableSheetScreenState
           ],
         );
       },
-      // ),
-      //   ],
-      // ),
     );
   }
 }

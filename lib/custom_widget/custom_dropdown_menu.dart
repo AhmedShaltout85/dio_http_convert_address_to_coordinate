@@ -24,8 +24,9 @@ class _CustomDropdownState extends State<CustomDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      borderRadius: const BorderRadius.all(Radius.circular(7)),
       value: _selectedItem,
-      hint: Text(widget.hintText),
+      hint: Text(widget.hintText, style: const TextStyle(color: Colors.indigo)),
       onChanged: (value) {
         setState(() {
           _selectedItem = value;

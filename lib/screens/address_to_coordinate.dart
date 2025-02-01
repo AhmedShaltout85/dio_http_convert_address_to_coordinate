@@ -8,6 +8,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
 
+import '../custom_widget/custom_end_drawer.dart';
+
 class AddressToCoordinates extends StatefulWidget {
   const AddressToCoordinates({super.key});
 
@@ -25,8 +27,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   var pickMarkers = HashSet<Marker>();
   late Future getLocs;
   final TextEditingController addressController = TextEditingController();
-  // String mapLink = "";
-  // List<LocationsMarkerModel> addressList = [];
+  late Future getHandasatItemsDropdownMenu;
+  List<String> handasatItemsDropdownMenu = [];
 
   @override
   void dispose() {
@@ -42,6 +44,22 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       getLocs = DioNetworkRepos().getLoc();
     });
     getLocs.then((value) => debugPrint(value.toString()));
+
+    //get handasat items dropdown menu from db
+    getHandasatItemsDropdownMenu =
+        DioNetworkRepos().fetchHandasatItemsDropdownMenu();
+
+    //load list
+    getHandasatItemsDropdownMenu.then((value) {
+      value.forEach((element) {
+        element = element.toString();
+        //add to list
+        handasatItemsDropdownMenu.add(element);
+      });
+      //debug print
+      debugPrint("handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+      debugPrint(value.toString());
+    });
 
     // _getCoordinatesFromAddress(address); // Convert on startup
 
@@ -78,11 +96,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         latitude = locations.first.latitude; // latitude=y
         longitude = locations.first.longitude; // longitude=x
 
-        // addressList.add(
-        //   LocationsMarkerModel(
-        //       address: address, latitude: latitude, longitude: longitude),
-        // );
-        //
+        //add marker
         pickMarkers.add(
           Marker(
             markerId: MarkerId(address),
@@ -95,17 +109,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                 BitmapDescriptor.hueGreen),
           ),
         );
-        // //
-        // // call the function to update locations in database
-        // DioNetworkRepos().updateLoc(address, latitude, longitude);
-        // //update Locations list after getting coordinates
-        // getLocs =  DioNetworkRepos().getLoc();
-        // //
+        //
         debugPrint(address);
         debugPrint(coordinates);
         debugPrint(longitude.toString());
         debugPrint(latitude.toString());
-        //
+
+        //update locations after getting coordinates
         getLocs = DioNetworkRepos().getLoc();
       });
 
@@ -164,27 +174,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             "POSTED new Location In Locations list after getting coordinates and gis link");
       }
 
-      // //  call the function to update locations in database
-      // DioNetworkRepos().updateLoc(address, latitude, longitude);
-      // //
-      // // //create new gis point
-      // String mapLink = await DioNetworkRepos().createNewGisPointAndGetMapLink(
-      //   24,
-      //   longitude.toString(),
-      //   latitude.toString(),
-      // );
-      // debugPrint("gis_longitude :>> $longitude");
-      // debugPrint("gis_latitude :>> $latitude");
-      // debugPrint("GIS MAP LINK :>> $mapLink");
-
-      // //update Locations list after getting coordinates and gis link
-      // await DioNetworkRepos().updateLocations(
-      //   address,
-      //   longitude,
-      //   latitude,
-      //   mapLink,
-      // );
-
       //update Locations list after getting coordinates
 
       setState(() {
@@ -199,6 +188,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
 
   @override
   Widget build(BuildContext context) {
+    // var handasahListItems = ['handasah1', 'handasah2', 'handasah3'];
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -219,22 +209,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             ),
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
-              // setState(
-              //   () {
-              //     // pickMarkers.add(
-              //     //   Marker(
-              //     //     markerId: MarkerId(coordinates),
-              //     //     position: LatLng(latitude, longitude),
-              //     //     icon: BitmapDescriptor.defaultMarkerWithHue(
-              //     //         BitmapDescriptor.hueGreen),
-              //     //     infoWindow: InfoWindow(
-              //     //       title: address,
-              //     //       snippet: coordinates,
-              //     //     ),
-              //     //   ),
-              //     // );
-              //   },
-              // );
             },
             markers: pickMarkers,
             zoomControlsEnabled: true,
@@ -313,8 +287,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       drawer: CustomDrawer(
         getLocs: getLocs,
       ),
-      endDrawer: CustomDrawer(
+      endDrawer: CustomEndDrawer(
         getLocs: getLocs,
+        handasahListItems: handasatItemsDropdownMenu,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,

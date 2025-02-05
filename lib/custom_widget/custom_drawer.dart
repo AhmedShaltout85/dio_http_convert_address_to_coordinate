@@ -40,13 +40,16 @@ class CustomDrawer extends StatelessWidget {
                           child: Card(
                             child: ListTile(
                               title: Text(
-                                  snapshot.data![index]['address']),
+                                snapshot.data![index]['address'],
+                                style: const TextStyle(
+                                    color: Colors.indigo,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               subtitle: Text(
-                                  "${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']}"),
+                                  "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
                             ),
                           ),
-                           onTap: () {
-                          
+                          onTap: () {
                             debugPrint("${snapshot.data[index]['id']}");
                             //CALL API TO UPDATE LOCATION
                             // id = widget.data[index]['id'];

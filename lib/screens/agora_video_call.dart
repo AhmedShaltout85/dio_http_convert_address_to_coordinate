@@ -149,8 +149,12 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
-                    icon: const Icon(Icons.call_end),
-                    color: Colors.red,
+                    icon: const CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Colors.red,
+                      child: Icon(Icons.call_end, color: Colors.white),
+                    ),
+                    // color: Colors.white,
                   ),
                 ],
               ),

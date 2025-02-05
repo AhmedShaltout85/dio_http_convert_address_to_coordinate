@@ -32,8 +32,8 @@ class _DraggableScrollableSheetScreenState
   @override
   Widget build(BuildContext context) {
     return CustomDraggableScrollableSheet(
-      minExtent: 0.2,
-      maxExtent: 0.8,
+      minExtent: 0.4,
+      maxExtent: 0.6,
       builder: (context, extent) {
         return Column(
           children: [
@@ -48,6 +48,7 @@ class _DraggableScrollableSheetScreenState
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
+                        // controller: ScrollController(),
                         shrinkWrap: true,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
@@ -59,7 +60,7 @@ class _DraggableScrollableSheetScreenState
                                     title:
                                         Text(snapshot.data![index]['address']),
                                     subtitle: Text(
-                                        "${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']}"),
+                                        "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
                                   ),
                                   Row(
                                       mainAxisAlignment:
@@ -134,7 +135,24 @@ class _DraggableScrollableSheetScreenState
                                             );
                                           },
                                           icon: const Icon(
-                                            Icons.location_searching,
+                                            Icons.location_on,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            debugPrint(
+                                                "Start Traking ${snapshot.data![index]['id']}");
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const Tracking(),
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(
+                                            Icons.close_rounded,
                                             color: Colors.blue,
                                           ),
                                         ),
@@ -173,7 +191,8 @@ class _DraggableScrollableSheetScreenState
                             },
                           );
                         },
-                        physics: const NeverScrollableScrollPhysics(),
+                        // physics: const ScrollableScrollPhysics(),
+                        // physics: const NeverScrollableScrollPhysics(),
                       );
                     }
                     return const Center(

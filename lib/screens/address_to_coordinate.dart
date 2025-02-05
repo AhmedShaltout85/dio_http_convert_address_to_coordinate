@@ -57,7 +57,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         handasatItemsDropdownMenu.add(element);
       });
       //debug print
-      debugPrint("handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+      debugPrint(
+          "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
       debugPrint(value.toString());
     });
 
@@ -288,8 +289,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         getLocs: getLocs,
       ),
       endDrawer: CustomEndDrawer(
+        title: 'Addresses List With coordinates',
         getLocs: getLocs,
-        handasahListItems: handasatItemsDropdownMenu,
+        stringListItems: handasatItemsDropdownMenu,
+        onPressed: () {
+          //
+        },
+        hintText: 'فضلا أختار الهندسة',
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,

@@ -191,7 +191,6 @@ class _DraggableScrollableSheetScreenState
                             },
                           );
                         },
-                        // physics: const ScrollableScrollPhysics(),
                         // physics: const NeverScrollableScrollPhysics(),
                       );
                     }

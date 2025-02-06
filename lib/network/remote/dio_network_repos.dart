@@ -18,7 +18,7 @@ class DioNetworkRepos {
   //   }
   // }
 
-final dio = Dio();
+  final dio = Dio();
 //get locations(GET by flag 0 (address not set yet))
   Future getLoc() async {
     // var dio = Dio();
@@ -172,9 +172,10 @@ final dio = Dio();
   }
 
   //check if address exists
-   Future<bool> checkAddressExists(String address) async {
+  Future<bool> checkAddressExists(String address) async {
     String encodedAddress = Uri.encodeComponent(address);
-    String getAddressUrl = 'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress';
+    String getAddressUrl =
+        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress';
 
     try {
       var response = await dio.get(getAddressUrl);
@@ -242,6 +243,28 @@ final dio = Dio();
     }
   }
 
+  //  Fetch Data from the Database(GET dropdown items for handasat users)
+  Future fetchHandasatUsersItemsDropdownMenu(String handasahName) async {
+    var dio = Dio();
+    var getHnadasatUsersUrl =
+        'http://192.168.17.250:9999/pick-location/api/v1/users/role/3/control-unit/$handasahName';
+    try {
+      var response = await dio.get(getHnadasatUsersUrl);
+      if (response.statusCode == 200) {
+        // debugPrint(dataList);
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
 //  get last record number from GIS server (broken-number-generator)
   Future<int> getLastRecordNumber() async {
     var dio = Dio();
@@ -274,15 +297,7 @@ final dio = Dio();
     }
   }
 
-//  Fetch Data from the Database(GET dropdown items for handasat users)
-  // Future<List<String>> fetchItems() async {
-  // final response = await http.get(Uri.parse('https://your-api.com/items'));
-  // if (response.statusCode == 200) {
-  //   List<dynamic> data = json.decode(response.body);
-  //   return data.map((item) => item['address'].toString()).toList();
-  // } else {
-  //   throw Exception('Failed to load items');
-  // }
+
 }
 
 //POST in GIS Server and GET MAP Link

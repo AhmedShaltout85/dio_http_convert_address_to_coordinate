@@ -25,7 +25,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double latitude = 0.0, longitude = 0.0;
   var pickMarkers = HashSet<Marker>();
-  late Future getLocs;
+  late Future getLocs; //get addresses from db(HotLine)
+  late Future
+      getLocsAfterGetCoordinatesAndGis; //get addresses from db(after getting coordinates and gis link)
   final TextEditingController addressController = TextEditingController();
   late Future getHandasatItemsDropdownMenu;
   List<String> handasatItemsDropdownMenu = [];
@@ -42,6 +44,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     super.initState();
     setState(() {
       getLocs = DioNetworkRepos().getLoc();
+      getLocsAfterGetCoordinatesAndGis =
+          DioNetworkRepos().getLocByFlagAndIsFinished();
     });
     getLocs.then((value) => debugPrint(value.toString()));
 
@@ -118,6 +122,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
 
         //update locations after getting coordinates
         getLocs = DioNetworkRepos().getLoc();
+        //update locations after getting coordinates and gis link
+        getLocsAfterGetCoordinatesAndGis =
+            DioNetworkRepos().getLocByFlagAndIsFinished();
       });
 
       //get last gis record from GIS server
@@ -179,6 +186,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
 
       setState(() {
         getLocs = DioNetworkRepos().getLoc();
+        //update locations after getting coordinates and gis link
+        getLocsAfterGetCoordinatesAndGis =
+            DioNetworkRepos().getLocByFlagAndIsFinished();
       });
     } catch (e) {
       setState(() {
@@ -189,7 +199,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
 
   @override
   Widget build(BuildContext context) {
-    // var handasahListItems = ['handasah1', 'handasah2', 'handasah3'];
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -265,10 +274,15 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     }
                     setState(() {
                       pickMarkers.clear();
+                      address = addressController.text;
+                      _getCoordinatesFromAddress(address);
+                      addressController.clear();
+                      //update locations after getting coordinates
+                      getLocs = DioNetworkRepos().getLoc();
+                      //update locations after getting coordinates and gis link
+                      getLocsAfterGetCoordinatesAndGis =
+                          DioNetworkRepos().getLocByFlagAndIsFinished();
                     });
-                    address = addressController.text;
-                    _getCoordinatesFromAddress(address);
-                    addressController.clear();
                   },
                   icon: const Icon(
                     Icons.search_outlined,
@@ -280,7 +294,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           ),
           //CustomDraggableSheet
           DraggableScrollableSheetScreen(
-            getLocs: getLocs,
+            getLocs: getLocsAfterGetCoordinatesAndGis,
           ), //call draggable sheet
           //CustomDraggableSheet
         ],
@@ -290,10 +304,11 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       ),
       endDrawer: CustomEndDrawer(
         title: 'Addresses List With coordinates',
-        getLocs: getLocs,
+        getLocs: getLocsAfterGetCoordinatesAndGis,
         stringListItems: handasatItemsDropdownMenu,
         onPressed: () {
           //
+        
         },
         hintText: 'فضلا أختار الهندسة',
       ),
@@ -303,7 +318,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           // pickMarkers.clear();
           setState(() {
             getLocs = DioNetworkRepos().getLoc();
-            // _getCoordinatesFromAddress(address);
+            //update locations after getting coordinates
+            getLocsAfterGetCoordinatesAndGis =
+                DioNetworkRepos().getLocByFlagAndIsFinished();
           });
         },
         mini: true,

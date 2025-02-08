@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
-import 'package:pick_location/screens/agora_video_call.dart';
+// import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/gis_map.dart';
 
 import '../network/remote/dio_network_repos.dart';
 // import '../screens/gis_map.dart';
+import '../screens/address_to_coordinate.dart';
 import '../themes/themes.dart';
 
 class CustomizLoginScreenBody extends StatefulWidget {
@@ -47,8 +48,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to another screen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const AgoraVideoCall()),
-        // MaterialPageRoute(builder: (context) => const VideoCallScreen()),
+        MaterialPageRoute(builder: (context) => const AddressToCoordinates()),
+        // MaterialPageRoute(builder: (context) => const AgoraVideoCall()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -171,8 +172,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const AgoraVideoCall()),
-        // MaterialPageRoute(builder: (_) => const VideoCallScreen()),
+        MaterialPageRoute(builder: (_) => const AddressToCoordinates()),
+        // MaterialPageRoute(builder: (_) => const AgoraVideoCall()),
       );
     } else {
       // Show error

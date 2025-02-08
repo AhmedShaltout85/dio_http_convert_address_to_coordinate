@@ -48,7 +48,6 @@ class _DraggableScrollableSheetScreenState
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
-                        // controller: ScrollController(),
                         shrinkWrap: true,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
@@ -60,8 +59,12 @@ class _DraggableScrollableSheetScreenState
                                     title:
                                         Text(snapshot.data![index]['address']),
                                     subtitle: Text(
-                                        "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
+                                        "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']}) \n${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})"),
                                   ),
+                                  // ListTile(
+                                  //   title: Text(
+                                  //       '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})'),
+                                  // ),
                                   Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,

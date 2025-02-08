@@ -7,23 +7,27 @@ import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;
 
 class DioNetworkRepos {
-  // Future getUsers() async {
-  //   var dio = Dio();
-  //   try {
-  //     var response = await dio.get(url);
-  //     return response.data;
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     throw Exception(e);
-  //   }
-  // }
-
   final dio = Dio();
 //get locations(GET by flag 0 (address not set yet))
   Future getLoc() async {
-    // var dio = Dio();
     try {
-      var response = await dio.get(urlGet);
+      var response = await dio.get(urlGetHotlineAddress);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+
+  Future getLocByFlagAndIsFinished() async {
+    try {
+      var response = await dio.get(urlGetAllByFlagAndIsFinished);
       if (response.statusCode == 200) {
         return response.data;
       } else {
@@ -39,7 +43,6 @@ class DioNetworkRepos {
 
 //update locations
   Future updateLoc(String address, double longitude, double latitude) async {
-    // var dio = Dio();
     try {
       final response = await dio.put(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
@@ -48,6 +51,57 @@ class DioNetworkRepos {
             "latitude": latitude,
             "flag": 1,
           });
+      return response.data;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+//update locations By address (add handasahName)
+  Future updateLocAddHandasah(String address, String? handasahName) async {
+    try {
+      final response = await dio.put(
+          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$address",
+          data: {
+            "handasah_name": handasahName,
+          });
+      debugPrint(response.data.toString());
+
+      return response.data;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+//update locations By address (add technicianName)
+  Future updateLocAddTechnician(String address, String? technicianName) async {
+    try {
+      final response = await dio.put(
+          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/technical/$address",
+          data: {
+            "technical_name": technicianName,
+          });
+      debugPrint(response.data.toString());
+
+      return response.data;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+//update locations By address (add isFinished)
+  Future updateLocAddIsFinished(String address, int isFinished) async {
+    try {
+      final response = await dio.put(
+          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/is-finished/$address",
+          data: {
+            "is_finished": isFinished,
+          });
+      debugPrint(response.data.toString());
+
       return response.data;
     } catch (e) {
       debugPrint(e.toString());
@@ -296,8 +350,6 @@ class DioNetworkRepos {
       throw Exception(e);
     }
   }
-
-
 }
 
 //POST in GIS Server and GET MAP Link

@@ -51,6 +51,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     });
     getLocs.then((value) => debugPrint(value.toString()));
 //(08-02-2025-not-working as expected)
+
     // getLocsAfterGetCoordinatesAndGis.then((value) {
     //   value.forEach((element) {
     //     getAddress = element['address'].toString();

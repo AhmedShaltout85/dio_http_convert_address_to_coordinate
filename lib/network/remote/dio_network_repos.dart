@@ -112,7 +112,6 @@ class DioNetworkRepos {
 //update locations(wiht-url)
   Future<void> updateLocations(
       String address, double longitude, double latitude, String url) async {
-    // var dio = Dio();
     try {
       var response = await dio.put(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
@@ -132,7 +131,6 @@ class DioNetworkRepos {
   //POST in GIS Server and GET MAP Link
   Future<String> createNewGisPointAndGetMapLink(
       int id, String longitude, String latitude) async {
-    // var dio = Dio();
     // Encode credentials to Base64
     final basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
@@ -163,7 +161,6 @@ class DioNetworkRepos {
   //Login User using username and password(working)
   Future<bool> loginByUsernameAndPassword(
       String username, String password) async {
-    // var dio = Dio();
     try {
       final response = await dio.get(
           "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
@@ -190,8 +187,7 @@ class DioNetworkRepos {
 //Login User using username and password(working)
   Future<Map<String, dynamic>> login(String username, String password) async {
     // Replace with your API endpoint
-    // var dio = Dio();
-
+    
     try {
       // Sending GET request with query parameters
       Response response = await dio.get(
@@ -253,7 +249,6 @@ class DioNetworkRepos {
   //post locations(wiht-url)
   Future createNewLocation(
       String address, double longitude, double latitude, String url) async {
-    var dio = Dio();
     try {
       var response = await dio.post(
           "http://192.168.17.250:9999/pick-location/api/v1/get-loc",
@@ -277,7 +272,6 @@ class DioNetworkRepos {
 
 //  Fetch Data from the Database(GET dropdown items for handasat)
   Future fetchHandasatItemsDropdownMenu() async {
-    var dio = Dio();
     var getHandasatUrl =
         'http://192.168.17.250:9999/pick-location/api/v1/handasah/all';
     try {
@@ -299,7 +293,6 @@ class DioNetworkRepos {
 
   //  Fetch Data from the Database(GET dropdown items for handasat users)
   Future fetchHandasatUsersItemsDropdownMenu(String handasahName) async {
-    var dio = Dio();
     var getHnadasatUsersUrl =
         'http://192.168.17.250:9999/pick-location/api/v1/users/role/3/control-unit/$handasahName';
     try {
@@ -319,9 +312,33 @@ class DioNetworkRepos {
     }
   }
 
+// Fetch Data from the Database(GET broken items for technicians users in handasat)
+// NOT TESTED
+//http://localhost:9999/pick-location/api/v1/get-loc/handasah/handasah/technical/user/is-finished/0
+  Future fetchHandasatUsersItemsBroken(
+      String handasahName, String technicianName, int isFinished) async {
+    var getHnadasatUsersListUrl =
+        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasahName/technical/$technicianName/is-finished/0';
+    try {
+      var response = await dio.get(getHnadasatUsersListUrl);
+      if (response.statusCode == 200) {
+        // debugPrint(dataList);
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
 //  get last record number from GIS server (broken-number-generator)
   Future<int> getLastRecordNumber() async {
-    var dio = Dio();
+    // var dio = Dio();
     var getLastRecordUrl = 'http://196.219.231.3:8000/lab-api/lab-id';
     final basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
@@ -351,143 +368,3 @@ class DioNetworkRepos {
     }
   }
 }
-
-//POST in GIS Server and GET MAP Link
-//TODO:GET GIS map LINK (22-12-2024-NOT-TEST)
-//   Future createNewGisPointAndGetMap(
-//       String longitude,
-//       String latitude, int id) async {
-// // Future createNewGisPointAndGetMap(
-// //       LocationsMarkerModel locationsMarkerModel) async{
-
-//     var dio = Dio();
-//     try {
-//       final response = await dio
-//           .post("http://192.168.17.250:8000/pick-location/api/", data: {
-//         "uid": id,
-//         "x": longitude,
-//         "y": latitude,
-//       });
-//       if (response.statusCode == 201) {
-//         return response.data;
-//       } else {
-//         throw Exception('Failed to post data');
-//       }
-//     } catch (e) {
-//       debugPrint(e.toString());
-//       throw Exception(e);
-//     }
-//   }
-
-//update locations using Constructor
-//TODO: update locations using Constructor NOT TESTED(27-10-2024)
-// Future updateLocs(LocationsMarkerModel locationsMarkerModel) async {
-//   var dio = Dio();
-//   try {
-//     final response = await dio.put(
-//         "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$locationsMarkerModel.address",
-//         data: {
-//           "longitude": locationsMarkerModel.longitude,
-//           "latitude": locationsMarkerModel.latitude,
-//           "gis_url": locationsMarkerModel.url
-//         });
-//     return response.data;
-//   } catch (e) {
-//     debugPrint(e.toString());
-//     throw Exception(e);
-//   }
-// }
-
-//update locations using id
-//TODO: update locations using id NOT TESTED(27-10-2024)
-// Future updateLocationsById(
-//     int id, LocationsMarkerModel locationsMarkerModel) async {
-//   try {
-//     List<LocationsMarkerModel> locationsList = [];
-//     final locationIndex =
-//         locationsList.indexWhere((element) => element.id == id);
-//     var dio = Dio();
-
-//     if (locationIndex >= 0) {
-//       final response = await dio.put(
-//           "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$id",
-//           data: {
-//             "longitude": locationsMarkerModel.longitude,
-//             "latitude": locationsMarkerModel.latitude,
-//             "flag": 1,
-//             "gis_url": locationsMarkerModel.url
-//           });
-//       locationsList[locationIndex] = locationsMarkerModel;
-//       return response.data;
-//     } else {
-//       throw Exception('Location not found');
-//     }
-//   } catch (e) {
-//     debugPrint(e.toString());
-//     throw Exception(e);
-//   }
-// }
-
-//POST in GIS Server
-//TODO:POST in GIS Server (22-12-2024-NOT-TEST)
-// Future createNewGisPoint(LocationsMarkerModel locationsMarkerModel) async{
-//   var dio = Dio();
-//   try {
-//     final response = await dio.post(
-//         "http://192.168.17.250:8000/pick-location/api/",
-//         data: {
-//           "y": locationsMarkerModel.longitude,
-//           "x": locationsMarkerModel.latitude,
-//           "uid": locationsMarkerModel.id,
-//         });
-//     return response.data;
-//   } catch (e) {
-//     debugPrint(e.toString());
-//     throw Exception(e);
-//   }
-// }
-
-// Future getLocs() async{
-//   var response = await http.get(Uri.parse(url2));
-//   if (response.statusCode == 200) {
-//     return response.body;
-//   }
-//   else {
-//     throw Exception('Failed to get data');
-//   }
-// }
-// }
-
-// UI VIEW for Dropdown
-// import 'package:flutter/material.dart';
-
-// class MyDropdownScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text("Custom Dropdown Menu")),
-//       body: Center(
-//         child: FutureBuilder<List<String>>(
-//           future: fetchDropdownItems(), // Replace with your future method get from API
-//           builder: (context, snapshot) {
-//             if (snapshot.connectionState == ConnectionState.waiting) {
-//               return CircularProgressIndicator();
-//             } else if (snapshot.hasError) {
-//               return Text('Error: ${snapshot.error}');
-//             } else if (snapshot.hasData) {
-//               return CustomDropdown(
-//                 items: snapshot.data!,
-//                 hintText: "Select an Item",
-//                 onChanged: (value) {
-//                   print('Selected item: $value');
-//                 },
-//               );
-//             } else {
-//               return Text('No items available');
-//             }
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }

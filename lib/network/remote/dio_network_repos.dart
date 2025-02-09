@@ -338,7 +338,6 @@ class DioNetworkRepos {
 
 //  get last record number from GIS server (broken-number-generator)
   Future<int> getLastRecordNumber() async {
-    // var dio = Dio();
     var getLastRecordUrl = 'http://196.219.231.3:8000/lab-api/lab-id';
     final basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';

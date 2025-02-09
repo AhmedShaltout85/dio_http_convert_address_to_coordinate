@@ -9,6 +9,8 @@ class CustomEndDrawer extends StatelessWidget {
   final List<String> stringListItems;
   final VoidCallback onPressed;
   final String hintText;
+  // final void Function(String?) onChanged; //(08-02-2025-not-working as expected)
+
 
   // Constructor
   const CustomEndDrawer({
@@ -18,6 +20,8 @@ class CustomEndDrawer extends StatelessWidget {
     required this.onPressed,
     required this.hintText,
     required this.title,
+  //  required this.onChanged, //(08-02-2025-not-working as expected)
+
   });
 
   @override
@@ -73,9 +77,9 @@ class CustomEndDrawer extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            subtitle: Text(
-                              "(${data['latitude'] ?? 'N/A'}, ${data['longitude'] ?? 'N/A'})",
-                            ),
+                            // subtitle: Text(
+                            //   "(${data['latitude'] ?? 'N/A'}, ${data['longitude'] ?? 'N/A'})",
+                            // ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -109,6 +113,7 @@ class CustomEndDrawer extends StatelessWidget {
                                       );
                                     }
                                   },
+                                  // onChanged: onChanged,
                                 ),
                               ),
                             ],

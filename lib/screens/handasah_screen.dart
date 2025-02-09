@@ -129,14 +129,27 @@ class _HandasahScreenState extends State<HandasahScreen> {
         onPressed: () {},
         hintText: 'فضلا أختار الموظف',
         title: 'Redirect To Handasah User',
+      //   onChanged: (value) {
+      //     if (value != null) {
+      //       debugPrint('Selected item: $value');
+      //       //updateLocAddHandasah
+      //       setState(() {
+      //         // DioNetworkRepos().updateLocAddTechnician(
+      //         //   getAddress,
+      //         //   value,
+      //         // );
+      //       });
+      //     }
+      //   },
       ),
-      drawer: CustomEndDrawer(
-        getLocs: getLocs,
-        stringListItems: handasatItemsDropdownMenu,
-        onPressed: () {},
-        title: 'Redirect To Handasah',
-        hintText: 'فضلا أختار الهندسة',
-      ),
+      // drawer: CustomEndDrawer(
+      //   getLocs: getLocs,
+      //   stringListItems: handasatItemsDropdownMenu,
+      //   onPressed: () {},
+      //   title: 'Redirect To Handasah',
+      //   hintText: 'فضلا أختار الهندسة',
+      //   onChanged: (vaule){},
+      // ),
     );
   }
 }

@@ -22,6 +22,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   final Completer<GoogleMapController> _controller = Completer();
   String address = "";
   String coordinates = "";
+  String getAddress = "";
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double latitude = 0.0, longitude = 0.0;
   var pickMarkers = HashSet<Marker>();
@@ -31,6 +32,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   final TextEditingController addressController = TextEditingController();
   late Future getHandasatItemsDropdownMenu;
   List<String> handasatItemsDropdownMenu = [];
+  List<String> addHandasahToAddressList = [];
 
   @override
   void dispose() {
@@ -48,6 +50,25 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           DioNetworkRepos().getLocByFlagAndIsFinished();
     });
     getLocs.then((value) => debugPrint(value.toString()));
+//(08-02-2025-not-working as expected)
+    // getLocsAfterGetCoordinatesAndGis.then((value) {
+    //   value.forEach((element) {
+    //     getAddress = element['address'].toString();
+    //     debugPrint(getAddress.toString());
+    //     addHandasahToAddressList.add(getAddress);
+    //   });
+    //   debugPrint(
+    //       addHandasahToAddressList.toString()); // Print all addresses as a list
+    //   int index = 2; // Example index
+
+    //   if (index >= 0 && index < addHandasahToAddressList.length) {
+    //     String currentAddress = addHandasahToAddressList[index];
+    //     debugPrint("Current Address: $currentAddress");
+    //   }
+    // });
+
+  //(08-02-2025-not-working as expected)
+  
 
     //get handasat items dropdown menu from db
     getHandasatItemsDropdownMenu =
@@ -308,9 +329,21 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         stringListItems: handasatItemsDropdownMenu,
         onPressed: () {
           //
-        
         },
         hintText: 'فضلا أختار الهندسة',
+        //(08-02-2025-not-working as expected)
+        // onChanged: (value) {
+        //   if (value != null) {
+        //     debugPrint('Selected item: $value');
+        //     //updateLocAddHandasah
+        //     setState(() {
+        //       DioNetworkRepos().updateLocAddHandasah(
+        //         getAddress,
+        //         value,
+        //       );
+        //     });
+        //   }
+        // },
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,

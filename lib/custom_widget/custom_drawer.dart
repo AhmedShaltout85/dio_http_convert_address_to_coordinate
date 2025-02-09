@@ -45,8 +45,8 @@ class CustomDrawer extends StatelessWidget {
                                     color: Colors.indigo,
                                     fontWeight: FontWeight.bold),
                               ),
-                              subtitle: Text(
-                                  "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
+                              // subtitle: Text(
+                              //     "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
                             ),
                           ),
                           onTap: () {

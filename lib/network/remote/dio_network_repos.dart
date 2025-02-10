@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-// import 'package:pick_location/model/locations_marker_model.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
 
 class DioNetworkRepos {
   final dio = Dio();
@@ -25,6 +23,7 @@ class DioNetworkRepos {
     }
   }
 
+//get locations(GET by flag 1 and 0)
   Future getLocByFlagAndIsFinished() async {
     try {
       var response = await dio.get(urlGetAllByFlagAndIsFinished);
@@ -119,7 +118,10 @@ class DioNetworkRepos {
             "longitude": longitude,
             "latitude": latitude,
             "flag": 1,
-            "gis_url": url
+            "gis_url": url,
+            "is_finished": 0,
+            "handasah_name": "",
+            "technical_name": "",
           });
       return response.data;
     } catch (e) {
@@ -225,7 +227,33 @@ class DioNetworkRepos {
   Future<bool> checkAddressExists(String address) async {
     String encodedAddress = Uri.encodeComponent(address);
     String getAddressUrl =
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress';
+        // 'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress'; //updated 10-02-2025 not tested
+        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$encodedAddress';
+
+    try {
+      var response = await dio.get(getAddressUrl);
+
+      if (response.statusCode == 200) {
+        debugPrint("PRINTED DATA FROM API: ${response.data}");
+        return true;
+      } else {
+        debugPrint('Address not found');
+        return false;
+      }
+    } on DioException catch (e) {
+      debugPrint("Dio error: ${e.response?.statusCode} - ${e.message}");
+      return false;
+    } catch (e) {
+      debugPrint("Unexpected error: $e");
+      return false;
+    }
+  }
+
+  //check if address exists BY ADDRESS And HANDASAH
+  Future<bool> checkAddressExistsByAddressAndHandasah(String address, String handasah) async {
+    String encodedAddress = Uri.encodeComponent(address);
+    String getAddressUrl =
+        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress/handasah/$handasah';
 
     try {
       var response = await dio.get(getAddressUrl);
@@ -318,7 +346,7 @@ class DioNetworkRepos {
   Future fetchHandasatUsersItemsBroken(
       String handasahName, String technicianName, int isFinished) async {
     var getHnadasatUsersListUrl =
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasahName/technical/$technicianName/is-finished/0';
+        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasahName/technical/$technicianName/is-finished/$isFinished';
     try {
       var response = await dio.get(getHnadasatUsersListUrl);
       if (response.statusCode == 200) {

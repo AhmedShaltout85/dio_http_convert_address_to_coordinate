@@ -28,4 +28,5 @@ const password = 'gislab1257910';
 class DataStatic {
 //Assign HandasahName
   static String handasahName = '';
+  static int setectedIndax = 0;
 }

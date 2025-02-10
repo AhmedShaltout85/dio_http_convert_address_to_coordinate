@@ -11,7 +11,6 @@ class CustomEndDrawer extends StatelessWidget {
   final String hintText;
   // final void Function(String?) onChanged; //(08-02-2025-not-working as expected)
 
-
   // Constructor
   const CustomEndDrawer({
     super.key,
@@ -20,8 +19,7 @@ class CustomEndDrawer extends StatelessWidget {
     required this.onPressed,
     required this.hintText,
     required this.title,
-  //  required this.onChanged, //(08-02-2025-not-working as expected)
-
+    //  required this.onChanged, //(08-02-2025-not-working as expected)
   });
 
   @override
@@ -111,7 +109,14 @@ class CustomEndDrawer extends StatelessWidget {
                                         data['address'] ?? '',
                                         value,
                                       );
-                                    }
+                                      debugPrint('updated item: $value');
+                                      //
+                                    } 
+                                    // else if (data['handasah_name'] == value) {
+                                      
+                                    //   snapshot.data.remove(data['address']);
+                                    //   debugPrint('removed item: $value');
+                                    // }
                                   },
                                   // onChanged: onChanged,
                                 ),

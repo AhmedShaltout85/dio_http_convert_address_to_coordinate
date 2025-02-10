@@ -148,7 +148,10 @@ class _DraggableScrollableSheetScreenState
                                             setState(() {
                                               //update is_finished(close broken locations)
                                               DioNetworkRepos()
-                                                  .updateLocAddIsFinished(snapshot.data![index]['address'], 1);
+                                                  .updateLocAddIsFinished(
+                                                      snapshot.data![index]
+                                                          ['address'],
+                                                      1);
                                             });
                                             // debugPrint(
                                             //     "Start Traking ${snapshot.data![index]['id']}");
@@ -178,25 +181,6 @@ class _DraggableScrollableSheetScreenState
                                   builder: (context) => const AddressDetails(),
                                 ),
                               );
-
-                              //CALL API TO UPDATE LOCATION
-                              // id = widget.data[index]['id'];
-                              //copy to clipboard
-                              // Clipboard.setData(ClipboardData(
-                              //     // text: widget.data[index]['address']));
-                              //     text: snapshot.data[index]['address']));
-                              // // Show a SnackBar to notify the user that the text is copied
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   const SnackBar(
-                              //     backgroundColor: Colors.black26,
-                              //     content: Center(
-                              //       child: Text(
-                              //         'تم نسخ العنوان بنجاح',
-                              //         style: TextStyle(color: Colors.white),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // );
                             },
                           );
                         },

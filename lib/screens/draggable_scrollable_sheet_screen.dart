@@ -19,17 +19,6 @@ class DraggableScrollableSheetScreen extends StatefulWidget {
 
 class _DraggableScrollableSheetScreenState
     extends State<DraggableScrollableSheetScreen> {
-  // late Future getLocs;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   setState(() {
-  //     getLocs = DioNetworkRepos().getLoc();
-  //   });
-  //   getLocs.then((value) => debugPrint(value.toString()));
-  // }
-
   @override
   Widget build(BuildContext context) {
     return CustomDraggableScrollableSheet(
@@ -60,115 +49,117 @@ class _DraggableScrollableSheetScreenState
                                     title:
                                         Text(snapshot.data![index]['address']),
                                     subtitle: Text(
-                                        "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']}) \n${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})"),
+                                        "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
                                   ),
-                                  // ListTile(
-                                  //   title: Text(
-                                  //       '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})'),
-                                  // ),
+                                  snapshot.data![index]['handasah_name'] == null
+                                      ? const SizedBox.shrink()
+                                      : ListTile(
+                                          title: Text(
+                                              '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})'),
+                                        ),
                                   Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () {
-                                            debugPrint(
-                                                "Start Gis Map ${snapshot.data![index]['gis_url']}");
-                                            //open in iframe webview in web app
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         IframeScreen(
-                                            //             url: snapshot
-                                            //                     .data![index]
-                                            //                 ['gis_url']),
-                                            //   ),
-                                            // );
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          debugPrint(
+                                              "Start Gis Map ${snapshot.data![index]['gis_url']}");
+                                          //open in iframe webview in web app
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         IframeScreen(
+                                          //             url: snapshot
+                                          //                     .data![index]
+                                          //                 ['gis_url']),
+                                          //   ),
+                                          // );
 
-                                            //open in browser
-                                            // CustomBrowserRedirect.openInBrowser(
-                                            //   snapshot.data![index]['gis_url'],
-                                            // );
-                                            //open in webview
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    CustomWebView(
-                                                  title: 'GIS Map webview',
-                                                  url: snapshot.data![index]
-                                                      ['gis_url'],
-                                                ),
+                                          //open in browser
+                                          // CustomBrowserRedirect.openInBrowser(
+                                          //   snapshot.data![index]['gis_url'],
+                                          // );
+                                          //open in webview
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CustomWebView(
+                                                title: 'GIS Map webview',
+                                                url: snapshot.data![index]
+                                                    ['gis_url'],
                                               ),
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.open_in_browser,
-                                            color: Colors.blue,
-                                          ),
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.open_in_browser,
+                                          color: Colors.blue,
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            debugPrint(
-                                                "Start Video Call ${snapshot.data![index]['id']}");
-                                            //open video call
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const AgoraVideoCall(),
-                                              ),
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.video_call,
-                                            color: Colors.green,
-                                          ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          debugPrint(
+                                              "Start Video Call ${snapshot.data![index]['id']}");
+                                          //open video call
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AgoraVideoCall(),
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.video_call,
+                                          color: Colors.green,
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            debugPrint(
-                                                "Start Traking ${snapshot.data![index]['id']}");
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const Tracking(),
-                                              ),
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.location_on,
-                                            color: Colors.blue,
-                                          ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          debugPrint(
+                                              "Start Traking ${snapshot.data![index]['id']}");
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const Tracking(),
+                                            ),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.location_on,
+                                          color: Colors.blue,
                                         ),
-                                        IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              //update is_finished(close broken locations)
-                                              DioNetworkRepos()
-                                                  .updateLocAddIsFinished(
-                                                      snapshot.data![index]
-                                                          ['address'],
-                                                      1);
-                                            });
-                                            // debugPrint(
-                                            //     "Start Traking ${snapshot.data![index]['id']}");
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         const Tracking(),
-                                            //   ),
-                                            // );
-                                          },
-                                          icon: const Icon(
-                                            Icons.close_rounded,
-                                            color: Colors.blue,
-                                          ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            //update is_finished(close broken locations)
+                                            DioNetworkRepos()
+                                                .updateLocAddIsFinished(
+                                                    snapshot.data![index]
+                                                        ['address'],
+                                                    1);
+                                          });
+                                          // debugPrint(
+                                          //     "Start Traking ${snapshot.data![index]['id']}");
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         const Tracking(),
+                                          //   ),
+                                          // );
+                                        },
+                                        icon: const Icon(
+                                          Icons.close_rounded,
+                                          color: Colors.blue,
                                         ),
-                                      ]),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),

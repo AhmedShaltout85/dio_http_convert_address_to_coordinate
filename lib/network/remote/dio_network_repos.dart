@@ -341,28 +341,38 @@ class DioNetworkRepos {
   }
 
 // Fetch Data from the Database(GET broken items for technicians users in handasat)
-// NOT TESTED
-//http://localhost:9999/pick-location/api/v1/get-loc/handasah/handasah/technical/user/is-finished/0
-  Future fetchHandasatUsersItemsBroken(
+// http://localhost:9999/pick-location/api/v1/get-loc/handasah/handasah/technical/user/is-finished/0
+  
+ Future<List<Map<String, dynamic>>> fetchHandasatUsersItemsBroken(
       String handasahName, String technicianName, int isFinished) async {
     var getHnadasatUsersListUrl =
         'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasahName/technical/$technicianName/is-finished/$isFinished';
     try {
       var response = await dio.get(getHnadasatUsersListUrl);
-      if (response.statusCode == 200) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
 
-        return response.data;
+      if (response.statusCode == 200 && response.data != null) {
+        if (response.data is List) {
+          // If it's already a List, return it directly
+          // debugPrint(dataList);
+          debugPrint("PRINTED DATA FROM API:  ${[response.data]}");
+          return List<Map<String, dynamic>>.from(response.data);
+        } else if (response.data is Map<String, dynamic>) {
+          // If it's a single Map, wrap it in a List
+          return [response.data];
+        } else {
+          debugPrint("Unexpected response format: ${response.data}");
+          return []; // Return an empty list if the format is unexpected
+        }
       } else {
         debugPrint('List is empty');
         return [];
       }
     } catch (e) {
-      debugPrint(e.toString());
-      throw Exception(e);
+      debugPrint("API Error: $e");
+      return []; // Return empty list on error
     }
   }
+
 
 //  get last record number from GIS server (broken-number-generator)
   Future<int> getLastRecordNumber() async {

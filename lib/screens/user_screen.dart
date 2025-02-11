@@ -169,6 +169,10 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                     );
                   });
+            } else if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
             return const Center(
               child: CircularProgressIndicator(),

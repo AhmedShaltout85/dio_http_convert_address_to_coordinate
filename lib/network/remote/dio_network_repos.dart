@@ -40,6 +40,23 @@ class DioNetworkRepos {
     }
   }
 
+//get locations(GET by Handasah free and Technician free)
+  Future getLocByHandasahAndTechnician() async {
+    try {
+      var response = await dio.get(urlGetAllByHandasahAndTechnician);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+
 //update locations
   Future updateLoc(String address, double longitude, double latitude) async {
     try {
@@ -120,8 +137,8 @@ class DioNetworkRepos {
             "flag": 1,
             "gis_url": url,
             "is_finished": 0,
-            "handasah_name": "",
-            "technical_name": "",
+            "handasah_name": "free",
+            "technical_name": "free",
           });
       return response.data;
     } catch (e) {

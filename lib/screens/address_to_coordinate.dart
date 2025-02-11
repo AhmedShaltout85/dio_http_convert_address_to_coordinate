@@ -29,6 +29,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   late Future getLocs; //get addresses from db(HotLine)
   late Future
       getLocsAfterGetCoordinatesAndGis; //get addresses from db(after getting coordinates and gis link)
+  late Future getLocsByHandasahNameAndTechinicianName;
   final TextEditingController addressController = TextEditingController();
   late Future getHandasatItemsDropdownMenu;
   List<String> handasatItemsDropdownMenu = [];
@@ -48,28 +49,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       getLocs = DioNetworkRepos().getLoc();
       getLocsAfterGetCoordinatesAndGis =
           DioNetworkRepos().getLocByFlagAndIsFinished();
+      getLocsByHandasahNameAndTechinicianName =
+          DioNetworkRepos().getLocByHandasahAndTechnician();
     });
-    getLocs.then((value) => debugPrint(value.toString()));
-//(08-02-2025-not-working as expected)
 
-    // getLocsAfterGetCoordinatesAndGis.then((value) {
-    //   value.forEach((element) {
-    //     getAddress = element['address'].toString();
-    //     debugPrint(getAddress.toString());
-    //     addHandasahToAddressList.add(getAddress);
-    //   });
-    //   debugPrint(
-    //       addHandasahToAddressList.toString()); // Print all addresses as a list
-    //   int index = 2; // Example index
+    getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
 
-    //   if (index >= 0 && index < addHandasahToAddressList.length) {
-    //     String currentAddress = addHandasahToAddressList[index];
-    //     debugPrint("Current Address: $currentAddress");
-    //   }
-    // });
-
-  //(08-02-2025-not-working as expected)
-  
+    getLocsByHandasahNameAndTechinicianName.then((value) =>
+        debugPrint("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
 
     //get handasat items dropdown menu from db
     getHandasatItemsDropdownMenu =
@@ -147,6 +134,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         //update locations after getting coordinates and gis link
         getLocsAfterGetCoordinatesAndGis =
             DioNetworkRepos().getLocByFlagAndIsFinished();
+        getLocsByHandasahNameAndTechinicianName =
+            DioNetworkRepos().getLocByHandasahAndTechnician();
       });
 
       //get last gis record from GIS server
@@ -211,6 +200,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         //update locations after getting coordinates and gis link
         getLocsAfterGetCoordinatesAndGis =
             DioNetworkRepos().getLocByFlagAndIsFinished();
+        getLocsByHandasahNameAndTechinicianName =
+            DioNetworkRepos().getLocByHandasahAndTechnician();
       });
     } catch (e) {
       setState(() {
@@ -304,6 +295,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                       //update locations after getting coordinates and gis link
                       getLocsAfterGetCoordinatesAndGis =
                           DioNetworkRepos().getLocByFlagAndIsFinished();
+                      getLocsByHandasahNameAndTechinicianName =
+                          DioNetworkRepos().getLocByHandasahAndTechnician();
                     });
                   },
                   icon: const Icon(
@@ -326,10 +319,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       ),
       endDrawer: CustomEndDrawer(
         title: 'Addresses List With coordinates',
-        getLocs: getLocsAfterGetCoordinatesAndGis,
+        getLocs: getLocsByHandasahNameAndTechinicianName,
         stringListItems: handasatItemsDropdownMenu,
         onPressed: () {
           //
+          setState(() {
+            getLocsByHandasahNameAndTechinicianName =
+                DioNetworkRepos().getLocByHandasahAndTechnician();
+          });
         },
         hintText: 'فضلا أختار الهندسة',
         //(08-02-2025-not-working as expected)
@@ -355,6 +352,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             //update locations after getting coordinates
             getLocsAfterGetCoordinatesAndGis =
                 DioNetworkRepos().getLocByFlagAndIsFinished();
+            getLocsByHandasahNameAndTechinicianName =
+                DioNetworkRepos().getLocByHandasahAndTechnician();
           });
         },
         mini: true,

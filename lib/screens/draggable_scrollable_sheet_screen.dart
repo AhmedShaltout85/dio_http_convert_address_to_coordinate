@@ -48,15 +48,20 @@ class _DraggableScrollableSheetScreenState
                                   ListTile(
                                     title:
                                         Text(snapshot.data![index]['address']),
-                                    subtitle: Text(
-                                        "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
+                                    subtitle: snapshot.data![index]
+                                                    ['handasah_name'] ==
+                                                "free" ||
+                                            snapshot.data![index]
+                                                    ['technical_name'] ==
+                                                "free"
+                                        ? Text(
+                                            '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
+                                        : SizedBox.fromSize(),
                                   ),
-                                  snapshot.data![index]['handasah_name'] == null
-                                      ? const SizedBox.shrink()
-                                      : ListTile(
-                                          title: Text(
-                                              '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})'),
-                                        ),
+                                  // ListTile(
+                                  //         title: Text(
+                                  //     "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
+                                  //       ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

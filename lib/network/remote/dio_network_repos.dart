@@ -302,7 +302,10 @@ class DioNetworkRepos {
             "longitude": longitude,
             "latitude": latitude,
             "flag": 1,
-            "gis_url": url
+            "gis_url": url,
+            "is_finished": 0,
+            "handasah_name": "free",
+            "technical_name": "free",
           });
       if (response.statusCode == 201) {
         return response.data;

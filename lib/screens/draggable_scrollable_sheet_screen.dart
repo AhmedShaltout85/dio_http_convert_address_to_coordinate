@@ -49,14 +49,14 @@ class _DraggableScrollableSheetScreenState
                                     title:
                                         Text(snapshot.data![index]['address']),
                                     subtitle: snapshot.data![index]
-                                                    ['handasah_name'] ==
+                                                    ['handasah_name'] !=
                                                 "free" ||
                                             snapshot.data![index]
-                                                    ['technical_name'] ==
+                                                    ['technical_name'] !=
                                                 "free"
                                         ? Text(
                                             '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
-                                        : SizedBox.fromSize(),
+                                        : const SizedBox.shrink(),
                                   ),
                                   // ListTile(
                                   //         title: Text(

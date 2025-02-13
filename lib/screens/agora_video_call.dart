@@ -152,7 +152,10 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
                     icon: const CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.red,
-                      child: Icon(Icons.call_end, color: Colors.white),
+                      child: Icon(
+                        Icons.call_end,
+                        color: Colors.white,
+                      ),
                     ),
                     // color: Colors.white,
                   ),

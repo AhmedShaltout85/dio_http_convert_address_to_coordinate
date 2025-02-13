@@ -32,14 +32,14 @@ class _UserScreenState extends State<UserScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'User Screen',
+          'البلاغات المخصصة للمستخدم',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.indigo,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pop(true);
             },
             icon: const Icon(
               Icons.arrow_back,
@@ -150,19 +150,19 @@ class _UserScreenState extends State<UserScreen> {
                                   color: Colors.blue,
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    //update is_finished(close broken locations)
-                                    DioNetworkRepos().updateLocAddIsFinished(
-                                        snapshot.data![index]['address'], 1);
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.close_rounded,
-                                  color: Colors.blue,
-                                ),
-                              ),
+                              // IconButton(
+                              //   onPressed: () {
+                              //     setState(() {
+                              //       //update is_finished(close broken locations)
+                              //       DioNetworkRepos().updateLocAddIsFinished(
+                              //           snapshot.data![index]['address'], 1);
+                              //     });
+                              //   },
+                              //   icon: const Icon(
+                              //     Icons.close_rounded,
+                              //     color: Colors.blue,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ],

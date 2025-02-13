@@ -20,7 +20,7 @@ class CustomDrawer extends StatelessWidget {
                   color: Colors.indigo,
                 ),
                 child: Text(
-                  'HotLine addresses',
+                  'العناوين الواردة من الخط الساخن',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 13,
@@ -69,6 +69,8 @@ class CustomDrawer extends StatelessWidget {
                                 ),
                               ),
                             );
+                            Navigator.of(context)
+                                .pop(); // This closes the drawer
                           },
                         );
                       },

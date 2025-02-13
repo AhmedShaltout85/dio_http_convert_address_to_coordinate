@@ -169,7 +169,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
       debugPrint(value.toString());
     });
-    
   }
 
   // Function to get latitude and longitude from an address using OpenRouteService
@@ -221,7 +220,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                 DioNetworkRepos().getLocByHandasahAndTechnician();
           });
 
-      //get last gis record from GIS server
+          //get last gis record from GIS server
           int lastRecordNumber = await DioNetworkRepos().getLastRecordNumber();
           debugPrint("lastRecordNumber :>> $lastRecordNumber");
           int newRecordNumber = lastRecordNumber + 1;
@@ -288,8 +287,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             getLocsByHandasahNameAndTechinicianName =
                 DioNetworkRepos().getLocByHandasahAndTechnician();
           });
-
-
         } else {
           setState(() {
             coordinates = "Error: No results found";
@@ -312,7 +309,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Address to Coordinates (ORS)",
+          "تحديد موقع عنوان على الخريطة (ORS)",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -372,7 +369,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                           Radius.circular(10.0),
                         ),
                       ),
-                      hintText: "Enter Address",
+                      hintText: "فضلا أدخل العنوان",
                       hintStyle: TextStyle(
                         color: Colors.indigo,
                         fontSize: 11,
@@ -390,10 +387,11 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                   ),
                 ),
                 IconButton(
-                  constraints: const BoxConstraints.tightFor(
-                    width: 20,
-                    height: 50,
-                  ),
+                  alignment: Alignment.center,
+                  // constraints: const BoxConstraints.tightFor(
+                  //   width: 20,
+                  //   height: 50,
+                  // ),
                   onPressed: () async {
                     if (addressController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -417,9 +415,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                           DioNetworkRepos().getLocByHandasahAndTechnician();
                     });
                   },
-                  icon: const Icon(
-                    Icons.search_outlined,
-                    color: Colors.indigo,
+                  icon: const CircleAvatar(
+                    backgroundColor: Colors.indigo,
+                    radius: 20,
+                    child: Icon(
+                      Icons.search_outlined,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -436,7 +438,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         getLocs: getLocs,
       ),
       endDrawer: CustomEndDrawer(
-        title: 'Addresses List With coordinates',
+        title: 'تخصيص الهندسة',
         getLocs: getLocsByHandasahNameAndTechinicianName,
         stringListItems: handasatItemsDropdownMenu,
         onPressed: () {

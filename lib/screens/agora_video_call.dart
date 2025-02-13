@@ -329,3 +329,65 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
 //     );
 //   }
 // }
+
+
+// To use a specific uid in the Agora video call code, you need to pass it when joining the channel using the joinChannel() method. In the code provided, the uid is currently set to 0, which allows Agora to assign a unique ID automatically.
+
+// To use a specific uid, follow these steps:
+
+// 1. Define the UID
+// Declare the UID as a constant or pass it as a parameter to the widget:
+
+
+// // Define a specific UID
+// const int myUid = 12345;
+// 2. Pass the UID to joinChannel()
+// Replace the uid parameter in joinChannel() with your specific UID:
+
+
+// await _engine.joinChannel(
+//   token: token,
+//   channelId: channel,
+//   uid: myUid,  // Use your specific UID here
+//   options: const ChannelMediaOptions(),
+// );
+// 3. Update the Local Video View
+// Ensure the local video view uses the same UID:
+
+
+// child: _localUserJoined
+//     ? AgoraVideoView(
+//         controller: VideoViewController(
+//           rtcEngine: _engine,
+//           canvas: VideoCanvas(uid: myUid),  // Use the same UID here
+//         ),
+//       )
+//     : const CircularProgressIndicator(),
+// 4. Update the Remote Video View
+// No changes are needed for the remote video view because it listens for the onUserJoined event and uses the remoteUid value automatically.
+
+// Example Changes
+// Here is a modified snippet of the relevant sections:
+
+
+// const int myUid = 12345;
+
+// await _engine.joinChannel(
+//   token: token,
+//   channelId: channel,
+//   uid: myUid,  // Use specific UID
+//   options: const ChannelMediaOptions(),
+// );
+
+// child: _localUserJoined
+//     ? AgoraVideoView(
+//         controller: VideoViewController(
+//           rtcEngine: _engine,
+//           canvas: VideoCanvas(uid: myUid),  // Match the specific UID
+//         ),
+//       )
+//     : const CircularProgressIndicator(),
+// Note:
+// Ensure the uid is unique in the channel; otherwise, there will be conflicts.
+// If you are using tokens for authentication, make sure the token is generated with the same uid.
+// This change ensures you are using a predefined uid instead of letting Agora auto-assign one.

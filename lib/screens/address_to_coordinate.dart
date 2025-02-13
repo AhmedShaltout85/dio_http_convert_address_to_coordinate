@@ -271,40 +271,45 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     maxLength: 250,
                   ),
                 ),
-                IconButton(
-                  // constraints: const BoxConstraints.tightFor(
-                  //   width: 20,
-                  //   height: 50,
-                  // ),
-                  onPressed: () async {
-                    if (addressController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text("فضلا أدخل العنوان"),
-                          backgroundColor: Colors.indigo.shade300,
-                        ),
-                      );
-                    }
-                    setState(() {
-                      pickMarkers.clear();
-                      address = addressController.text;
-                      _getCoordinatesFromAddress(address);
-                      addressController.clear();
-                      //update locations after getting coordinates
-                      getLocs = DioNetworkRepos().getLoc();
-                      //update locations after getting coordinates and gis link
-                      getLocsAfterGetCoordinatesAndGis =
-                          DioNetworkRepos().getLocByFlagAndIsFinished();
-                      getLocsByHandasahNameAndTechinicianName =
-                          DioNetworkRepos().getLocByHandasahAndTechnician();
-                    });
-                  },
-                  icon: const CircleAvatar(
-                    backgroundColor: Colors.indigo,
-                    radius: 20,
-                    child: Icon(
-                      Icons.search_outlined,
-                      color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 17.0,
+                  ),
+                  child: IconButton(
+                    // constraints: const BoxConstraints.tightFor(
+                    //   width: 20,
+                    //   height: 50,
+                    // ),
+                    onPressed: () async {
+                      if (addressController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text("فضلا أدخل العنوان"),
+                            backgroundColor: Colors.indigo.shade300,
+                          ),
+                        );
+                      }
+                      setState(() {
+                        pickMarkers.clear();
+                        address = addressController.text;
+                        _getCoordinatesFromAddress(address);
+                        addressController.clear();
+                        //update locations after getting coordinates
+                        getLocs = DioNetworkRepos().getLoc();
+                        //update locations after getting coordinates and gis link
+                        getLocsAfterGetCoordinatesAndGis =
+                            DioNetworkRepos().getLocByFlagAndIsFinished();
+                        getLocsByHandasahNameAndTechinicianName =
+                            DioNetworkRepos().getLocByHandasahAndTechnician();
+                      });
+                    },
+                    icon: const CircleAvatar(
+                      backgroundColor: Colors.indigo,
+                      radius: 20,
+                      child: Icon(
+                        Icons.search_outlined,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -322,7 +327,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         getLocs: getLocs,
       ),
       endDrawer: CustomEndDrawer(
-         title: 'تخصيص الهندسة',
+        title: 'تخصيص الهندسة',
         getLocs: getLocsByHandasahNameAndTechinicianName,
         stringListItems: handasatItemsDropdownMenu,
         onPressed: () {

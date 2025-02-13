@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
       // home: const LoginScreen(),//TESTED (WORKING)
       // home: LandingScreen(), //TESTED (WORKING)
       // home: AgoraVideoCall(), //TESTED (WORKING_pub.dev example-primary) (i used this one)
-      // home: VideoCallScreen(), //TESTED (WORKING_chatGPT example)
       // home: HandasahScreen(),
       home: AddressToCoordinates() // NOTTESTED (google maps api-web)
       // home: DraggableScrollableSheetScreen(),

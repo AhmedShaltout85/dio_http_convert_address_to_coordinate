@@ -4,8 +4,8 @@ import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/tracking.dart';
 
+import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_draggable_scrollable_sheet.dart';
-import '../custom_widget/custom_web_view.dart';
 
 class DraggableScrollableSheetScreen extends StatefulWidget {
   final Future getLocs;
@@ -82,21 +82,21 @@ class _DraggableScrollableSheetScreenState
                                           // );
 
                                           //open in browser
-                                          // CustomBrowserRedirect.openInBrowser(
-                                          //   snapshot.data![index]['gis_url'],
-                                          // );
-                                          //open in webview
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CustomWebView(
-                                                title: 'GIS Map webview',
-                                                url: snapshot.data![index]
-                                                    ['gis_url'],
-                                              ),
-                                            ),
+                                          CustomBrowserRedirect.openInBrowser(
+                                            snapshot.data![index]['gis_url'],
                                           );
+                                          //open in webview
+                                        //   Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) =>
+                                        //           CustomWebView(
+                                        //         title: 'GIS Map webview',
+                                        //         url: snapshot.data![index]
+                                        //             ['gis_url'],
+                                        //       ),
+                                        //     ),
+                                        //   );
                                         },
                                         icon: const Icon(
                                           Icons.open_in_browser,

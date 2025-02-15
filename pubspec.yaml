@@ -31,6 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
   # flutter_native_splash: ^2.4.4
+  # flutter_map_cancellable_tile_provider:
+  flutter_map: ^6.0.0
+  latlong2: ^0.9.0
  
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,9 +59,13 @@ dependencies:
   agora_rtc_engine: ^6.0.0
   # Permissions handler 
   permission_handler: 
+  # agroa_for_web
+  flutter_webrtc: ^0.9.10  # Required for rendering on web
 
-  # curved_navigation_bar
+
+  # # curved_navigation_bar
   curved_navigation_bar: ^1.0.3
+  # drop_down_list_menu: ^0.0.9
   # flutter native splash config
 # flutter_native_splash:
 #     color: "#42a5f5"
@@ -106,6 +113,7 @@ flutter:
     - assets/imgs/3.png
     - assets/imgs/4.png
     - assets/logo.png
+    - assets/aw_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

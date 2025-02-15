@@ -424,4 +424,36 @@ class DioNetworkRepos {
       throw Exception(e);
     }
   }
+
+
+//  get last record number from GIS serverWEB (broken-number-generator)
+  Future<int> getLastRecordNumberWeb() async {
+    var getLastRecordUrlWeb = 'http://196.219.231.3:8000/lab-api/web-lab-id';
+    final basicAuth =
+        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
+    try {
+      var response = await dio.get(
+        getLastRecordUrlWeb,
+        // data: {"category": "gis_lab_api"},
+        options: Options(
+          headers: {
+            'authorization': basicAuth,
+          },
+        ),
+      );
+      if (response.statusCode == 201) {
+        // debugPrint(dataList);
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return 0;
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
 }

@@ -221,7 +221,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           });
 
           //get last gis record from GIS server
-          int lastRecordNumber = await DioNetworkRepos().getLastRecordNumber();
+          int lastRecordNumber = await DioNetworkRepos().getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
           debugPrint("lastRecordNumber :>> $lastRecordNumber");
           int newRecordNumber = lastRecordNumber + 1;
           debugPrint("newRecordNumber :>> $newRecordNumber");

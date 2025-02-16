@@ -1,3 +1,146 @@
+// ignore_for_file: library_private_types_in_public_api, unused_field
+
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../utils/dio_http_constants.dart'; // Ensure this file contains your Agora App ID and Token
+
+class AudioCallScreen extends StatefulWidget {
+  const AudioCallScreen({super.key});
+
+  @override
+  _AudioCallScreenState createState() => _AudioCallScreenState();
+}
+
+class _AudioCallScreenState extends State<AudioCallScreen> {
+  int? _remoteUid; // UID of the remote user
+  late RtcEngine _engine; // Agora RTC Engine instance
+  bool _localUserJoined = false; // Track if the local user has joined the channel
+
+  @override
+  void initState() {
+    super.initState();
+    initAgora(); // Initialize Agora when the widget is created
+  }
+
+  @override
+  void dispose() {
+    _engine.leaveChannel(); // Leave the channel when the widget is disposed
+    _engine.release(); // Release the Agora engine resources
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Background container
+          Container(
+            color: Colors.black87,
+            child: Center(
+              child: _remoteUid == null
+                  ? const Text(
+                      'Calling …',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : Text(
+                      'Calling with $_remoteUid',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+            ),
+          ),
+          // End call button
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 25.0, right: 25),
+              child: Container(
+                height: 50,
+                color: Colors.black12,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(true); // End the call
+                      },
+                      icon: const Icon(
+                        Icons.call_end,
+                        size: 44,
+                        color: Colors.redAccent,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Initialize Agora RTC Engine
+  Future<void> initAgora() async {
+    // Request microphone permission
+    await [Permission.microphone].request();
+
+    // Create and initialize the Agora RTC Engine
+    _engine = createAgoraRtcEngine();
+    await _engine.initialize(
+      const RtcEngineContext(
+        appId: appId, // Replace with your Agora App ID
+        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+      ),
+    );
+
+    // Enable audio
+    await _engine.enableAudio();
+
+    // Register event handlers
+    _engine.registerEventHandler(
+      RtcEngineEventHandler(
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          debugPrint("Local user ${connection.localUid} joined");
+          setState(() {
+            _localUserJoined = true;
+          });
+        },
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          debugPrint("Remote user $remoteUid joined");
+          setState(() {
+            _remoteUid = remoteUid;
+          });
+        },
+        onUserOffline: (RtcConnection connection, int remoteUid,
+            UserOfflineReasonType reason) {
+          debugPrint("Remote user $remoteUid left the channel");
+          setState(() {
+            _remoteUid = null;
+          });
+        },
+        onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
+          debugPrint("Token privilege will expire: $token");
+        },
+      ),
+    );
+
+    // Set the client role to broadcaster
+    await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+
+    // Join the channel
+    await _engine.joinChannel(
+      token: token, // Replace with your Agora Token
+      channelId: channel, // Replace with your channel name
+      uid: 0, // Use 0 to let Agora assign a UID
+      options: const ChannelMediaOptions(),
+    );
+  }
+}
+
+
 // // for the audio call it’s so similar :
 
 

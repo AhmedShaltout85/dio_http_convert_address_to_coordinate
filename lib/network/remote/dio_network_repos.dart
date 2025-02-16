@@ -23,7 +23,7 @@ class DioNetworkRepos {
     }
   }
 
-//get locations(GET by flag 1 and 0)
+//get locations(GET by flag 1 and isFinished 0)
   Future getLocByFlagAndIsFinished() async {
     try {
       var response = await dio.get(urlGetAllByFlagAndIsFinished);
@@ -40,8 +40,29 @@ class DioNetworkRepos {
     }
   }
 
+//get locationsBy handasah(GET by handasah (handasah) and  isFinished 0)
+  Future getLocByHandasahAndIsFinished(String handasah, int isFinished) async {
+    var urlGetAllByHandasahAndIsFinished =
+        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasah/is-finished/$isFinished';
+    try {
+      var response = await dio.get(urlGetAllByHandasahAndIsFinished);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+
 //get locations(GET by Handasah free and Technician free)
-  Future getLocByHandasahAndTechnician() async {
+  Future getLocByHandasahAndTechnician(String handasah, String technician) async {
+    var urlGetAllByHandasahAndTechnician =
+        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician'; //GET by Handasah free and Technician free
     try {
       var response = await dio.get(urlGetAllByHandasahAndTechnician);
       if (response.statusCode == 200) {

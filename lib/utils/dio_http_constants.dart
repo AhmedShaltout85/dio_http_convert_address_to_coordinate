@@ -5,8 +5,10 @@ const String urlGetHotlineAddress =
     "http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0"; //GET by flag 0 (address not set yet)
 const String urlGetAllByFlagAndIsFinished =
     'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/1/is-finished/0'; //GET by flag 0 and isFinished 0
-const String urlGetAllByHandasahAndTechnician =
-    'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/free/technical/free'; //GET by Handasah free and Technician free
+// const String urlGetAllByHandasahAndIsFinished =
+//     'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/handasah/is-finished/0'; //GET by handasah (handasah) and isFinished 0
+// const String urlGetAllByHandasahAndTechnician =
+//     'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/free/technical/free'; //GET by Handasah free and Technician free
 const String urlPut =
     "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/"; //PUT update locations
 

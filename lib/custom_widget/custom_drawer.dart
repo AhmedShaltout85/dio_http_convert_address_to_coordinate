@@ -3,7 +3,13 @@ import 'package:flutter/services.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Future getLocs;
-  const CustomDrawer({super.key, required this.getLocs});
+  final String title;
+  //constructor
+  const CustomDrawer({
+    super.key,
+    required this.getLocs,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +19,15 @@ class CustomDrawer extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-            const SizedBox(
+            SizedBox(
               height: 50,
               child: DrawerHeader(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.indigo,
                 ),
                 child: Text(
-                  'العناوين الواردة من الخط الساخن',
-                  style: TextStyle(
+                  title,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 13,
                   ),
@@ -45,8 +51,14 @@ class CustomDrawer extends StatelessWidget {
                                     color: Colors.indigo,
                                     fontWeight: FontWeight.bold),
                               ),
-                              // subtitle: Text(
-                              //     "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
+                              subtitle: snapshot.data![index]
+                                              ['handasah_name'] ==
+                                          "free" ||
+                                      snapshot.data![index]['technical_name'] ==
+                                          "free"
+                                  ? const SizedBox.shrink()
+                                  : Text(
+                                      "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
                             ),
                           ),
                           onTap: () {

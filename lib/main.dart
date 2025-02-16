@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pick_location/screens/address_to_coordinates_web.dart';
+// import 'package:pick_location/screens/address_to_coordinates_web.dart';
 
 // import 'package:pick_location/screens/agora_video_call.dart';
 
@@ -11,8 +11,7 @@ import 'package:pick_location/screens/address_to_coordinates_web.dart';
 // import 'package:pick_location/screens/address_to_coordinate.dart';
 // import 'package:pick_location/screens/gis_map.dart';
 // import 'package:pick_location/screens/login_screen.dart';
-// import 'screens/user_screen.dart';
-
+import 'screens/user_screen.dart';
 
 void main() {
   // WebViewPlatform.instance =
@@ -29,26 +28,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Pick-Locations App',
       debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //   appBarTheme: const AppBarTheme(
-      //     backgroundColor: Colors.indigo,
-      //     foregroundColor: Colors.white,
-      //   ),
-      //   primaryColor: Colors.indigo,
-      //   primarySwatch: Colors.indigo,
-      // ),
-      // home: AddressToCoordinates(), //TESTED (WORKING)
+      theme: ThemeData(
+        //   appBarTheme: const AppBarTheme(
+        //     backgroundColor: Colors.indigo,
+        //     foregroundColor: Colors.white,
+        //   ),
+        primaryColor: Colors.indigo,
+        primarySwatch: Colors.indigo,
+      ),
+      // home: const AddressToCoordinates(), //TESTED (WORKING)
       // home: const GisMap(), //TESTED (WORKING-OPEN IN BROWSER & WEBVIEW)
       // home: const LoginScreen(),//TESTED (WORKING)
-      // home: LandingScreen(), //TESTED (WORKING)
-      // home: AgoraVideoCall(), //TESTED (WORKING_pub.dev example-primary) (i used this one)
-      // home: HandasahScreen(),
-      home: AddressToCoordinates() // NOTTESTED (google maps api-web)
-      // home: DraggableScrollableSheetScreen(),
-      // home: UserScreen(),
+      // home: const LandingScreen(), //TESTED (WORKING)
+      // home: const AgoraVideoCall(), //TESTED (WORKING_pub.dev example-primary) (i used this one)
+      // home: const HandasahScreen(),
+      // home: const AddressToCoordinates() // NOTTESTED (google maps api-web)
+      // home: const DraggableScrollableSheetScreen(),
+      home: const UserScreen(),
     );
   }
 }

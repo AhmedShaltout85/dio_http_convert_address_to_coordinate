@@ -145,7 +145,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       getLocsAfterGetCoordinatesAndGis =
           DioNetworkRepos().getLocByFlagAndIsFinished();
       getLocsByHandasahNameAndTechinicianName =
-          DioNetworkRepos().getLocByHandasahAndTechnician();
+          DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
     });
 
     getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
@@ -217,7 +217,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             getLocsAfterGetCoordinatesAndGis =
                 DioNetworkRepos().getLocByFlagAndIsFinished();
             getLocsByHandasahNameAndTechinicianName =
-                DioNetworkRepos().getLocByHandasahAndTechnician();
+                DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
           });
 
           //get last gis record from GIS server
@@ -285,7 +285,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             getLocsAfterGetCoordinatesAndGis =
                 DioNetworkRepos().getLocByFlagAndIsFinished();
             getLocsByHandasahNameAndTechinicianName =
-                DioNetworkRepos().getLocByHandasahAndTechnician();
+                DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
           });
         } else {
           setState(() {
@@ -414,7 +414,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                         getLocsAfterGetCoordinatesAndGis =
                             DioNetworkRepos().getLocByFlagAndIsFinished();
                         getLocsByHandasahNameAndTechinicianName =
-                            DioNetworkRepos().getLocByHandasahAndTechnician();
+                            DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
                       });
                     },
                     icon: const CircleAvatar(
@@ -438,6 +438,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         ],
       ),
       drawer: CustomDrawer(
+        title: 'العناوين الواردة من الخط الساخن',
         getLocs: getLocs,
       ),
       endDrawer: CustomEndDrawer(
@@ -448,7 +449,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           //
           setState(() {
             getLocsByHandasahNameAndTechinicianName =
-                DioNetworkRepos().getLocByHandasahAndTechnician();
+                DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
           });
         },
         hintText: 'فضلا أختار الهندسة',
@@ -463,7 +464,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             getLocsAfterGetCoordinatesAndGis =
                 DioNetworkRepos().getLocByFlagAndIsFinished();
             getLocsByHandasahNameAndTechinicianName =
-                DioNetworkRepos().getLocByHandasahAndTechnician();
+                DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
           });
         },
         mini: true,

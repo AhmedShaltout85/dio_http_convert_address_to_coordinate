@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'dart:html';
@@ -7,7 +6,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class IframeScreen extends StatefulWidget {
-    final String url;
+  final String url;
 
   const IframeScreen({super.key, required this.url});
 
@@ -26,8 +25,8 @@ class _IframeScreenState extends State<IframeScreen> {
     // _iFrameElement.style.width = '80%';
     // _iFrameElement.src = 'https://flutter.dev/';
     // _iFrameElement.src = 'http://196.219.231.3:8000/lab-api/lab-marker/24';
-    _iFrameElement.style.height = '100%';
-    _iFrameElement.style.width = '100%';
+    _iFrameElement.style.height = '90%';
+    _iFrameElement.style.width = '80%';
     _iFrameElement.src = widget.url;
     _iFrameElement.style.border = 'none';
 

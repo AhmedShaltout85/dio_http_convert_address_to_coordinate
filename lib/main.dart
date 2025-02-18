@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 // import 'screens/draggable_scrollable_sheet_screen.dart';
 // import 'screens/handasah_screen.dart';
-// import 'package:pick_location/screens/landing_screen.dart';
+import 'package:pick_location/screens/landing_screen.dart';
 // import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:webview_flutter_web/webview_flutter_web.dart';
 // import 'package:pick_location/screens/address_to_coordinate.dart';
 // import 'package:pick_location/screens/gis_map.dart';
 // import 'package:pick_location/screens/login_screen.dart';
-import 'screens/user_screen.dart';
+// import 'screens/user_screen.dart';
 
 void main() {
   // WebViewPlatform.instance =
@@ -42,12 +42,12 @@ class MyApp extends StatelessWidget {
       // home: const AddressToCoordinates(), //TESTED (WORKING)
       // home: const GisMap(), //TESTED (WORKING-OPEN IN BROWSER & WEBVIEW)
       // home: const LoginScreen(),//TESTED (WORKING)
-      // home: const LandingScreen(), //TESTED (WORKING)
+      home: const LandingScreen(), //TESTED (WORKING)
       // home: const AgoraVideoCall(), //TESTED (WORKING_pub.dev example-primary) (i used this one)
       // home: const HandasahScreen(),
       // home: const AddressToCoordinates() // NOTTESTED (google maps api-web)
       // home: const DraggableScrollableSheetScreen(),
-      home: const UserScreen(),
+      // home: const UserScreen(),
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class DioNetworkRepos {
   final dio = Dio();
-//get locations(GET by flag 0 (address not set yet))
+//1-- GET locations(GET by flag 0 (address not set yet))
   Future getLoc() async {
     try {
       var response = await dio.get(urlGetHotlineAddress);
@@ -23,7 +23,7 @@ class DioNetworkRepos {
     }
   }
 
-//get locations(GET by flag 1 and isFinished 0)
+//2-- GET locations(GET by flag 1 and isFinished 0)
   Future getLocByFlagAndIsFinished() async {
     try {
       var response = await dio.get(urlGetAllByFlagAndIsFinished);
@@ -40,7 +40,7 @@ class DioNetworkRepos {
     }
   }
 
-//get locationsBy handasah(GET by handasah (handasah) and  isFinished 0)
+//3-- GET locationsBy handasah(GET by handasah (handasah) and  isFinished 0)
   Future getLocByHandasahAndIsFinished(String handasah, int isFinished) async {
     var urlGetAllByHandasahAndIsFinished =
         'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasah/is-finished/$isFinished';
@@ -59,7 +59,7 @@ class DioNetworkRepos {
     }
   }
 
-//get locations(GET by Handasah free and Technician free)
+//4-- GET locations(GET by Handasah free and Technician free)
   Future getLocByHandasahAndTechnician(String handasah, String technician) async {
     var urlGetAllByHandasahAndTechnician =
         'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician'; //GET by Handasah free and Technician free
@@ -78,7 +78,7 @@ class DioNetworkRepos {
     }
   }
 
-//update locations
+//5-- UPDATE locations(by longitude and latitude)
   Future updateLoc(String address, double longitude, double latitude) async {
     try {
       final response = await dio.put(
@@ -95,7 +95,7 @@ class DioNetworkRepos {
     }
   }
 
-//update locations By address (add handasahName)
+//6-- UPDATE locations By address (add handasahName)
   Future updateLocAddHandasah(String address, String? handasahName) async {
     try {
       final response = await dio.put(
@@ -112,7 +112,7 @@ class DioNetworkRepos {
     }
   }
 
-//update locations By address (add technicianName)
+//7-- UPDATE locations By address (add technicianName)
   Future updateLocAddTechnician(String address, String? technicianName) async {
     try {
       final response = await dio.put(
@@ -129,7 +129,7 @@ class DioNetworkRepos {
     }
   }
 
-//update locations By address (add isFinished)
+//8-- UPDATE locations By address (add isFinished)
   Future updateLocAddIsFinished(String address, int isFinished) async {
     try {
       final response = await dio.put(
@@ -146,7 +146,7 @@ class DioNetworkRepos {
     }
   }
 
-//update locations(wiht-url)
+//9-- UPDATE locations(wiht-url)
   Future<void> updateLocations(
       String address, double longitude, double latitude, String url) async {
     try {
@@ -168,7 +168,7 @@ class DioNetworkRepos {
     }
   }
 
-  //POST in GIS Server and GET MAP Link
+  //10-- POST in GIS Server and GET MAP Link
   Future<String> createNewGisPointAndGetMapLink(
       int id, String longitude, String latitude) async {
     // Encode credentials to Base64
@@ -197,7 +197,7 @@ class DioNetworkRepos {
     }
   }
 
-  //GET USERNAME AND PASSWORD
+  //11-- GET USERNAME AND PASSWORD
   //Login User using username and password(working)
   Future<bool> loginByUsernameAndPassword(
       String username, String password) async {
@@ -208,8 +208,9 @@ class DioNetworkRepos {
         debugPrint("${response.data} from loginByUsernameAndPassword");
         final usernameResponse = response.data['username'];
         final passwordResponse = response.data['password'];
+        DataStatic.userRole = response.data['role']; //not tested(18-02-2025)
         debugPrint(
-            'Login successful! Username: $usernameResponse, Password: $passwordResponse');
+            'Login successful! Username: $usernameResponse, Password: $passwordResponse , ID: $DataStatic.userRole');
         return true;
       } else {
         debugPrint('Login failed: ${response.data}');
@@ -224,7 +225,7 @@ class DioNetworkRepos {
     }
   }
 
-//Login User using username and password(working)
+//12-- LOGIN User using username and password(working)
   Future<Map<String, dynamic>> login(String username, String password) async {
     // Replace with your API endpoint
     
@@ -235,6 +236,9 @@ class DioNetworkRepos {
 
       if (response.statusCode == 200) {
         // Assuming the API returns JSON data
+        DataStatic.userRole = response.data['role'];
+        debugPrint("PRINTED DATA FROM API: ${response.data['role']}");
+        debugPrint("PRINTED DATA FROM API: $DataStatic.userRole");
         return {
           'success': true,
           'data': response.data,
@@ -261,7 +265,7 @@ class DioNetworkRepos {
     }
   }
 
-  //check if address exists
+  //13-- CHECK if address exists
   Future<bool> checkAddressExists(String address) async {
     String encodedAddress = Uri.encodeComponent(address);
     String getAddressUrl =
@@ -287,7 +291,7 @@ class DioNetworkRepos {
     }
   }
 
-  //check if address exists BY ADDRESS And HANDASAH
+  //14-- CHECK if address exists BY ADDRESS And HANDASAH
   Future<bool> checkAddressExistsByAddressAndHandasah(String address, String handasah) async {
     String encodedAddress = Uri.encodeComponent(address);
     String getAddressUrl =
@@ -312,7 +316,7 @@ class DioNetworkRepos {
     }
   }
 
-  //post locations(wiht-url)
+  //15-- POST locations(wiht-url)
   Future createNewLocation(
       String address, double longitude, double latitude, String url) async {
     try {
@@ -339,7 +343,7 @@ class DioNetworkRepos {
     }
   }
 
-//  Fetch Data from the Database(GET dropdown items for handasat)
+//16-- FETCH Data from the Database(GET dropdown items for handasat)
   Future fetchHandasatItemsDropdownMenu() async {
     var getHandasatUrl =
         'http://192.168.17.250:9999/pick-location/api/v1/handasah/all';
@@ -360,7 +364,7 @@ class DioNetworkRepos {
     }
   }
 
-  //  Fetch Data from the Database(GET dropdown items for handasat users)
+  //17-- FETCH Data from the Database(GET dropdown items for handasat users)
   Future fetchHandasatUsersItemsDropdownMenu(String handasahName) async {
     var getHnadasatUsersUrl =
         'http://192.168.17.250:9999/pick-location/api/v1/users/role/3/control-unit/$handasahName';
@@ -381,7 +385,7 @@ class DioNetworkRepos {
     }
   }
 
-// Fetch Data from the Database(GET broken items for technicians users in handasat)
+//18-- FETCH Data from the Database(GET broken items for technicians users in handasat)
 // http://localhost:9999/pick-location/api/v1/get-loc/handasah/handasah/technical/user/is-finished/0
   
  Future<List<Map<String, dynamic>>> fetchHandasatUsersItemsBroken(
@@ -415,7 +419,7 @@ class DioNetworkRepos {
   }
 
 
-//  get last record number from GIS server (broken-number-generator)
+//19-- GET last record number from GIS server (broken-number-generator)
   Future<int> getLastRecordNumber() async {
     var getLastRecordUrl = 'http://196.219.231.3:8000/lab-api/lab-id';
     final basicAuth =
@@ -447,7 +451,7 @@ class DioNetworkRepos {
   }
 
 
-//  get last record number from GIS serverWEB (broken-number-generator)
+//20-- GET last record number from GIS serverWEB (broken-number-generator)
   Future<int> getLastRecordNumberWeb() async {
     var getLastRecordUrlWeb = 'http://196.219.231.3:8000/lab-api/web-lab-id';
     final basicAuth =
@@ -477,4 +481,5 @@ class DioNetworkRepos {
       throw Exception(e);
     }
   }
+
 }

@@ -33,4 +33,8 @@ class DataStatic {
 //Assign HandasahName
   static String handasahName = '';
   static int setectedIndax = 0;
+//get user info
+  static String username = '';
+  static String password = '';  
+  static int userRole = 0;
 }

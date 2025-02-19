@@ -215,7 +215,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Address to Coordinates",
+          "تحويل العنوان الى إحداثيات",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -254,7 +254,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                           Radius.circular(10.0),
                         ),
                       ),
-                      hintText: "Enter Address",
+                      hintText: "فضلا أدخل النعنوان",
                       hintStyle: TextStyle(
                         color: Colors.indigo,
                         fontSize: 11,

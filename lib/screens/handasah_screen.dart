@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
-// import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
+import 'package:pick_location/utils/dio_http_constants.dart';
+import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
 import '../custom_widget/custom_drawer.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -15,6 +16,7 @@ class HandasahScreen extends StatefulWidget {
 class _HandasahScreenState extends State<HandasahScreen> {
   late Future getLocsByHandasahNameAndIsFinished;
   late Future getLocByHandasahAndTechnician;
+  String handasahName = DataStatic.handasahName;
 
   //get handasat items dropdown menu from db
   // late Future getHandasatItemsDropdownMenu;
@@ -23,19 +25,18 @@ class _HandasahScreenState extends State<HandasahScreen> {
   late Future getHandasatUsersItemsDropdownMenu;
   List<String> handasatUsersItemsDropdownMenu = [];
 
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     setState(() {
       //
-      getLocsByHandasahNameAndIsFinished =
-          DioNetworkRepos().getLocByHandasahAndIsFinished('Handasah', 0);
+      getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
+          .getLocByHandasahAndIsFinished(handasahName, 0);
       //
       getLocByHandasahAndTechnician = DioNetworkRepos()
           .getLocByHandasahAndTechnician(
-              'Handasah', 'free'); //not assigned users
+              handasahName, 'free'); //not assigned users
       //
     });
     getLocsByHandasahNameAndIsFinished.then((value) {
@@ -50,7 +51,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
 
     //get handasat users items dropdown menu from db(future)
     getHandasatUsersItemsDropdownMenu =
-        DioNetworkRepos().fetchHandasatUsersItemsDropdownMenu('Handasah');
+        DioNetworkRepos().fetchHandasatUsersItemsDropdownMenu(handasahName);
 
     //load list(future)
     getHandasatUsersItemsDropdownMenu.then((value) {
@@ -69,27 +70,21 @@ class _HandasahScreenState extends State<HandasahScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldKey,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white, size: 17),
         backgroundColor: Colors.indigo,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_drop_down_circle),
-        //   onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-        // ),
         centerTitle: true,
-        title: const Text(
-          'صفحة الهندسة',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          DataStatic.handasahName,
+          style: const TextStyle(color: Colors.white),
         ),
       ),
       body: Stack(
         children: [
-           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:Container(),
-          //    IframeScreen(
-          //       url: 'http://196.219.231.3:8000/lab-api/lab-marker/24'),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: IframeScreen(
+                url: 'http://196.219.231.3:8000/lab-api/lab-marker/24'),
           ),
           Align(
             alignment: Alignment.topRight,
@@ -104,30 +99,29 @@ class _HandasahScreenState extends State<HandasahScreen> {
                 onPressed: () {
                   setState(() {
                     getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
-                        .getLocByHandasahAndIsFinished('Handasah', 0);
+                        .getLocByHandasahAndIsFinished(handasahName, 0);
                     getLocByHandasahAndTechnician = DioNetworkRepos()
-                        .getLocByHandasahAndTechnician('Handasah', 'free');
+                        .getLocByHandasahAndTechnician(handasahName, 'free');
                   });
                 },
-                hintText: 'فضلا أختار الموظف',
+                hintText: 'فضلا أختار الفنى',
                 title: 'تخصيص فنى',
               ),
             ),
           ),
         ],
       ),
-
       endDrawer: CustomDrawer(
-        title: "جميع الكسور الخاصة بالهندسة",
+        title: "جميع الاعطال الخاصة بالهندسة",
         getLocs: getLocsByHandasahNameAndIsFinished,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
             getLocsByHandasahNameAndIsFinished =
-                DioNetworkRepos().getLocByHandasahAndIsFinished('Handasah', 0);
+                DioNetworkRepos().getLocByHandasahAndIsFinished(handasahName, 0);
             getLocByHandasahAndTechnician = DioNetworkRepos()
-                .getLocByHandasahAndTechnician('Handasah', 'free');
+                .getLocByHandasahAndTechnician(handasahName, 'free');
           });
         },
         backgroundColor: Colors.indigo,

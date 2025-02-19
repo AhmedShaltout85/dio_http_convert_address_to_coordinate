@@ -140,4 +140,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+# 
+  # update in (19-02-2025) to prevent The platformViewRegistry getter is deprecated and will be removed in a future release. Please import it from `dart:ui_web` instead.
 
+analyzer:
+  errors:
+    undefined_prefixed_name: ignore

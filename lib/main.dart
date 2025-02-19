@@ -14,9 +14,6 @@ import 'package:pick_location/screens/landing_screen.dart';
 // import 'screens/user_screen.dart';
 
 void main() {
-  // WebViewPlatform.instance =
-  //     WebWebViewPlatform(); // Initialize for web platform
-
   runApp(
     const MyApp(),
   );
@@ -32,10 +29,6 @@ class MyApp extends StatelessWidget {
       title: 'Pick-Locations App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        //   appBarTheme: const AppBarTheme(
-        //     backgroundColor: Colors.indigo,
-        //     foregroundColor: Colors.white,
-        //   ),
         primaryColor: Colors.indigo,
         primarySwatch: Colors.indigo,
       ),

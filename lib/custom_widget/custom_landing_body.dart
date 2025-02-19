@@ -41,6 +41,7 @@ class CustomLandingBody extends StatelessWidget {
                                 children: [
                                   Text(
                                     "شركة مياه الشرب بالاسكندرية ",
+                                    softWrap: false,
                                     style: TextStyle(
                                       color: AppTheme.primTextColor,
                                       fontWeight: FontWeight.bold,
@@ -49,6 +50,7 @@ class CustomLandingBody extends StatelessWidget {
                                   ),
                                   Text(
                                     "قطاع التكنولوجيا والخدمات الرقمية",
+                                    softWrap: false,
                                     style: TextStyle(
                                       color: AppTheme.primTextColor,
                                       fontWeight: FontWeight.bold,
@@ -57,6 +59,7 @@ class CustomLandingBody extends StatelessWidget {
                                   ),
                                   Text(
                                     "إدراة البرمجيات",
+                                    softWrap: false,
                                     style: TextStyle(
                                       color: AppTheme.primTextColor,
                                       fontWeight: FontWeight.bold,

@@ -5,6 +5,8 @@ import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/material.dart';
 
 class DioNetworkRepos {
+  // String handasahName = '';
+  // String userName = '';
   final dio = Dio();
 //1-- GET locations(GET by flag 0 (address not set yet))
   Future getLoc() async {
@@ -60,7 +62,8 @@ class DioNetworkRepos {
   }
 
 //4-- GET locations(GET by Handasah free and Technician free)
-  Future getLocByHandasahAndTechnician(String handasah, String technician) async {
+  Future getLocByHandasahAndTechnician(
+      String handasah, String technician) async {
     var urlGetAllByHandasahAndTechnician =
         'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician'; //GET by Handasah free and Technician free
     try {
@@ -209,6 +212,8 @@ class DioNetworkRepos {
         final usernameResponse = response.data['username'];
         final passwordResponse = response.data['password'];
         DataStatic.userRole = response.data['role']; //not tested(18-02-2025)
+        DataStatic.handasahName =
+            response.data['handasah_name']; //not tested(18-02-2025)
         debugPrint(
             'Login successful! Username: $usernameResponse, Password: $passwordResponse , ID: $DataStatic.userRole');
         return true;
@@ -228,7 +233,7 @@ class DioNetworkRepos {
 //12-- LOGIN User using username and password(working)
   Future<Map<String, dynamic>> login(String username, String password) async {
     // Replace with your API endpoint
-    
+
     try {
       // Sending GET request with query parameters
       Response response = await dio.get(
@@ -237,8 +242,13 @@ class DioNetworkRepos {
       if (response.statusCode == 200) {
         // Assuming the API returns JSON data
         DataStatic.userRole = response.data['role'];
+        DataStatic.handasahName = response.data['controlUnit'];
+        DataStatic.username = response.data['username'];
+        // handasahName = response.data['controlUnit'];
+        // userName = response.data['username'];
         debugPrint("PRINTED DATA FROM API: ${response.data['role']}");
-        debugPrint("PRINTED DATA FROM API: $DataStatic.userRole");
+        debugPrint("PRINTED DATA FROM API: ${response.data['controlUnit']}");
+        debugPrint("PRINTED DATA FROM API: ${response.data['username']}");
         return {
           'success': true,
           'data': response.data,
@@ -292,7 +302,8 @@ class DioNetworkRepos {
   }
 
   //14-- CHECK if address exists BY ADDRESS And HANDASAH
-  Future<bool> checkAddressExistsByAddressAndHandasah(String address, String handasah) async {
+  Future<bool> checkAddressExistsByAddressAndHandasah(
+      String address, String handasah) async {
     String encodedAddress = Uri.encodeComponent(address);
     String getAddressUrl =
         'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress/handasah/$handasah';
@@ -387,8 +398,8 @@ class DioNetworkRepos {
 
 //18-- FETCH Data from the Database(GET broken items for technicians users in handasat)
 // http://localhost:9999/pick-location/api/v1/get-loc/handasah/handasah/technical/user/is-finished/0
-  
- Future<List<Map<String, dynamic>>> fetchHandasatUsersItemsBroken(
+
+  Future<List<Map<String, dynamic>>> fetchHandasatUsersItemsBroken(
       String handasahName, String technicianName, int isFinished) async {
     var getHnadasatUsersListUrl =
         'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasahName/technical/$technicianName/is-finished/$isFinished';
@@ -417,7 +428,6 @@ class DioNetworkRepos {
       return []; // Return empty list on error
     }
   }
-
 
 //19-- GET last record number from GIS server (broken-number-generator)
   Future<int> getLastRecordNumber() async {
@@ -450,7 +460,6 @@ class DioNetworkRepos {
     }
   }
 
-
 //20-- GET last record number from GIS serverWEB (broken-number-generator)
   Future<int> getLastRecordNumberWeb() async {
     var getLastRecordUrlWeb = 'http://196.219.231.3:8000/lab-api/web-lab-id';
@@ -481,5 +490,4 @@ class DioNetworkRepos {
       throw Exception(e);
     }
   }
-
 }

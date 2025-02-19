@@ -2,6 +2,7 @@ import 'dart:async'; // Import Timer
 import 'package:flutter/material.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/tracking.dart';
+import 'package:pick_location/utils/dio_http_constants.dart';
 import '../custom_widget/custom_web_view.dart';
 import '../network/remote/dio_network_repos.dart';
 
@@ -33,7 +34,9 @@ class _UserScreenState extends State<UserScreen> {
   void _fetchData() {
     setState(() {
       getUsersBrokenPointsList = DioNetworkRepos()
-          .fetchHandasatUsersItemsBroken('handasah', 'user', 0);
+          .fetchHandasatUsersItemsBroken(
+              DataStatic.handasahName, DataStatic.username, 0);
+      // .fetchHandasatUsersItemsBroken('handasah', 'user', 0);
     });
     getUsersBrokenPointsList.then((value) {
       debugPrint("PRINTED DATA FROM UI: $value");
@@ -62,7 +65,7 @@ class _UserScreenState extends State<UserScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'البلاغات المخصصة للمستخدم',
+          'الاعطال المخصصة للمستخدم',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,

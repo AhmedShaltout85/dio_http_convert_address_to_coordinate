@@ -1,28 +1,25 @@
-import 'dart:async';
+
 import 'dart:collection';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:flutter_map/flutter_map.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:latlong2/latlong.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
 
 import '../custom_widget/custom_drawer.dart';
 import '../custom_widget/custom_end_drawer.dart';
 import '../network/remote/dio_network_repos.dart';
 
-class AddressToCoordinates extends StatefulWidget {
-  const AddressToCoordinates({super.key});
+class AddressToCoordinatesOSM extends StatefulWidget {
+  const AddressToCoordinatesOSM({super.key});
 
   @override
   AddressToCoordinatesState createState() => AddressToCoordinatesState();
 }
 
-class AddressToCoordinatesState extends State<AddressToCoordinates> {
-  final Completer<GoogleMapController> _controller = Completer();
-
+class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
+  final MapController mapController = MapController();
   String address = "";
   String coordinates = "";
   String getAddress = "";
@@ -38,8 +35,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   List<String> handasatItemsDropdownMenu = [];
   List<String> addHandasahToAddressList = [];
 
-  // Replace with your actual Google Maps API key
-  String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
+  // Replace with your actual OpenRouteService API key
+  String orsApiKey = "5b3ce3597851110001cf6248d0d79559117e4291811ec3f408780f7a";
+
+  //
 
   @override
   void dispose() {
@@ -82,36 +81,38 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     });
   }
 
-  // Function to get latitude and longitude from an address using Google Maps Geocoding API
+  // Function to get latitude and longitude from an address using OpenRouteService
   Future<void> _getCoordinatesFromAddress(String address) async {
     final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$googleMapsApiKey');
+        'https://api.openrouteservice.org/geocode/search?api_key=$orsApiKey&text=${Uri.encodeComponent(address)}&size=1');
 
     try {
-      final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: {
+          'User-Agent': 'pick_locations/1.0 (contact@example.com)', // Required
+          'Content-Type': 'application/json'
+        },
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
 
-        if (data['results'].isNotEmpty) {
-          var location = data['results'][0]['geometry']['location'];
+        if (data['features'].isNotEmpty) {
+          var location = data['features'][0]['geometry']['coordinates'];
           setState(() {
-            coordinates =
-                "Latitude: ${location['lat']}, Longitude: ${location['lng']}";
-            latitude = location['lat']; // latitude
-            longitude = location['lng']; // longitude
+            coordinates = "Latitude: ${location[1]}, Longitude: ${location[0]}";
+            latitude = location[1]; // latitude=y
+            longitude = location[0]; // longitude=x
 
             //add marker
             pickMarkers.add(
               Marker(
-                markerId: MarkerId(address),
-                position: LatLng(latitude, longitude),
-                infoWindow: InfoWindow(
-                  title: address,
-                  snippet: coordinates,
-                ),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen),
+                width: 80.0,
+                height: 80.0,
+                point: LatLng(latitude, longitude),
+                child: const Icon(Icons.location_on,
+                    color: Colors.red, size: 40.0),
               ),
             );
             //
@@ -130,8 +131,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           });
 
           //get last gis record from GIS server
-          int lastRecordNumber = await DioNetworkRepos()
-              .getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
+          int lastRecordNumber = await DioNetworkRepos().getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
           debugPrint("lastRecordNumber :>> $lastRecordNumber");
           int newRecordNumber = lastRecordNumber + 1;
           debugPrint("newRecordNumber :>> $newRecordNumber");
@@ -219,7 +219,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "تحديد موقع عنوان على الخريطة (Google Maps)",
+          "تحديد موقع عنوان على الخريطة (ORS)",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -229,16 +229,36 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       ),
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: alexandriaCoordinates,
-              zoom: 10.4746,
-            ),
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            markers: pickMarkers,
-            zoomControlsEnabled: true,
+          FlutterMap(
+            mapController: mapController,
+            options: MapOptions(
+                initialCenter: alexandriaCoordinates,
+                initialZoom: 10.4746,
+                onMapReady: () => setState(() {
+                      _getCoordinatesFromAddress(address);
+                    })),
+            children: [
+              TileLayer(
+                urlTemplate:
+                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                subdomains: const ['a', 'b', 'c'],
+              ),
+              MarkerLayer(
+                markers: pickMarkers.toList(),
+              ),
+              // PolylineLayer(
+              //   polylines: [
+              //     Polyline(
+              //       points: [
+              //         const LatLng(31.205753, 29.924526),
+              //         const LatLng(31.205753, 29.924526),
+              //       ],
+              //       strokeWidth: 2.0,
+              //       color: Colors.red,
+              //     ),
+              //   ],
+              // ),
+            ],
           ),
 
           Padding(
@@ -280,6 +300,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                   padding: const EdgeInsets.only(bottom: 17.0),
                   child: IconButton(
                     alignment: Alignment.center,
+                    // constraints: const BoxConstraints.tightFor(
+                    //   width: 20,
+                    //   height: 50,
+                    // ),
                     onPressed: () async {
                       if (addressController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -300,8 +324,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                         getLocsAfterGetCoordinatesAndGis =
                             DioNetworkRepos().getLocByFlagAndIsFinished();
                         getLocsByHandasahNameAndTechinicianName =
-                            DioNetworkRepos()
-                                .getLocByHandasahAndTechnician("free", "free");
+                            DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
                       });
                     },
                     icon: const CircleAvatar(
@@ -325,7 +348,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         ],
       ),
       drawer: CustomDrawer(
-        title: 'الاعطال الواردة من الخط الساخن',
+        title: 'العناوين الواردة من الخط الساخن',
         getLocs: getLocs,
       ),
       endDrawer: CustomEndDrawer(

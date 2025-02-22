@@ -51,14 +51,14 @@ class CustomDrawer extends StatelessWidget {
                                     color: Colors.indigo,
                                     fontWeight: FontWeight.bold),
                               ),
-                              subtitle: snapshot.data![index]
-                                              ['handasah_name'] ==
-                                          "free" ||
-                                      snapshot.data![index]['technical_name'] ==
-                                          "free"
-                                  ? const SizedBox.shrink()
-                                  : Text(
-                                      "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
+                              // subtitle: snapshot.data![index]
+                              //                 ['handasah_name'] ==
+                              //             "free" ||
+                              //         snapshot.data![index]['technical_name'] ==
+                              //             "free"
+                              //     ? const SizedBox.shrink()
+                              //     : Text(
+                              //         "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
                             ),
                           ),
                           onTap: () {

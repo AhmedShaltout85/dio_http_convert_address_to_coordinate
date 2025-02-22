@@ -3,7 +3,7 @@ import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
-import '../custom_widget/custom_drawer.dart';
+// import '../custom_widget/custom_drawer.dart';
 import '../network/remote/dio_network_repos.dart';
 
 class HandasahScreen extends StatefulWidget {
@@ -17,6 +17,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
   late Future getLocsByHandasahNameAndIsFinished;
   late Future getLocByHandasahAndTechnician;
   String handasahName = DataStatic.handasahName;
+  String gisHandasahUrl = "";
 
   //get handasat items dropdown menu from db
   // late Future getHandasatItemsDropdownMenu;
@@ -25,14 +26,13 @@ class _HandasahScreenState extends State<HandasahScreen> {
   late Future getHandasatUsersItemsDropdownMenu;
   List<String> handasatUsersItemsDropdownMenu = [];
 
-
   @override
   void initState() {
     super.initState();
     setState(() {
       //
-      getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
-          .getLocByHandasahAndIsFinished(handasahName, 0);
+      getLocsByHandasahNameAndIsFinished =
+          DioNetworkRepos().getLocByHandasahAndIsFinished(handasahName, 0);
       //
       getLocByHandasahAndTechnician = DioNetworkRepos()
           .getLocByHandasahAndTechnician(
@@ -79,18 +79,13 @@ class _HandasahScreenState extends State<HandasahScreen> {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      body: Stack(
+      body: Row(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: IframeScreen(
-                url: 'http://196.219.231.3:8000/lab-api/lab-marker/24'),
-          ),
-          Align(
-            alignment: Alignment.topRight,
+          Expanded(
+            flex: 1,
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              width: 250,
+              width: 220,
               height: MediaQuery.of(context).size.height,
               color: Colors.black45,
               child: CustomHandasahAssignUser(
@@ -109,17 +104,156 @@ class _HandasahScreenState extends State<HandasahScreen> {
               ),
             ),
           ),
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: gisHandasahUrl == ""
+                  ? const Center(child: Text("loading..."))
+                  : IframeScreen(
+                      url: gisHandasahUrl,
+                    ), //
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              width: 220,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.black45,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  const SizedBox(
+                    height: 50,
+                    child: DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Colors.indigo,
+                      ),
+                      child: Text(
+                        "جميع الاعطال الخاصة بالهندسة",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ),
+                  FutureBuilder(
+                      future: getLocsByHandasahNameAndIsFinished,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                child: Card(
+                                  child: ListTile(
+                                    title: Text(
+                                      snapshot.data![index]['address'],
+                                      style: const TextStyle(
+                                          color: Colors.indigo,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: snapshot.data![index]
+                                                    ['handasah_name'] ==
+                                                "free" ||
+                                            snapshot.data![index]
+                                                    ['technical_name'] ==
+                                                "free"
+                                        ? const SizedBox.shrink()
+                                        : Text(
+                                            "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
+                                  ),
+                                ),
+                                onTap: () {
+                                  // This assigns the selected item to gisHandasahUrl
+                                  setState(() {
+                                    gisHandasahUrl =
+                                        snapshot.data![index]['gis_url'];
+                                  });
+                                },
+                              );
+                            },
+                            physics: const NeverScrollableScrollPhysics(),
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }),
+                ],
+              ),
+              // CustomDrawer(
+              //   title: "جميع الاعطال الخاصة بالهندسة",
+              //   getLocs: getLocsByHandasahNameAndIsFinished,
+              // ),
+            ),
+          ),
+          // Align(
+          //   alignment: Alignment.topLeft,
+          //   child:
+          //    Container(
+          //     margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          //     width: 250,
+          //     height: MediaQuery.of(context).size.height,
+          //     color: Colors.black45,
+          //     child: CustomHandasahAssignUser(
+          //       getLocs: getLocByHandasahAndTechnician,
+          //       stringListItems: handasatUsersItemsDropdownMenu,
+          //       onPressed: () {
+          //         setState(() {
+          //           getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
+          //               .getLocByHandasahAndIsFinished(handasahName, 0);
+          //           getLocByHandasahAndTechnician = DioNetworkRepos()
+          //               .getLocByHandasahAndTechnician(handasahName, 'free');
+          //         });
+          //       },
+          //       hintText: 'فضلا أختار الفنى',
+          //       title: 'تخصيص فنى',
+          //     ),
+          //   ),
+          // ),
+          // Align(
+          //   alignment: Alignment.topRight,
+          //   child: Container(
+          //     margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          //     width: 250,
+          //     height: MediaQuery.of(context).size.height,
+          //     color: Colors.black45,
+          //     child: CustomDrawer(
+          //       title: "جميع الاعطال الخاصة بالهندسة",
+          //       getLocs: getLocsByHandasahNameAndIsFinished,
+          //     ),
+          //     // CustomHandasahAssignUser(
+          //     //   getLocs: getLocByHandasahAndTechnician,
+          //     //   stringListItems: handasatUsersItemsDropdownMenu,
+          //     //   onPressed: () {
+          //     //     setState(() {
+          //     //       getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
+          //     //           .getLocByHandasahAndIsFinished(handasahName, 0);
+          //     //       getLocByHandasahAndTechnician = DioNetworkRepos()
+          //     //           .getLocByHandasahAndTechnician(handasahName, 'free');
+          //     //     });
+          //     //   },
+          //     //   hintText: 'فضلا أختار الفنى',
+          //     //   title: 'تخصيص فنى',
+          //     // ),
+          //   ),
+          // ),
         ],
       ),
-      endDrawer: CustomDrawer(
-        title: "جميع الاعطال الخاصة بالهندسة",
-        getLocs: getLocsByHandasahNameAndIsFinished,
-      ),
+      // endDrawer: CustomDrawer(
+      //   title: "جميع الاعطال الخاصة بالهندسة",
+      //   getLocs: getLocsByHandasahNameAndIsFinished,
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            getLocsByHandasahNameAndIsFinished =
-                DioNetworkRepos().getLocByHandasahAndIsFinished(handasahName, 0);
+            getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
+                .getLocByHandasahAndIsFinished(handasahName, 0);
             getLocByHandasahAndTechnician = DioNetworkRepos()
                 .getLocByHandasahAndTechnician(handasahName, 'free');
           });

@@ -126,7 +126,7 @@ class _UserScreenState extends State<UserScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => CustomWebView(
-                                        title: 'GIS Map webview',
+                                        title: '${snapshot.data![index]['address']}',
                                         url: snapshot.data![index]['gis_url'],
                                       ),
                                     ),

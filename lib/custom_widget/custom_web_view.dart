@@ -49,7 +49,10 @@ class _CustomWebViewState extends State<CustomWebView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title ?? 'Web View'),
+        title: Text(
+          widget.title ?? 'Web View',
+          style: const TextStyle(color: Colors.indigo),
+        ),
       ),
       body: Stack(
         children: [

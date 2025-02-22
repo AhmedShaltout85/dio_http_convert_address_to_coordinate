@@ -109,7 +109,15 @@ class _HandasahScreenState extends State<HandasahScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: gisHandasahUrl == ""
-                  ? const Center(child: Text("loading..."))
+                  ? const Center(
+                      child: Text(
+                        "loading...",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.indigo,
+                        ),
+                      ),
+                    )
                   : IframeScreen(
                       url: gisHandasahUrl,
                     ), //

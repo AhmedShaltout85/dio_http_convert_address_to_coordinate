@@ -9,7 +9,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../utils/dio_http_constants.dart';
 
 class AgoraVideoCall extends StatefulWidget {
-  const AgoraVideoCall({super.key});
+  final String title;
+  const AgoraVideoCall({super.key, required this.title});
 
   @override
   State<AgoraVideoCall> createState() => _AgoraVideoCallState();
@@ -98,7 +99,7 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
-        title: const Text('Making a Video Call'),
+        title: Text(widget.title, style: const TextStyle(color: Colors.white)),
         centerTitle: true,
         foregroundColor: Colors.white,
         leading: IconButton(

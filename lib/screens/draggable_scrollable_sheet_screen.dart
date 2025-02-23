@@ -86,17 +86,17 @@ class _DraggableScrollableSheetScreenState
                                             snapshot.data![index]['gis_url'],
                                           );
                                           //open in webview
-                                        //   Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //       builder: (context) =>
-                                        //           CustomWebView(
-                                        //         title: 'GIS Map webview',
-                                        //         url: snapshot.data![index]
-                                        //             ['gis_url'],
-                                        //       ),
-                                        //     ),
-                                        //   );
+                                          //   Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           CustomWebView(
+                                          //         title: 'GIS Map webview',
+                                          //         url: snapshot.data![index]
+                                          //             ['gis_url'],
+                                          //       ),
+                                          //     ),
+                                          //   );
                                         },
                                         icon: const Icon(
                                           Icons.open_in_browser,
@@ -112,7 +112,10 @@ class _DraggableScrollableSheetScreenState
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const AgoraVideoCall(),
+                                                  AgoraVideoCall(
+                                                title:
+                                                    '${snapshot.data![index]['address']}',
+                                              ),
                                             ),
                                           );
                                         },

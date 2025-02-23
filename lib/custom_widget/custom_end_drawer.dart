@@ -82,43 +82,43 @@ class CustomEndDrawer extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              IconButton(
-                                onPressed: onPressed,
-                                icon: const Icon(
-                                  Icons.call_missed_rounded,
-                                  color: Colors.indigo,
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  onPressed: onPressed,
+                                  icon: const Icon(
+                                    Icons.call_missed_rounded,
+                                    color: Colors.indigo,
+                                  ),
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.all(10.0),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 7.0),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.indigo, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: CustomDropdown(
-                                  hintText: hintText,
-                                  items: stringListItems,
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      debugPrint('Selected item: $value');
-                                      //updateLocAddHandasah
-                                      DioNetworkRepos().updateLocAddHandasah(
-                                        data['address'] ?? '',
-                                        value,
-                                      );
-                                      debugPrint('updated item: $value');
-                                      //
-                                    } 
-                                    // else if (data['handasah_name'] == value) {
-                                      
-                                    //   snapshot.data.remove(data['address']);
-                                    //   debugPrint('removed item: $value');
-                                    // }
-                                  },
-                                  // onChanged: onChanged,
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  margin: const EdgeInsets.all(7.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 3.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.indigo, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: CustomDropdown(
+                                    hintText: hintText,
+                                    items: stringListItems,
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        debugPrint('Selected item: $value');
+                                        //updateLocAddHandasah
+                                        DioNetworkRepos().updateLocAddHandasah(
+                                          data['address'] ?? '',
+                                          value,
+                                        );
+                                        debugPrint('updated item: $value');
+                                        //
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
                             ],

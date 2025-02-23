@@ -1,5 +1,7 @@
 import 'dart:async'; // Import Timer
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/tracking.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
@@ -122,15 +124,21 @@ class _UserScreenState extends State<UserScreen> {
                                 onPressed: () {
                                   debugPrint(
                                       "Start Gis Map ${snapshot.data![index]['gis_url']}");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CustomWebView(
-                                        title: '${snapshot.data![index]['address']}',
-                                        url: snapshot.data![index]['gis_url'],
+                                  if (kIsWeb) {
+                                    CustomBrowserRedirect.openInBrowser(
+                                        snapshot.data![index]['gis_url']);
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CustomWebView(
+                                          title:
+                                              '${snapshot.data![index]['address']}',
+                                          url: snapshot.data![index]['gis_url'],
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 },
                                 icon: const Icon(
                                   Icons.open_in_browser,
@@ -144,8 +152,10 @@ class _UserScreenState extends State<UserScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AgoraVideoCall(),
+                                      builder: (context) => AgoraVideoCall(
+                                        title:
+                                            '${snapshot.data![index]['address']}',
+                                      ),
                                     ),
                                   );
                                 },
@@ -167,6 +177,19 @@ class _UserScreenState extends State<UserScreen> {
                                 },
                                 icon: const Icon(
                                   Icons.location_on,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    //update is_finished(close broken locations)
+                                    DioNetworkRepos().updateLocAddIsFinished(
+                                        snapshot.data![index]['address'], 1);
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.close_rounded,
                                   color: Colors.blue,
                                 ),
                               ),

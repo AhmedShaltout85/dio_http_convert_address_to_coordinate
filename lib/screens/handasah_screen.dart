@@ -71,12 +71,14 @@ class _HandasahScreenState extends State<HandasahScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white, size: 17),
-        backgroundColor: Colors.indigo,
         centerTitle: true,
+        elevation: 7,
+        // backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
         title: Text(
           DataStatic.handasahName,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.indigo),
         ),
       ),
       body: Row(
@@ -87,7 +89,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               width: 220,
               height: MediaQuery.of(context).size.height,
-              color: Colors.black45,
+              color: Colors.black38,
               child: CustomHandasahAssignUser(
                 getLocs: getLocByHandasahAndTechnician,
                 stringListItems: handasatUsersItemsDropdownMenu,
@@ -129,7 +131,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               width: 220,
               height: MediaQuery.of(context).size.height,
-              color: Colors.black45,
+              color: Colors.black38,
               child: ListView(
                 shrinkWrap: true,
                 children: [
@@ -194,69 +196,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                       }),
                 ],
               ),
-              // CustomDrawer(
-              //   title: "جميع الاعطال الخاصة بالهندسة",
-              //   getLocs: getLocsByHandasahNameAndIsFinished,
-              // ),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.topLeft,
-          //   child:
-          //    Container(
-          //     margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          //     width: 250,
-          //     height: MediaQuery.of(context).size.height,
-          //     color: Colors.black45,
-          //     child: CustomHandasahAssignUser(
-          //       getLocs: getLocByHandasahAndTechnician,
-          //       stringListItems: handasatUsersItemsDropdownMenu,
-          //       onPressed: () {
-          //         setState(() {
-          //           getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
-          //               .getLocByHandasahAndIsFinished(handasahName, 0);
-          //           getLocByHandasahAndTechnician = DioNetworkRepos()
-          //               .getLocByHandasahAndTechnician(handasahName, 'free');
-          //         });
-          //       },
-          //       hintText: 'فضلا أختار الفنى',
-          //       title: 'تخصيص فنى',
-          //     ),
-          //   ),
-          // ),
-          // Align(
-          //   alignment: Alignment.topRight,
-          //   child: Container(
-          //     margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          //     width: 250,
-          //     height: MediaQuery.of(context).size.height,
-          //     color: Colors.black45,
-          //     child: CustomDrawer(
-          //       title: "جميع الاعطال الخاصة بالهندسة",
-          //       getLocs: getLocsByHandasahNameAndIsFinished,
-          //     ),
-          //     // CustomHandasahAssignUser(
-          //     //   getLocs: getLocByHandasahAndTechnician,
-          //     //   stringListItems: handasatUsersItemsDropdownMenu,
-          //     //   onPressed: () {
-          //     //     setState(() {
-          //     //       getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
-          //     //           .getLocByHandasahAndIsFinished(handasahName, 0);
-          //     //       getLocByHandasahAndTechnician = DioNetworkRepos()
-          //     //           .getLocByHandasahAndTechnician(handasahName, 'free');
-          //     //     });
-          //     //   },
-          //     //   hintText: 'فضلا أختار الفنى',
-          //     //   title: 'تخصيص فنى',
-          //     // ),
-          //   ),
-          // ),
         ],
       ),
-      // endDrawer: CustomDrawer(
-      //   title: "جميع الاعطال الخاصة بالهندسة",
-      //   getLocs: getLocsByHandasahNameAndIsFinished,
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {

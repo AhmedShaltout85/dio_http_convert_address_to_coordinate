@@ -8,11 +8,10 @@ class Tracking extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.indigo,
         centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
+        elevation: 7,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
         title: const Text('Tracking', style: TextStyle(color: Colors.white)),
       ),
       body: const Center(

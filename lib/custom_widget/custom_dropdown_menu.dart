@@ -6,12 +6,13 @@ class CustomDropdown extends StatefulWidget {
   final List<String> items; // Pass dropdown items here
   final String hintText;
   final ValueChanged<String?> onChanged;
+  final bool isExpanded;
 
   const CustomDropdown({
     super.key,
     required this.items,
     required this.hintText,
-    required this.onChanged,
+    required this.onChanged, required this.isExpanded,
   });
 
   @override
@@ -32,6 +33,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
           color: Colors.indigo,
         ),
       ),
+      isExpanded: widget.isExpanded,
       onChanged: (value) {
         setState(() {
           _selectedItem = value;
@@ -41,7 +43,14 @@ class _CustomDropdownState extends State<CustomDropdown> {
       items: widget.items.map<DropdownMenuItem<String>>((String item) {
         return DropdownMenuItem<String>(
           value: item,
-          child: Text(item),
+          child: Center(
+            child: Text(
+              textAlign: TextAlign.center,
+              // textDirection: TextDirection.rtl,
+              item,
+              style: const TextStyle(color: Colors.indigo),
+            ),
+          ),
         );
       }).toList(),
     );

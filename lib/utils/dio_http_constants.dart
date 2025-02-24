@@ -25,6 +25,16 @@ const appId = "ffd898c8ae5d4d96be499de1166e6229";
 const token = "";
 const channel = "pick_location";
 
+// //Agora Constants for Video Call updated
+// const appId = 'c7f8762224f147b2b446ba97543e2eaa';
+// const token = '';
+// const channel = 'control_room_location';
+
+// //Agora Constants for Audio Call
+// const appId = '179f3d65e03e4d40a6900cb55a51f154';
+// const token = '';
+// const channel = 'control_location_voice';
+
 // Basic Authentication credentials
 const username = 'gis';
 const password = 'gislab1257910';

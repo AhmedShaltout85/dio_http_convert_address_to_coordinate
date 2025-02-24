@@ -585,12 +585,12 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       appBar: AppBar(
         title: const Text(
           "تحديد موقع عنوان على الخريطة (Google Maps)",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.indigo,
-        iconTheme: const IconThemeData(color: Colors.white, size: 17),
+        elevation: 7,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
       ),
       body: Row(
         children: [

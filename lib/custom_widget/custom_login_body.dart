@@ -198,6 +198,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
+import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
 import 'package:pick_location/screens/handasah_screen.dart';
@@ -220,6 +221,7 @@ class CustomizLoginScreenBody extends StatefulWidget {
 class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  List<String> roleList = ['غرفة العمليات', 'Gis', 'الهندسة', 'فنى هندسة'];
 
   void handleLogin(BuildContext context) async {
     final username = usernameController.text;
@@ -284,17 +286,31 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
               children: [
                 const CustomCircleAvatar(
                   imgString: 'assets/logo.png',
-                  width: 120, // Larger for web
-                  height: 120,
-                  radius: 120,
+                  width: 100, // Larger for web
+                  height: 100,
+                  radius: 100,
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'Login User',
-                  style: TextStyle(
-                    color: Colors.indigo,
-                    fontSize: 32, // Larger font for web
-                    fontWeight: FontWeight.bold,
+                // const Text(
+                //   'Login User',
+                //   style: TextStyle(
+                //     color: Colors.indigo,
+                //     fontSize: 32, // Larger font for web
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                Container(
+                  margin: const EdgeInsets.all(3.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.indigo, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: CustomDropdown(
+                    isExpanded: false,
+                    items: roleList,
+                    hintText: 'فضلا اختر نوع الحساب',
+                    onChanged: (value) {},
                   ),
                 ),
                 const SizedBox(height: 20),

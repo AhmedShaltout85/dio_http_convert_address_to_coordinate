@@ -13,7 +13,10 @@ class AddressDetails extends StatelessWidget {
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        title: const Text('Address Details', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Address Details',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: const Center(
         child: Text('Address Details'),

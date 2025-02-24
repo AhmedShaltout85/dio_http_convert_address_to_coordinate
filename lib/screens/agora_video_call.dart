@@ -99,7 +99,10 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.indigo,
-        title: Text(widget.title, style: const TextStyle(color: Colors.white)),
+        title: Text(
+          widget.title,
+          style: const TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         foregroundColor: Colors.white,
         leading: IconButton(

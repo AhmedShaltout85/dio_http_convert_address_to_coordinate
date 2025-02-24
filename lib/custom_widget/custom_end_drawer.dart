@@ -95,22 +95,24 @@ class CustomEndDrawer extends StatelessWidget {
                               Expanded(
                                 flex: 3,
                                 child: Container(
-                                  margin: const EdgeInsets.all(7.0),
+                                  margin: const EdgeInsets.all(3.0),
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 3.0),
+                                      horizontal: 1.0),
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                         color: Colors.indigo, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: CustomDropdown(
+                                    isExpanded: true,
                                     hintText: hintText,
                                     items: stringListItems,
                                     onChanged: (value) {
                                       if (value != null) {
                                         debugPrint('Selected item: $value');
                                         //updateLocAddHandasah
-                                        DioNetworkRepos().updateLocAddHandasah(
+                                        DioNetworkRepos()
+                                            .updateLocAddHandasah(
                                           data['address'] ?? '',
                                           value,
                                         );

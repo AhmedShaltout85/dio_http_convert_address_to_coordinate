@@ -49,13 +49,13 @@ class CustomHandasahAssignUser extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-      
+
               if (!snapshot.hasData ||
                   snapshot.data == null ||
                   snapshot.data!.isEmpty) {
                 return const Center(child: Text("No data available"));
               }
-      
+
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -97,6 +97,7 @@ class CustomHandasahAssignUser extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: CustomDropdown(
+                                isExpanded: true,
                                 hintText: hintText,
                                 items: stringListItems,
                                 onChanged: (value) {
@@ -109,9 +110,9 @@ class CustomHandasahAssignUser extends StatelessWidget {
                                     );
                                     debugPrint('updated item: $value');
                                     //
-                                  } 
+                                  }
                                   // else if (data['handasah_name'] == value) {
-                                    
+
                                   //   snapshot.data.remove(data['address']);
                                   //   debugPrint('removed item: $value');
                                   // }

@@ -15,6 +15,10 @@ class GisMap extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('GIS Map View'),
+         centerTitle: true,
+        elevation: 7,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
       ),
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [

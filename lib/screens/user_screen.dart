@@ -103,18 +103,47 @@ class _UserScreenState extends State<UserScreen> {
                               snapshot.data![index]['address'],
                               style: const TextStyle(
                                   color: Colors.indigo,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
                             ),
-                            subtitle: Text(
-                                "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
+                            // subtitle: Text(
+                            //     "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
                           ),
                           snapshot.data![index]['handasah_name'] == null
                               ? const SizedBox.shrink()
                               : ListTile(
-                                  title: Text(
-                                    '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})',
-                                    style:
-                                        const TextStyle(color: Colors.indigo),
+                                  title: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${snapshot.data![index]['handasah_name']}',
+                                          style: const TextStyle(
+                                              color: Colors.green),
+                                        ),
+                                        Text(
+                                          '${snapshot.data![index]['technical_name']}',
+                                          style: const TextStyle(
+                                              color: Colors.green),
+                                        ),
+                                        TextButton(
+                                          style: const ButtonStyle(
+                                            backgroundColor:
+                                                WidgetStatePropertyAll(
+                                                    Colors.green),
+                                          ),
+                                          onPressed: () {},
+                                          child: const Text(
+                                            'قبول الشكوى',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 7),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                           Row(
@@ -165,7 +194,7 @@ class _UserScreenState extends State<UserScreen> {
                                 },
                                 icon: const Icon(
                                   Icons.video_call,
-                                  color: Colors.yellow,
+                                  color: Colors.green,
                                 ),
                               ),
                               IconButton(

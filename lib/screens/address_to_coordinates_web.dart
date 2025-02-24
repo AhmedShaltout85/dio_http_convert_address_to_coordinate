@@ -829,7 +829,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             IconButton(
                                               tooltip:
                                                   'التوجهه للخريطة GIS Map',
-                                              hoverColor: Colors.green,
+                                              hoverColor: Colors.yellow,
                                               onPressed: () {
                                                 debugPrint(
                                                     "Start Gis Map ${snapshot.data![index]['gis_url']}");
@@ -894,7 +894,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             ),
                                             IconButton(
                                               tooltip: 'بدء تتبع فنى الهندسة',
-                                              hoverColor: Colors.green,
+                                              hoverColor: Colors.yellow,
                                               onPressed: () {
                                                 debugPrint(
                                                     "Start Traking ${snapshot.data![index]['id']}");
@@ -909,6 +909,28 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               icon: const Icon(
                                                 Icons.location_on,
                                                 color: Colors.red,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              tooltip: 'إبلاغ كسورات معامل',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {
+                                                
+                                              },
+                                              icon: const Icon(
+                                                Icons.broken_image_outlined,
+                                                color: Colors.purple,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              tooltip: 'مهمات مخازن مطلوبة',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {
+                                               
+                                              },
+                                              icon: const Icon(
+                                                Icons.store_sharp,
+                                                color: Colors.grey,
                                               ),
                                             ),
                                             // IconButton(

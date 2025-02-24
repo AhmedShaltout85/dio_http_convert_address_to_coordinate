@@ -142,7 +142,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         color: Colors.indigo,
                       ),
                       child: Text(
-                        "جميع الاعطال الخاصة بالهندسة",
+                        "جميع الشكاوى غير مغلقة الخاصة بالهندسة",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 13,

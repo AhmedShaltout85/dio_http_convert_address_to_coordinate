@@ -37,6 +37,8 @@ class CustomEndDrawer extends StatelessWidget {
                   color: Colors.indigo,
                 ),
                 child: Text(
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.center,
                   title,
                   style: const TextStyle(
                     color: Colors.white,
@@ -55,7 +57,7 @@ class CustomEndDrawer extends StatelessWidget {
                 if (!snapshot.hasData ||
                     snapshot.data == null ||
                     snapshot.data!.isEmpty) {
-                  return const Center(child: Text("No data available"));
+                  return const Center(child: Text("عفوا لا يوجد شكاوى جديده"));
                 }
 
                 return ListView.builder(
@@ -73,6 +75,7 @@ class CustomEndDrawer extends StatelessWidget {
                               style: const TextStyle(
                                 color: Colors.indigo,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 12,
                               ),
                             ),
                             // subtitle: Text(
@@ -111,8 +114,7 @@ class CustomEndDrawer extends StatelessWidget {
                                       if (value != null) {
                                         debugPrint('Selected item: $value');
                                         //updateLocAddHandasah
-                                        DioNetworkRepos()
-                                            .updateLocAddHandasah(
+                                        DioNetworkRepos().updateLocAddHandasah(
                                           data['address'] ?? '',
                                           value,
                                         );

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
-import 'package:pick_location/screens/tracking.dart';
+// import 'package:pick_location/screens/tracking.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import '../custom_widget/custom_web_view.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -66,9 +66,9 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'الاعطال المخصصة للمستخدم',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          '${DataStatic.username} : الاعطال المخصصة للمستخدم',
+          style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.indigo,
@@ -87,7 +87,7 @@ class _UserScreenState extends State<UserScreen> {
             if (snapshot.hasData) {
               if (snapshot.data!.isEmpty) {
                 return const Center(
-                  child: Text("No data available"),
+                  child: Text("عفوا لايوجد شكاوى جديدة"),
                 );
               }
               return ListView.builder(
@@ -121,6 +121,8 @@ class _UserScreenState extends State<UserScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
+                                tooltip: 'اظهار الموقع على الخريطة GIS Map',
+                                hoverColor: Colors.yellow,
                                 onPressed: () {
                                   debugPrint(
                                       "Start Gis Map ${snapshot.data![index]['gis_url']}");
@@ -146,6 +148,8 @@ class _UserScreenState extends State<UserScreen> {
                                 ),
                               ),
                               IconButton(
+                                tooltip: 'إجراء مكالمة فيديو',
+                                hoverColor: Colors.yellow,
                                 onPressed: () {
                                   debugPrint(
                                       "Start Video Call ${snapshot.data![index]['id']}");
@@ -161,26 +165,12 @@ class _UserScreenState extends State<UserScreen> {
                                 },
                                 icon: const Icon(
                                   Icons.video_call,
-                                  color: Colors.green,
+                                  color: Colors.yellow,
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  debugPrint(
-                                      "Start Traking ${snapshot.data![index]['id']}");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Tracking(),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.location_on,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              IconButton(
+                                tooltip: 'إغلاق الشكوى',
+                                hoverColor: Colors.yellow,
                                 onPressed: () {
                                   setState(() {
                                     //update is_finished(close broken locations)
@@ -190,7 +180,18 @@ class _UserScreenState extends State<UserScreen> {
                                 },
                                 icon: const Icon(
                                   Icons.close_rounded,
-                                  color: Colors.blue,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: 'طلب مهمات مخازن',
+                                hoverColor: Colors.yellow,
+                                onPressed: () {
+                                  //
+                                },
+                                icon: const Icon(
+                                  Icons.local_convenience_store_outlined,
+                                  color: Colors.grey,
                                 ),
                               ),
                             ],

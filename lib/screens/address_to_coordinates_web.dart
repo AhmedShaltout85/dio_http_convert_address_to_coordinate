@@ -584,13 +584,16 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "تحديد موقع عنوان على الخريطة (Google Maps)",
+          "تحديد موقع عنوان على الخريطة (غرفة الطوارئ)",
           style: TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
         elevation: 7,
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
+        iconTheme: const IconThemeData(
+          color: Colors.indigo,
+          size: 17,
+        ),
       ),
       body: Row(
         children: [
@@ -602,7 +605,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
               height: MediaQuery.of(context).size.height,
               // color: Colors.black45,
               child: CustomEndDrawer(
-                title: 'تخصيص الهندسة',
+                title: 'تخصيص شكاوى الهندسة',
                 getLocs: getLocsByHandasahNameAndTechinicianName,
                 stringListItems: handasatItemsDropdownMenu,
                 onPressed: () {
@@ -736,8 +739,12 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                       color: Colors.indigo,
                       child: const Center(
                         child: Text(
-                          "جميع الاعطال الموجودة",
-                          style: TextStyle(color: Colors.white),
+                          textDirection: TextDirection.rtl,
+                          textAlign: TextAlign.center,
+                          'جميع الشكاوى غير المغلقة',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -755,26 +762,74 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                       children: [
                                         ListTile(
                                           title: Text(
-                                              snapshot.data![index]['address']),
-                                          subtitle: snapshot.data![index]
-                                                          ['handasah_name'] !=
-                                                      "free" ||
-                                                  snapshot.data![index]
-                                                          ['technical_name'] !=
-                                                      "free"
-                                              ? Text(
-                                                  '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
-                                              : const SizedBox.shrink(),
+                                            snapshot.data![index]['address'],
+                                            style: const TextStyle(
+                                                color: Colors.indigo,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
+                                          ),
+                                          subtitle: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  color: Colors.white,
+                                                  // width: 15,
+                                                  child: Text(
+                                                    "${snapshot.data![index]['handasah_name']}",
+                                                    style: const TextStyle(
+                                                      color: Colors.green,
+                                                    ),
+                                                  ),
+                                                  //  snapshot.data![index]
+                                                  //                 ['handasah_name'] !=
+                                                  //             "free" ||
+                                                  //         snapshot.data![index]
+                                                  //                 ['technical_name'] !=
+                                                  //             "free"
+                                                  //     ? Text(
+                                                  //         '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
+                                                  //     : const SizedBox.shrink(),
+                                                ),
+                                                Container(
+                                                  color: Colors.white,
+                                                  // width: 15,
+                                                  child: Text(
+                                                    "${snapshot.data![index]['technical_name']}",
+                                                    style: const TextStyle(
+                                                      color: Colors.green,
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  style: const ButtonStyle(
+                                                    backgroundColor:
+                                                        WidgetStatePropertyAll(
+                                                            Colors.green),
+                                                  ),
+                                                  onPressed: () {},
+                                                  child: const Text(
+                                                    'تم قبول الشكوى',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 7),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                        // ListTile(
-                                        //         title: Text(
-                                        //     "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
-                                        //       ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                             IconButton(
+                                              tooltip:
+                                                  'التوجهه للخريطة GIS Map',
+                                              hoverColor: Colors.green,
                                               onPressed: () {
                                                 debugPrint(
                                                     "Start Gis Map ${snapshot.data![index]['gis_url']}");
@@ -815,6 +870,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               ),
                                             ),
                                             IconButton(
+                                              tooltip: 'أجراء مكالمة فيديو',
+                                              hoverColor: Colors.yellow,
                                               onPressed: () {
                                                 debugPrint(
                                                     "Start Video Call ${snapshot.data![index]['id']}");
@@ -836,6 +893,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               ),
                                             ),
                                             IconButton(
+                                              tooltip: 'بدء تتبع فنى الهندسة',
+                                              hoverColor: Colors.green,
                                               onPressed: () {
                                                 debugPrint(
                                                     "Start Traking ${snapshot.data![index]['id']}");
@@ -849,7 +908,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               },
                                               icon: const Icon(
                                                 Icons.location_on,
-                                                color: Colors.blue,
+                                                color: Colors.red,
                                               ),
                                             ),
                                             // IconButton(

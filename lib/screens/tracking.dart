@@ -12,7 +12,12 @@ class Tracking extends StatelessWidget {
         elevation: 7,
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
-        title: const Text('Tracking', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Tracking',
+          style: TextStyle(
+            color: Colors.indigo,
+          ),
+        ),
       ),
       body: const Center(
         child: Text('Tracking'),

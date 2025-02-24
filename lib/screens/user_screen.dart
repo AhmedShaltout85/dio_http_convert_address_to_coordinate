@@ -136,7 +136,7 @@ class _UserScreenState extends State<UserScreen> {
                                           ),
                                           onPressed: () {},
                                           child: const Text(
-                                            'قبول الشكوى',
+                                            'تم القبول الشكوى',
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 7),

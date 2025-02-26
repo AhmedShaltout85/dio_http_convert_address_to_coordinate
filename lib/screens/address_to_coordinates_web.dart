@@ -799,17 +799,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                       style: const TextStyle(
                                                         fontSize: 7.0,
                                                         color: Colors.green,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
-                                                    //  snapshot.data![index]
-                                                    //                 ['handasah_name'] !=
-                                                    //             "free" ||
-                                                    //         snapshot.data![index]
-                                                    //                 ['technical_name'] !=
-                                                    //             "free"
-                                                    //     ? Text(
-                                                    //         '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
-                                                    //     : const SizedBox.shrink(),
                                                   ),
                                                 ),
                                                 snapshot.data![index][
@@ -845,6 +838,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                               fontSize: 7.0,
                                                               color:
                                                                   Colors.orange,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         ),
@@ -879,6 +875,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                               fontSize: 7.0,
                                                               color:
                                                                   Colors.green,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         ),
@@ -915,6 +914,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                               fontSize: 7.0,
                                                               color:
                                                                   Colors.green,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         )
@@ -946,6 +948,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                               fontSize: 7.0,
                                                               color:
                                                                   Colors.orange,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
                                                             ),
                                                           ),
                                                         ),

@@ -3,7 +3,6 @@ import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
-// import '../custom_widget/custom_drawer.dart';
 import '../network/remote/dio_network_repos.dart';
 
 class HandasahScreen extends StatefulWidget {
@@ -112,15 +111,12 @@ class _HandasahScreenState extends State<HandasahScreen> {
               padding: const EdgeInsets.all(8.0),
               child: gisHandasahUrl == ""
                   ? const Center(
-                      child: Text(
-                        "loading...",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.indigo,
-                        ),
+                      child: CircularProgressIndicator(
+                        color: Colors.indigo,
                       ),
                     )
                   : IframeScreen(
+                      // key: UniqueKey(),
                       url: gisHandasahUrl,
                     ), //
             ),
@@ -161,6 +157,17 @@ class _HandasahScreenState extends State<HandasahScreen> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return InkWell(
+                                onTap: () {
+                                  // This assigns the selected item to gisHandasahUrl
+                                  setState(() {
+                                    debugPrint(
+                                        "Previous URL: $gisHandasahUrl"); // Debugging
+                                    gisHandasahUrl =
+                                        snapshot.data![index]['gis_url'];
+                                    debugPrint(
+                                        "New URL: $gisHandasahUrl"); // Debugging
+                                  });
+                                },
                                 child: Card(
                                   child: ListTile(
                                     title: Text(
@@ -196,17 +203,9 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                 style: const TextStyle(
                                                   fontSize: 7.0,
                                                   color: Colors.green,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                              //  snapshot.data![index]
-                                              //                 ['handasah_name'] !=
-                                              //             "free" ||
-                                              //         snapshot.data![index]
-                                              //                 ['technical_name'] !=
-                                              //             "free"
-                                              //     ? Text(
-                                              //         '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
-                                              //     : const SizedBox.shrink(),
                                             ),
                                           ),
                                           snapshot.data![index]
@@ -235,6 +234,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                             .visible,
                                                         fontSize: 7.0,
                                                         color: Colors.orange,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -262,6 +263,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                       style: const TextStyle(
                                                         fontSize: 7.0,
                                                         color: Colors.green,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -292,6 +295,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                       style: TextStyle(
                                                         fontSize: 7.0,
                                                         color: Colors.green,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   )
@@ -317,6 +322,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                       style: TextStyle(
                                                         fontSize: 7.0,
                                                         color: Colors.orange,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -324,24 +331,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                         ],
                                       ),
                                     ),
-                                    // snapshot.data![index]
-                                    //                 ['handasah_name'] ==
-                                    //             "free" ||
-                                    //         snapshot.data![index]
-                                    //                 ['technical_name'] ==
-                                    //             "free"
-                                    //     ? const SizedBox.shrink()
-                                    //     : Text(
-                                    //         "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
                                   ),
                                 ),
-                                onTap: () {
-                                  // This assigns the selected item to gisHandasahUrl
-                                  setState(() {
-                                    gisHandasahUrl =
-                                        snapshot.data![index]['gis_url'];
-                                  });
-                                },
                               );
                             },
                             physics: const NeverScrollableScrollPhysics(),

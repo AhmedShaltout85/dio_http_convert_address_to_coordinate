@@ -102,7 +102,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                   });
                 },
                 hintText: 'فضلا أختار الفنى',
-                title: 'تخصيص فنى',
+                title: 'تخصيص شكوى لفنى',
               ),
             ),
           ),
@@ -142,10 +142,12 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         color: Colors.indigo,
                       ),
                       child: Text(
-                        "جميع الشكاوى غير مغلقة الخاصة بالهندسة",
+                        textDirection: TextDirection.rtl,
+                        textAlign: TextAlign.center,
+                        "الشكاوى غير مغلقة الخاصة بالهندسة",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 13,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -165,17 +167,172 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                       snapshot.data![index]['address'],
                                       style: const TextStyle(
                                           color: Colors.indigo,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    subtitle: snapshot.data![index]
-                                                    ['handasah_name'] ==
-                                                "free" ||
-                                            snapshot.data![index]
-                                                    ['technical_name'] ==
-                                                "free"
-                                        ? const SizedBox.shrink()
-                                        : Text(
-                                            "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 7.0, horizontal: 3.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              margin: const EdgeInsets.all(3.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 1.0),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.green,
+                                                    width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                              ),
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                "${snapshot.data![index]['handasah_name']}",
+                                                style: const TextStyle(
+                                                  fontSize: 7.0,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                              //  snapshot.data![index]
+                                              //                 ['handasah_name'] !=
+                                              //             "free" ||
+                                              //         snapshot.data![index]
+                                              //                 ['technical_name'] !=
+                                              //             "free"
+                                              //     ? Text(
+                                              //         '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
+                                              //     : const SizedBox.shrink(),
+                                            ),
+                                          ),
+                                          snapshot.data![index]
+                                                      ['technical_name'] ==
+                                                  "free"
+                                              ? Expanded(
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            3.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 3.0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.orange,
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
+                                                    ),
+                                                    child: const Text(
+                                                      "قيد تخصيص فنى",
+                                                      style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .visible,
+                                                        fontSize: 7.0,
+                                                        color: Colors.orange,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Expanded(
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            3.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 3.0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.green,
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
+                                                    ),
+                                                    child: Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      "${snapshot.data![index]['technical_name']}",
+                                                      style: const TextStyle(
+                                                        fontSize: 7.0,
+                                                        color: Colors.green,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                          Expanded(
+                                            child: snapshot.data![index]
+                                                        ['is_approved'] ==
+                                                    1
+                                                ? Container(
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            3.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 3.0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.green,
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
+                                                    ),
+                                                    child: const Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      'تم قبول الشكوى',
+                                                      style: TextStyle(
+                                                        fontSize: 7.0,
+                                                        color: Colors.green,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            3.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 3.0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.orange,
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
+                                                    ),
+                                                    child: const Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      'قيد قبول الشكوى',
+                                                      style: TextStyle(
+                                                        fontSize: 7.0,
+                                                        color: Colors.orange,
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // snapshot.data![index]
+                                    //                 ['handasah_name'] ==
+                                    //             "free" ||
+                                    //         snapshot.data![index]
+                                    //                 ['technical_name'] ==
+                                    //             "free"
+                                    //     ? const SizedBox.shrink()
+                                    //     : Text(
+                                    //         "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
                                   ),
                                 ),
                                 onTap: () {
@@ -207,6 +364,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                 .getLocByHandasahAndIsFinished(handasahName, 0);
             getLocByHandasahAndTechnician = DioNetworkRepos()
                 .getLocByHandasahAndTechnician(handasahName, 'free');
+            gisHandasahUrl = "";
           });
         },
         backgroundColor: Colors.indigo,

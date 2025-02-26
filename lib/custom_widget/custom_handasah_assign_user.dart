@@ -35,6 +35,8 @@ class CustomHandasahAssignUser extends StatelessWidget {
                 color: Colors.indigo,
               ),
               child: Text(
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.center,
                 title,
                 style: const TextStyle(
                   color: Colors.white,

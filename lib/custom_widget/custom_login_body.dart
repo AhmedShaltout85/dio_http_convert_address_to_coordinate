@@ -222,6 +222,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   List<String> roleList = ['غرفة العمليات', 'Gis', 'الهندسة', 'فنى هندسة'];
+  String? roleValue;
 
   void handleLogin(BuildContext context) async {
     final username = usernameController.text;
@@ -230,7 +231,12 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Please enter both username and password')),
+          content: Text(
+            'Please enter both username and password',
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center,
+          ),
+        ),
       );
       return;
     }
@@ -240,7 +246,13 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
     if (context.mounted) {
       if (response['success']) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login successful!')),
+          const SnackBar(
+            content: Text(
+              'تم تسجيل الدخول بنجاح',
+              textDirection: TextDirection.rtl,
+              textAlign: TextAlign.center,
+            ),
+          ),
         );
         if (DataStatic.userRole == 1) {
           // Navigate to AddressToCoordinates screen
@@ -262,7 +274,12 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${response['message']}')),
+          SnackBar(
+              content: Text(
+            'Login failed: ${response['message']}',
+            textDirection: TextDirection.rtl,
+            textAlign: TextAlign.center,
+          )),
         );
       }
     }
@@ -310,7 +327,9 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                     isExpanded: false,
                     items: roleList,
                     hintText: 'فضلا اختر نوع الحساب',
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      roleValue = value;
+                    },
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -350,11 +369,14 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                           textString: 'Login',
                           onPressed: () async {
                             if (usernameController.text.isEmpty ||
-                                passwordController.text.isEmpty) {
+                                passwordController.text.isEmpty ||
+                                roleValue == null) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content:
-                                      Text('Please Enter Username & Password'),
+                                  content: Text(
+                                      textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.center,
+                                      'فضلا أختر نوع الحساب, وبيانات المستخدم بشكل صحيح'),
                                 ),
                               );
                             } else {

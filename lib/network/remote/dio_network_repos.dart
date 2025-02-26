@@ -5,8 +5,7 @@ import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/material.dart';
 
 class DioNetworkRepos {
-  // String handasahName = '';
-  // String userName = '';
+ 
   final dio = Dio();
 //1-- GET locations(GET by flag 0 (address not set yet))
   Future getLoc() async {
@@ -485,6 +484,23 @@ class DioNetworkRepos {
         return 0;
         // throw Exception('List is empty');
       }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  //21-- UPDATE locations By address (add isApproved)
+  Future updateLocAddIsApproved(String address, int isApproved) async {
+    try {
+      final response = await dio.put(
+          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/is-approved/$address",
+          data: {
+            "is_approved": isApproved,
+          });
+      debugPrint(response.data.toString());
+
+      return response.data;
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);

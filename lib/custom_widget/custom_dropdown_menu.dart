@@ -12,7 +12,8 @@ class CustomDropdown extends StatefulWidget {
     super.key,
     required this.items,
     required this.hintText,
-    required this.onChanged, required this.isExpanded,
+    required this.onChanged,
+    required this.isExpanded,
   });
 
   @override
@@ -48,7 +49,10 @@ class _CustomDropdownState extends State<CustomDropdown> {
               textAlign: TextAlign.center,
               // textDirection: TextDirection.rtl,
               item,
-              style: const TextStyle(color: Colors.indigo),
+              style: const TextStyle(
+                color: Colors.indigo,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         );

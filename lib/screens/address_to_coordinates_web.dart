@@ -769,54 +769,186 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 fontSize: 12),
                                           ),
                                           subtitle: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 7.0, horizontal: 3.0),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Container(
-                                                  color: Colors.white,
-                                                  // width: 15,
-                                                  child: Text(
-                                                    "${snapshot.data![index]['handasah_name']}",
-                                                    style: const TextStyle(
-                                                      color: Colors.green,
+                                                Expanded(
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            3.0),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 1.0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.green,
+                                                          width: 1.0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
                                                     ),
-                                                  ),
-                                                  //  snapshot.data![index]
-                                                  //                 ['handasah_name'] !=
-                                                  //             "free" ||
-                                                  //         snapshot.data![index]
-                                                  //                 ['technical_name'] !=
-                                                  //             "free"
-                                                  //     ? Text(
-                                                  //         '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
-                                                  //     : const SizedBox.shrink(),
-                                                ),
-                                                Container(
-                                                  color: Colors.white,
-                                                  // width: 15,
-                                                  child: Text(
-                                                    "${snapshot.data![index]['technical_name']}",
-                                                    style: const TextStyle(
-                                                      color: Colors.green,
+                                                    child: Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      "${snapshot.data![index]['handasah_name']}",
+                                                      style: const TextStyle(
+                                                        fontSize: 7.0,
+                                                        color: Colors.green,
+                                                      ),
                                                     ),
+                                                    //  snapshot.data![index]
+                                                    //                 ['handasah_name'] !=
+                                                    //             "free" ||
+                                                    //         snapshot.data![index]
+                                                    //                 ['technical_name'] !=
+                                                    //             "free"
+                                                    //     ? Text(
+                                                    //         '${snapshot.data![index]['handasah_name']}, (${snapshot.data![index]['technical_name']})')
+                                                    //     : const SizedBox.shrink(),
                                                   ),
                                                 ),
-                                                TextButton(
-                                                  style: const ButtonStyle(
-                                                    backgroundColor:
-                                                        WidgetStatePropertyAll(
-                                                            Colors.green),
-                                                  ),
-                                                  onPressed: () {},
-                                                  child: const Text(
-                                                    'تم قبول الشكوى',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 7),
-                                                  ),
+                                                snapshot.data![index][
+                                                            'technical_name'] ==
+                                                        "free"
+                                                    ? Expanded(
+                                                        child: Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .all(3.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      3.0),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .orange,
+                                                                width: 1.0),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0),
+                                                          ),
+                                                          child: const Text(
+                                                            "قيد تخصيص فنى",
+                                                            style: TextStyle(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .visible,
+                                                              fontSize: 7.0,
+                                                              color:
+                                                                  Colors.orange,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Expanded(
+                                                        child: Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .all(3.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      3.0),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .green,
+                                                                width: 1.0),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0),
+                                                          ),
+                                                          child: Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            "${snapshot.data![index]['technical_name']}",
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 7.0,
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                Expanded(
+                                                  child: snapshot.data![index]
+                                                              ['is_approved'] ==
+                                                          1
+                                                      ? Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .all(3.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      3.0),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .green,
+                                                                width: 1.0),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0),
+                                                          ),
+                                                          child: const Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            'تم قبول الشكوى',
+                                                            style: TextStyle(
+                                                              fontSize: 7.0,
+                                                              color:
+                                                                  Colors.green,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .all(3.0),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      3.0),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .orange,
+                                                                width: 1.0),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5.0),
+                                                          ),
+                                                          child: const Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            'قيد قبول الشكوى',
+                                                            style: TextStyle(
+                                                              fontSize: 7.0,
+                                                              color:
+                                                                  Colors.orange,
+                                                            ),
+                                                          ),
+                                                        ),
                                                 ),
                                               ],
                                             ),
@@ -826,111 +958,115 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            IconButton(
-                                              tooltip:
-                                                  'التوجهه للخريطة GIS Map',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {
-                                                debugPrint(
-                                                    "Start Gis Map ${snapshot.data![index]['gis_url']}");
-                                                //open in iframe webview in web app
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) =>
-                                                //         IframeScreen(
-                                                //             url: snapshot
-                                                //                     .data![index]
-                                                //                 ['gis_url']),
-                                                //   ),
-                                                // );
+                                            Expanded(
+                                              child: IconButton(
+                                                tooltip:
+                                                    'التوجهه للخريطة GIS Map',
+                                                hoverColor: Colors.yellow,
+                                                onPressed: () {
+                                                  debugPrint(
+                                                      "Start Gis Map ${snapshot.data![index]['gis_url']}");
+                                                  //open in iframe webview in web app
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //     builder: (context) =>
+                                                  //         IframeScreen(
+                                                  //             url: snapshot
+                                                  //                     .data![index]
+                                                  //                 ['gis_url']),
+                                                  //   ),
+                                                  // );
 
-                                                //open in browser
-                                                CustomBrowserRedirect
-                                                    .openInBrowser(
-                                                  snapshot.data![index]
-                                                      ['gis_url'],
-                                                );
-                                                //open in webview
-                                                //   Navigator.push(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //       builder: (context) =>
-                                                //           CustomWebView(
-                                                //         title: 'GIS Map webview',
-                                                //         url: snapshot.data![index]
-                                                //             ['gis_url'],
-                                                //       ),
-                                                //     ),
-                                                //   );
-                                              },
-                                              icon: const Icon(
-                                                Icons.open_in_browser,
-                                                color: Colors.blue,
+                                                  //open in browser
+                                                  CustomBrowserRedirect
+                                                      .openInBrowser(
+                                                    snapshot.data![index]
+                                                        ['gis_url'],
+                                                  );
+                                                  //open in webview
+                                                  //   Navigator.push(
+                                                  //     context,
+                                                  //     MaterialPageRoute(
+                                                  //       builder: (context) =>
+                                                  //           CustomWebView(
+                                                  //         title: 'GIS Map webview',
+                                                  //         url: snapshot.data![index]
+                                                  //             ['gis_url'],
+                                                  //       ),
+                                                  //     ),
+                                                  //   );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.open_in_browser,
+                                                  color: Colors.blue,
+                                                ),
                                               ),
                                             ),
-                                            IconButton(
-                                              tooltip: 'أجراء مكالمة فيديو',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {
-                                                debugPrint(
-                                                    "Start Video Call ${snapshot.data![index]['id']}");
-                                                //open video call
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AgoraVideoCall(
-                                                      title:
-                                                          '${snapshot.data![index]['address']}',
+                                            Expanded(
+                                              child: IconButton(
+                                                tooltip: 'أجراء مكالمة فيديو',
+                                                hoverColor: Colors.yellow,
+                                                onPressed: () {
+                                                  debugPrint(
+                                                      "Start Video Call ${snapshot.data![index]['id']}");
+                                                  //open video call
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AgoraVideoCall(
+                                                        title:
+                                                            '${snapshot.data![index]['address']}',
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                Icons.video_call,
-                                                color: Colors.green,
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.video_call,
+                                                  color: Colors.green,
+                                                ),
                                               ),
                                             ),
-                                            IconButton(
-                                              tooltip: 'بدء تتبع فنى الهندسة',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {
-                                                debugPrint(
-                                                    "Start Traking ${snapshot.data![index]['id']}");
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Tracking(),
-                                                  ),
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                Icons.location_on,
-                                                color: Colors.red,
+                                            Expanded(
+                                              child: IconButton(
+                                                tooltip: 'بدء تتبع فنى الهندسة',
+                                                hoverColor: Colors.yellow,
+                                                onPressed: () {
+                                                  debugPrint(
+                                                      "Start Traking ${snapshot.data![index]['id']}");
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const Tracking(),
+                                                    ),
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.location_on,
+                                                  color: Colors.red,
+                                                ),
                                               ),
                                             ),
-                                            IconButton(
-                                              tooltip: 'إبلاغ كسورات معامل',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {
-                                                
-                                              },
-                                              icon: const Icon(
-                                                Icons.broken_image_outlined,
-                                                color: Colors.purple,
+                                            Expanded(
+                                              child: IconButton(
+                                                tooltip: 'إبلاغ كسورات معامل',
+                                                hoverColor: Colors.yellow,
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  Icons.heat_pump,
+                                                  color: Colors.purple,
+                                                ),
                                               ),
                                             ),
                                             IconButton(
                                               tooltip: 'مهمات مخازن مطلوبة',
                                               hoverColor: Colors.yellow,
-                                              onPressed: () {
-                                               
-                                              },
+                                              onPressed: () {},
                                               icon: const Icon(
                                                 Icons.store_sharp,
-                                                color: Colors.grey,
+                                                color: Colors.cyan,
                                               ),
                                             ),
                                             // IconButton(

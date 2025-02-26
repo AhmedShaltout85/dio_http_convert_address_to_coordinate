@@ -18,6 +18,7 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   late Future<List<Map<String, dynamic>>> getUsersBrokenPointsList;
   Timer? _timer; // Timer for periodic fetching
+  int? isApproved;
 
   @override
   void initState() {
@@ -94,6 +95,7 @@ class _UserScreenState extends State<UserScreen> {
                   shrinkWrap: true,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
+                    isApproved = snapshot.data![index]['is_approved'];
                     return Card(
                       margin: const EdgeInsets.all(10),
                       child: Column(
@@ -106,8 +108,6 @@ class _UserScreenState extends State<UserScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15),
                             ),
-                            // subtitle: Text(
-                            //     "(${snapshot.data![index]['latitude']},${snapshot.data![index]['longitude']})"),
                           ),
                           snapshot.data![index]['handasah_name'] == null
                               ? const SizedBox.shrink()
@@ -128,20 +128,53 @@ class _UserScreenState extends State<UserScreen> {
                                           style: const TextStyle(
                                               color: Colors.green),
                                         ),
-                                        TextButton(
-                                          style: const ButtonStyle(
-                                            backgroundColor:
-                                                WidgetStatePropertyAll(
-                                                    Colors.green),
-                                          ),
-                                          onPressed: () {},
-                                          child: const Text(
-                                            'تم القبول الشكوى',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 7),
-                                          ),
-                                        ),
+                                        isApproved == 1
+                                            ? TextButton(
+                                                style: const ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStatePropertyAll(
+                                                          Colors.green),
+                                                ),
+                                                onPressed: () {},
+                                                child: const Text(
+                                                  'تم قبول الشكوى',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 7),
+                                                ),
+                                              )
+                                            : TextButton(
+                                                style: const ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStatePropertyAll(
+                                                          Colors.orange),
+                                                ),
+                                                onPressed: () {
+                                                  //update isApproved
+                                                  setState(() {
+                                                    DioNetworkRepos()
+                                                        .updateLocAddIsApproved(
+                                                            snapshot.data![
+                                                                    index]
+                                                                ['address'],
+                                                            1);
+                                                    isApproved = 1;
+                                                    //fetch data
+                                                    DioNetworkRepos()
+                                                        .fetchHandasatUsersItemsBroken(
+                                                            DataStatic
+                                                                .handasahName,
+                                                            DataStatic.username,
+                                                            0);
+                                                  });
+                                                },
+                                                child: const Text(
+                                                  'قيد قبول الشكوى',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 7),
+                                                ),
+                                              ),
                                       ],
                                     ),
                                   ),
@@ -205,6 +238,10 @@ class _UserScreenState extends State<UserScreen> {
                                     //update is_finished(close broken locations)
                                     DioNetworkRepos().updateLocAddIsFinished(
                                         snapshot.data![index]['address'], 1);
+                                    DioNetworkRepos().fetchHandasatUsersItemsBroken(
+                                        DataStatic.handasahName,
+                                        DataStatic.username,
+                                        0); // Manually refresh data after update
                                   });
                                 },
                                 icon: const Icon(
@@ -220,7 +257,7 @@ class _UserScreenState extends State<UserScreen> {
                                 },
                                 icon: const Icon(
                                   Icons.local_convenience_store_outlined,
-                                  color: Colors.grey,
+                                  color: Colors.cyan,
                                 ),
                               ),
                             ],

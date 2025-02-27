@@ -963,83 +963,93 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Expanded(
-                                              child: IconButton(
-                                                tooltip:
-                                                    'التوجهه للخريطة GIS Map',
-                                                hoverColor: Colors.yellow,
-                                                onPressed: () {
-                                                  debugPrint(
-                                                      "Start Gis Map ${snapshot.data![index]['gis_url']}");
-                                                  //open in iframe webview in web app
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) =>
-                                                  //         IframeScreen(
-                                                  //             url: snapshot
-                                                  //                     .data![index]
-                                                  //                 ['gis_url']),
-                                                  //   ),
-                                                  // );
+                                            IconButton(
+                                              tooltip:
+                                                  'التوجهه للخريطة GIS Map',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {
+                                                debugPrint(
+                                                    "Start Gis Map ${snapshot.data![index]['gis_url']}");
+                                                //open in iframe webview in web app
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //         IframeScreen(
+                                                //             url: snapshot
+                                                //                     .data![index]
+                                                //                 ['gis_url']),
+                                                //   ),
+                                                // );
 
-                                                  //open in browser
-                                                  CustomBrowserRedirect
-                                                      .openInBrowser(
-                                                    snapshot.data![index]
-                                                        ['gis_url'],
-                                                  );
-                                                  //open in webview
-                                                  //   Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //       builder: (context) =>
-                                                  //           CustomWebView(
-                                                  //         title: 'GIS Map webview',
-                                                  //         url: snapshot.data![index]
-                                                  //             ['gis_url'],
-                                                  //       ),
-                                                  //     ),
-                                                  //   );
-                                                },
-                                                icon: const Icon(
-                                                  Icons.open_in_browser,
-                                                  color: Colors.blue,
-                                                ),
+                                                //open in browser
+                                                CustomBrowserRedirect
+                                                    .openInBrowser(
+                                                  snapshot.data![index]
+                                                      ['gis_url'],
+                                                );
+                                                //open in webview
+                                                //   Navigator.push(
+                                                //     context,
+                                                //     MaterialPageRoute(
+                                                //       builder: (context) =>
+                                                //           CustomWebView(
+                                                //         title: 'GIS Map webview',
+                                                //         url: snapshot.data![index]
+                                                //             ['gis_url'],
+                                                //       ),
+                                                //     ),
+                                                //   );
+                                              },
+                                              icon: const Icon(
+                                                Icons.open_in_browser,
+                                                color: Colors.blue,
                                               ),
                                             ),
-                                            Expanded(
-                                              child: IconButton(
-                                                tooltip: 'أجراء مكالمة فيديو',
-                                                hoverColor: Colors.yellow,
-                                                onPressed: () {
-                                                  debugPrint(
-                                                      "Start Video Call ${snapshot.data![index]['id']}");
-                                                  //open video call
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          AgoraVideoCall(
-                                                        title:
-                                                            '${snapshot.data![index]['address']}',
-                                                      ),
+                                            IconButton(
+                                              tooltip: 'أجراء مكالمة فيديو',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {
+                                                debugPrint(
+                                                    "Start Video Call ${snapshot.data![index]['id']}");
+                                                //open video call
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AgoraVideoCall(
+                                                      title:
+                                                          '${snapshot.data![index]['address']}',
                                                     ),
-                                                  );
-                                                },
-                                                icon: const Icon(
-                                                  Icons.video_call,
-                                                  color: Colors.green,
-                                                ),
+                                                  ),
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                Icons.video_call,
+                                                color: Colors.green,
                                               ),
                                             ),
-                                            Expanded(
-                                              child: IconButton(
-                                                tooltip: 'بدء تتبع فنى الهندسة',
-                                                hoverColor: Colors.yellow,
-                                                onPressed: () {
-                                                  debugPrint(
-                                                      "Start Traking ${snapshot.data![index]['id']}");
+                                            IconButton(
+                                              tooltip: 'بدء تتبع فنى الهندسة',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {
+                                                debugPrint(
+                                                    "Start Traking ${snapshot.data![index]['id']}");
+                                                if (snapshot.data![index]
+                                                        ['is_approved'] ==
+                                                    null) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text(
+                                                      'الشكوى قيد القبول وجارى التفعيل',
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    )),
+                                                  );
+                                                } else {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -1047,31 +1057,11 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                           const Tracking(),
                                                     ),
                                                   );
-                                                },
-                                                icon: const Icon(
-                                                  Icons.location_on,
-                                                  color: Colors.red,
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: IconButton(
-                                                tooltip: 'إبلاغ كسورات معامل',
-                                                hoverColor: Colors.yellow,
-                                                onPressed: () {},
-                                                icon: const Icon(
-                                                  Icons.heat_pump,
-                                                  color: Colors.purple,
-                                                ),
-                                              ),
-                                            ),
-                                            IconButton(
-                                              tooltip: 'مهمات مخازن مطلوبة',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {},
+                                                }
+                                              },
                                               icon: const Icon(
-                                                Icons.store_sharp,
-                                                color: Colors.cyan,
+                                                Icons.location_on,
+                                                color: Colors.red,
                                               ),
                                             ),
                                             // IconButton(

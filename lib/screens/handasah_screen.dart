@@ -169,168 +169,218 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                   });
                                 },
                                 child: Card(
-                                  child: ListTile(
-                                    title: Text(
-                                      snapshot.data![index]['address'],
-                                      style: const TextStyle(
-                                          color: Colors.indigo,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    subtitle: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 7.0, horizontal: 3.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                              margin: const EdgeInsets.all(3.0),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                                  child: Column(
+                                    children: [
+                                      ListTile(
+                                        title: Text(
+                                          snapshot.data![index]['address'],
+                                          style: const TextStyle(
+                                              color: Colors.indigo,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 7.0, horizontal: 3.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  margin:
+                                                      const EdgeInsets.all(3.0),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       horizontal: 1.0),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.green,
-                                                    width: 1.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(5.0),
-                                              ),
-                                              child: Text(
-                                                textAlign: TextAlign.center,
-                                                "${snapshot.data![index]['handasah_name']}",
-                                                style: const TextStyle(
-                                                  fontSize: 7.0,
-                                                  color: Colors.green,
-                                                  fontWeight: FontWeight.bold,
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.green,
+                                                        width: 1.0),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0),
+                                                  ),
+                                                  child: Text(
+                                                    textAlign: TextAlign.center,
+                                                    "${snapshot.data![index]['handasah_name']}",
+                                                    style: const TextStyle(
+                                                      fontSize: 7.0,
+                                                      color: Colors.green,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                                 ),
+                                              ),
+                                              snapshot.data![index]
+                                                          ['technical_name'] ==
+                                                      "free"
+                                                  ? Expanded(
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .all(3.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                    3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.orange,
+                                                              width: 1.0),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      5.0),
+                                                        ),
+                                                        child: const Text(
+                                                          "قيد تخصيص فنى",
+                                                          style: TextStyle(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .visible,
+                                                            fontSize: 7.0,
+                                                            color:
+                                                                Colors.orange,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Expanded(
+                                                      child: Container(
+                                                        margin: const EdgeInsets
+                                                            .all(3.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                    3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.green,
+                                                              width: 1.0),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      5.0),
+                                                        ),
+                                                        child: Text(
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          "${snapshot.data![index]['technical_name']}",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 7.0,
+                                                            color: Colors.green,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                              Expanded(
+                                                child: snapshot.data![index]
+                                                            ['is_approved'] ==
+                                                        1
+                                                    ? Container(
+                                                        margin: const EdgeInsets
+                                                            .all(3.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                    3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.green,
+                                                              width: 1.0),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      5.0),
+                                                        ),
+                                                        child: const Text(
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          'تم قبول الشكوى',
+                                                          style: TextStyle(
+                                                            fontSize: 7.0,
+                                                            color: Colors.green,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        margin: const EdgeInsets
+                                                            .all(3.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                    3.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.orange,
+                                                              width: 1.0),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      5.0),
+                                                        ),
+                                                        child: const Text(
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          'قيد قبول الشكوى',
+                                                          style: TextStyle(
+                                                            fontSize: 7.0,
+                                                            color:
+                                                                Colors.orange,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                              tooltip: 'إبلاغ كسورات معامل',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.report_gmailerrorred,
+                                                color: Colors.purple,
                                               ),
                                             ),
-                                          ),
-                                          snapshot.data![index]
-                                                      ['technical_name'] ==
-                                                  "free"
-                                              ? Expanded(
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            3.0),
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 3.0),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.orange,
-                                                          width: 1.0),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5.0),
-                                                    ),
-                                                    child: const Text(
-                                                      "قيد تخصيص فنى",
-                                                      style: TextStyle(
-                                                        overflow: TextOverflow
-                                                            .visible,
-                                                        fontSize: 7.0,
-                                                        color: Colors.orange,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              : Expanded(
-                                                  child: Container(
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            3.0),
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 3.0),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.green,
-                                                          width: 1.0),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5.0),
-                                                    ),
-                                                    child: Text(
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      "${snapshot.data![index]['technical_name']}",
-                                                      style: const TextStyle(
-                                                        fontSize: 7.0,
-                                                        color: Colors.green,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                          Expanded(
-                                            child: snapshot.data![index]
-                                                        ['is_approved'] ==
-                                                    1
-                                                ? Container(
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            3.0),
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 3.0),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.green,
-                                                          width: 1.0),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5.0),
-                                                    ),
-                                                    child: const Text(
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      'تم قبول الشكوى',
-                                                      style: TextStyle(
-                                                        fontSize: 7.0,
-                                                        color: Colors.green,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : Container(
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            3.0),
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 3.0),
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.orange,
-                                                          width: 1.0),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5.0),
-                                                    ),
-                                                    child: const Text(
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      'قيد قبول الشكوى',
-                                                      style: TextStyle(
-                                                        fontSize: 7.0,
-                                                        color: Colors.orange,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                            IconButton(
+                                              tooltip: 'مهمات مخازن مطلوبة',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.store_sharp,
+                                                color: Colors.cyan,
+                                              ),
+                                            ),
+                                          ]),
+                                    ],
                                   ),
                                 ),
                               );

@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:async'; // Import Timer
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -53,9 +55,28 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
-// Function to get current location
+// Function to get current location(with permission request)
   Future<void> _getCurrentLocation() async {
     var location = Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    location.enableBackgroundMode(enable: true);
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
 
     try {
       var userLocation = await location.getLocation();

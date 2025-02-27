@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 // ignore: avoid_web_libraries_in_flutter
@@ -5,6 +6,8 @@ import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pick_location/screens/address_to_coordinates_web.dart';
+import 'package:pick_location/screens/user_screen.dart';
 
 import '../utils/dio_http_constants.dart';
 
@@ -101,7 +104,7 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
         backgroundColor: Colors.indigo,
         title: Text(
           widget.title,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white, fontSize: 10),
         ),
         centerTitle: true,
         foregroundColor: Colors.white,
@@ -151,7 +154,20 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.of(context).pop(true);
+                      kIsWeb
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const AddressToCoordinates(),
+                              ),
+                            )
+                          : Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const UserScreen(),
+                              ),
+                            );
                     },
                     icon: const CircleAvatar(
                       radius: 25,

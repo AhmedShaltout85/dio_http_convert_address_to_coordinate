@@ -69,7 +69,7 @@ class _UserScreenState extends State<UserScreen> {
       appBar: AppBar(
         title: Text(
           '${DataStatic.username} : الاعطال المخصصة للمستخدم',
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white, fontSize: 10),
         ),
         centerTitle: true,
         backgroundColor: Colors.indigo,

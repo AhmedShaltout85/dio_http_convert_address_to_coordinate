@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
-// import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
+import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
 import '../network/remote/dio_network_repos.dart';
 
@@ -108,18 +108,17 @@ class _HandasahScreenState extends State<HandasahScreen> {
           Expanded(
             flex: 3,
             child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: gisHandasahUrl == ""
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.indigo,
-                        ),
-                      )
-                    : Container()
-                // IframeScreen(
-                //     url: gisHandasahUrl,
-                //   ), //
-                ),
+              padding: const EdgeInsets.all(8.0),
+              child: gisHandasahUrl == ""
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.indigo,
+                      ),
+                    )
+                  : IframeScreen(
+                      url: gisHandasahUrl,
+                    ), //
+            ),
           ),
           Expanded(
             flex: 1,

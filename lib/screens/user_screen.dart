@@ -1,9 +1,10 @@
 import 'dart:async'; // Import Timer
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
+
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
-// import 'package:pick_location/screens/tracking.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import '../custom_widget/custom_web_view.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -19,12 +20,15 @@ class _UserScreenState extends State<UserScreen> {
   late Future<List<Map<String, dynamic>>> getUsersBrokenPointsList;
   Timer? _timer; // Timer for periodic fetching
   int? isApproved;
+  LocationData? currentLocation;
+  late String address;
 
   @override
   void initState() {
     super.initState();
     _fetchData(); // Initial fetch
     _startPeriodicFetch(); // Start periodic fetching
+    _getCurrentLocation(); // Get current location
   }
 
   @override
@@ -47,6 +51,40 @@ class _UserScreenState extends State<UserScreen> {
         debugPrint("Data is empty, will retry...");
       }
     });
+  }
+
+// Function to get current location
+  Future<void> _getCurrentLocation() async {
+    var location = Location();
+
+    try {
+      var userLocation = await location.getLocation();
+      setState(() {
+        currentLocation = userLocation;
+        // markers.add(
+        //   Marker(
+        //     markerId: const MarkerId("current_location"),
+        //     position: LatLng(userLocation.latitude!, userLocation.longitude!),
+        //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        //   ),
+        // );
+      });
+    } catch (e) {
+      debugPrint("Error getting location: $e");
+    }
+
+    location.onLocationChanged.listen((LocationData newLocation) {
+      setState(() {
+        currentLocation = newLocation;
+      });
+    });
+  }
+
+  //Function to start fetching updated location
+  void _startFetchingLocation() {
+    _getCurrentLocation();
+    DioNetworkRepos().updateLocationToBackend(
+        address, currentLocation!.latitude!, currentLocation!.longitude!);
   }
 
   // Function to start periodic fetching
@@ -96,6 +134,7 @@ class _UserScreenState extends State<UserScreen> {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     isApproved = snapshot.data![index]['is_approved'];
+                    address = snapshot.data![index]['address'];
                     return Card(
                       margin: const EdgeInsets.all(10),
                       child: Column(
@@ -128,22 +167,8 @@ class _UserScreenState extends State<UserScreen> {
                                           style: const TextStyle(
                                               color: Colors.green),
                                         ),
-                                        isApproved == 1
+                                        isApproved == 0
                                             ? TextButton(
-                                                style: const ButtonStyle(
-                                                  backgroundColor:
-                                                      WidgetStatePropertyAll(
-                                                          Colors.green),
-                                                ),
-                                                onPressed: () {},
-                                                child: const Text(
-                                                  'تم قبول الشكوى',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 7),
-                                                ),
-                                              )
-                                            : TextButton(
                                                 style: const ButtonStyle(
                                                   backgroundColor:
                                                       WidgetStatePropertyAll(
@@ -174,7 +199,49 @@ class _UserScreenState extends State<UserScreen> {
                                                       color: Colors.white,
                                                       fontSize: 7),
                                                 ),
-                                              ),
+                                              )
+                                            : TextButton(
+                                                style: const ButtonStyle(
+                                                  backgroundColor:
+                                                      WidgetStatePropertyAll(
+                                                          Colors.green),
+                                                ),
+                                                onPressed: () {
+                                                  //active live Location
+
+                                                  setState(() {
+                                                    //post current user Location
+                                                    DioNetworkRepos()
+                                                        .sendLocationToBackend(
+                                                            snapshot.data![
+                                                                    index]
+                                                                ['address'],
+                                                            snapshot.data![
+                                                                    index][
+                                                                'technical_name'],
+                                                            snapshot.data![
+                                                                    index]
+                                                                ['latitude'],
+                                                            snapshot.data![
+                                                                    index]
+                                                                ['longitude'],
+                                                            currentLocation
+                                                                ?.latitude,
+                                                            currentLocation
+                                                                ?.longitude);
+                                                  });
+                                                  debugPrint(
+                                                      'address: ${snapshot.data![index]['address']}, latitude: ${snapshot.data![index]['latitude']},longitude: ${snapshot.data![index]['longitude']},currentLocation?.latitude: ${currentLocation?.latitude},currentLocation?.longitude: ${currentLocation?.longitude}, technical_name: ${snapshot.data![index]['technical_name']}');
+                                                  //updated Location
+                                                  _startFetchingLocation();
+                                                },
+                                                child: const Text(
+                                                  'تم قبول الشكوى',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 7),
+                                                ),
+                                              )
                                       ],
                                     ),
                                   ),

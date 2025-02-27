@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
-import 'package:pick_location/screens/tracking.dart';
+// import 'package:pick_location/screens/tracking.dart';
 
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_draggable_scrollable_sheet.dart';
@@ -128,13 +128,13 @@ class _DraggableScrollableSheetScreenState
                                         onPressed: () {
                                           debugPrint(
                                               "Start Traking ${snapshot.data![index]['id']}");
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const Tracking(),
-                                            ),
-                                          );
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         const Tracking(),
+                                          //   ),
+                                          // );
                                         },
                                         icon: const Icon(
                                           Icons.location_on,

@@ -1,367 +1,3 @@
-// import 'dart:async';
-// import 'dart:collection';
-// import 'dart:convert';
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
-
-// import '../custom_widget/custom_drawer.dart';
-// import '../custom_widget/custom_end_drawer.dart';
-// import '../network/remote/dio_network_repos.dart';
-
-// class AddressToCoordinates extends StatefulWidget {
-//   const AddressToCoordinates({super.key});
-
-//   @override
-//   AddressToCoordinatesState createState() => AddressToCoordinatesState();
-// }
-
-// class AddressToCoordinatesState extends State<AddressToCoordinates> {
-//   final Completer<GoogleMapController> _controller = Completer();
-
-//   String address = "";
-//   String coordinates = "";
-//   String getAddress = "";
-//   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
-//   double latitude = 0.0, longitude = 0.0;
-//   var pickMarkers = HashSet<Marker>();
-//   late Future getLocs; //get addresses from db(HotLine)
-//   late Future
-//       getLocsAfterGetCoordinatesAndGis; //get addresses from db(after getting coordinates and gis link)
-//   late Future getLocsByHandasahNameAndTechinicianName;
-//   final TextEditingController addressController = TextEditingController();
-//   late Future getHandasatItemsDropdownMenu;
-//   List<String> handasatItemsDropdownMenu = [];
-//   List<String> addHandasahToAddressList = [];
-
-//   // Replace with your actual Google Maps API key
-//   String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
-
-//   @override
-//   void dispose() {
-//     // Dispose the controller when the widget is disposed
-//     addressController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     setState(() {
-//       getLocs = DioNetworkRepos().getLoc();
-//       getLocsAfterGetCoordinatesAndGis =
-//           DioNetworkRepos().getLocByFlagAndIsFinished();
-//       getLocsByHandasahNameAndTechinicianName =
-//           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-//     });
-
-//     getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
-
-//     getLocsByHandasahNameAndTechinicianName.then((value) =>
-//         debugPrint("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
-
-//     //get handasat items dropdown menu from db
-//     getHandasatItemsDropdownMenu =
-//         DioNetworkRepos().fetchHandasatItemsDropdownMenu();
-
-//     //load list
-//     getHandasatItemsDropdownMenu.then((value) {
-//       value.forEach((element) {
-//         element = element.toString();
-//         //add to list
-//         handasatItemsDropdownMenu.add(element);
-//       });
-//       //debug print
-//       debugPrint(
-//           "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
-//       debugPrint(value.toString());
-//     });
-//   }
-
-//   // Function to get latitude and longitude from an address using Google Maps Geocoding API
-//   Future<void> _getCoordinatesFromAddress(String address) async {
-//     final url = Uri.parse(
-//         'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$googleMapsApiKey');
-
-//     try {
-//       final response = await http.get(url);
-
-//       if (response.statusCode == 200) {
-//         final data = json.decode(response.body);
-
-//         if (data['results'].isNotEmpty) {
-//           var location = data['results'][0]['geometry']['location'];
-//           setState(() {
-//             coordinates =
-//                 "Latitude: ${location['lat']}, Longitude: ${location['lng']}";
-//             latitude = location['lat']; // latitude
-//             longitude = location['lng']; // longitude
-
-//             //add marker
-//             pickMarkers.add(
-//               Marker(
-//                 markerId: MarkerId(address),
-//                 position: LatLng(latitude, longitude),
-//                 infoWindow: InfoWindow(
-//                   title: address,
-//                   snippet: coordinates,
-//                 ),
-//                 icon: BitmapDescriptor.defaultMarkerWithHue(
-//                     BitmapDescriptor.hueGreen),
-//               ),
-//             );
-//             //
-//             debugPrint(address);
-//             debugPrint(coordinates);
-//             debugPrint(longitude.toString());
-//             debugPrint(latitude.toString());
-
-//             //update locations after getting coordinates
-//             getLocs = DioNetworkRepos().getLoc();
-//             //update locations after getting coordinates and gis link
-//             getLocsAfterGetCoordinatesAndGis =
-//                 DioNetworkRepos().getLocByFlagAndIsFinished();
-//             getLocsByHandasahNameAndTechinicianName =
-//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-//           });
-
-//           //get last gis record from GIS server
-//           int lastRecordNumber = await DioNetworkRepos()
-//               .getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
-//           debugPrint("lastRecordNumber :>> $lastRecordNumber");
-//           int newRecordNumber = lastRecordNumber + 1;
-//           debugPrint("newRecordNumber :>> $newRecordNumber");
-//           //
-//           //create new gis point
-//           String mapLink =
-//               await DioNetworkRepos().createNewGisPointAndGetMapLink(
-//             newRecordNumber,
-//             longitude.toString(),
-//             latitude.toString(),
-//           );
-//           debugPrint("gis_longitude :>> $longitude");
-//           debugPrint("gis_latitude :>> $latitude");
-//           debugPrint("GIS MAP LINK :>> $mapLink");
-
-//           // check if address already exist(UPDATED-IN-29-01-2025)
-//           var addressInList =
-//               await DioNetworkRepos().checkAddressExists(address);
-//           debugPrint(
-//               "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)}");
-//           debugPrint("PRINTED BY USING VAR: $addressInList");
-//           // debugPrint("PRINTED BY USING STRING: $addressInListString");
-//           //
-//           //
-//           if (addressInList == true) {
-//             //  call the function to update locations in database
-//             debugPrint("address already exist >>>>>> $addressInList");
-
-//             //  call the function to update locations in database
-//             //update Locations list after getting coordinates and gis link
-//             await DioNetworkRepos().updateLocations(
-//               address,
-//               longitude,
-//               latitude,
-//               mapLink,
-//             );
-//             //
-//             debugPrint(
-//                 "updated Locations list after getting coordinates and gis link");
-//           } else {
-//             //  call the function to post locations in database
-//             debugPrint("address not exist >>>>>>>>> $addressInList");
-
-//             //  call the function to post locations in database
-//             await DioNetworkRepos().createNewLocation(
-//               address,
-//               longitude,
-//               latitude,
-//               mapLink,
-//             );
-//             //
-//             debugPrint(
-//                 "POSTED new Location In Locations list after getting coordinates and gis link");
-//           }
-
-//           //update Locations list after getting coordinates
-
-//           setState(() {
-//             getLocs = DioNetworkRepos().getLoc();
-//             //update locations after getting coordinates and gis link
-//             getLocsAfterGetCoordinatesAndGis =
-//                 DioNetworkRepos().getLocByFlagAndIsFinished();
-//             getLocsByHandasahNameAndTechinicianName =
-//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-//           });
-//         } else {
-//           setState(() {
-//             coordinates = "Error: No results found";
-//           });
-//         }
-//       } else {
-//         setState(() {
-//           coordinates = "Error: Failed to fetch data";
-//         });
-//       }
-//     } catch (e) {
-//       setState(() {
-//         coordinates = "Error: Unable to get coordinates";
-//       });
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text(
-//           "تحديد موقع عنوان على الخريطة (Google Maps)",
-//           style: TextStyle(color: Colors.white),
-//         ),
-//         centerTitle: true,
-//         elevation: 0,
-//         backgroundColor: Colors.indigo,
-//         iconTheme: const IconThemeData(color: Colors.white, size: 17),
-//       ),
-//       body: Stack(
-//         children: [
-//           GoogleMap(
-//             initialCameraPosition: CameraPosition(
-//               target: alexandriaCoordinates,
-//               zoom: 10.4746,
-//             ),
-//             onMapCreated: (GoogleMapController controller) {
-//               _controller.complete(controller);
-//             },
-//             markers: pickMarkers,
-//             zoomControlsEnabled: true,
-//           ),
-
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Row(
-//               children: [
-//                 Expanded(
-//                   child: TextField(
-//                     decoration: const InputDecoration(
-//                       constraints: BoxConstraints(
-//                         maxHeight: 70,
-//                         minWidth: 200,
-//                       ),
-//                       filled: true,
-//                       fillColor: Colors.white,
-//                       border: OutlineInputBorder(
-//                         borderRadius: BorderRadius.all(
-//                           Radius.circular(10.0),
-//                         ),
-//                       ),
-//                       hintText: "فضلا أدخل العنوان",
-//                       hintStyle: TextStyle(
-//                         color: Colors.indigo,
-//                         fontSize: 11,
-//                       ),
-//                     ),
-//                     controller:
-//                         addressController, // set the controller to get address input
-//                     style: const TextStyle(
-//                       fontSize: 13,
-//                       color: Colors.indigo,
-//                     ),
-//                     cursorColor: Colors.amber,
-//                     keyboardType: TextInputType.text,
-//                     maxLength: 250,
-//                   ),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.only(bottom: 17.0),
-//                   child: IconButton(
-//                     alignment: Alignment.center,
-//                     onPressed: () async {
-//                       if (addressController.text.isEmpty) {
-//                         ScaffoldMessenger.of(context).showSnackBar(
-//                           SnackBar(
-//                             content: const Text("فضلا أدخل العنوان"),
-//                             backgroundColor: Colors.indigo.shade300,
-//                           ),
-//                         );
-//                       }
-//                       setState(() {
-//                         pickMarkers.clear();
-//                         address = addressController.text;
-//                         _getCoordinatesFromAddress(address);
-//                         addressController.clear();
-//                         //update locations after getting coordinates
-//                         getLocs = DioNetworkRepos().getLoc();
-//                         //update locations after getting coordinates and gis link
-//                         getLocsAfterGetCoordinatesAndGis =
-//                             DioNetworkRepos().getLocByFlagAndIsFinished();
-//                         getLocsByHandasahNameAndTechinicianName =
-//                             DioNetworkRepos()
-//                                 .getLocByHandasahAndTechnician("free", "free");
-//                       });
-//                     },
-//                     icon: const CircleAvatar(
-//                       backgroundColor: Colors.indigo,
-//                       radius: 20,
-//                       child: Icon(
-//                         Icons.search_outlined,
-//                         color: Colors.white,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           //CustomDraggableSheet
-//           DraggableScrollableSheetScreen(
-//             getLocs: getLocsAfterGetCoordinatesAndGis,
-//           ), //call draggable sheet
-//           //CustomDraggableSheet
-//         ],
-//       ),
-//       drawer: CustomDrawer(
-//         title: 'الاعطال الواردة من الخط الساخن',
-//         getLocs: getLocs,
-//       ),
-//       endDrawer: CustomEndDrawer(
-//         title: 'تخصيص الهندسة',
-//         getLocs: getLocsByHandasahNameAndTechinicianName,
-//         stringListItems: handasatItemsDropdownMenu,
-//         onPressed: () {
-//           //
-//           setState(() {
-//             getLocsByHandasahNameAndTechinicianName =
-//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-//           });
-//         },
-//         hintText: 'فضلا أختار الهندسة',
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         backgroundColor: Colors.indigo,
-//         onPressed: () {
-//           // pickMarkers.clear();
-//           setState(() {
-//             getLocs = DioNetworkRepos().getLoc();
-//             //update locations after getting coordinates
-//             getLocsAfterGetCoordinatesAndGis =
-//                 DioNetworkRepos().getLocByFlagAndIsFinished();
-//             getLocsByHandasahNameAndTechinicianName =
-//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-//           });
-//         },
-//         mini: true,
-//         child: const Icon(
-//           Icons.refresh,
-//           color: Colors.white,
-//         ),
-//       ),
-//       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-//     );
-//   }
-// }
-
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
@@ -370,8 +6,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
-// import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
 import 'package:pick_location/screens/tracking.dart';
+// import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
+// import 'package:pick_location/screens/tracking.dart';
 
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_drawer.dart';
@@ -1054,7 +691,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          const Tracking(),
+                                                          Tracking(
+                                                        address:
+                                                            '${snapshot.data![index]['address']}',
+                                                        latitude:
+                                                            "${snapshot.data![index]['latitude']}",
+                                                        longitude:
+                                                            '${snapshot.data![index]['longitude']}',
+                                                      ),
                                                     ),
                                                   );
                                                 }
@@ -1161,3 +805,368 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     );
   }
 }
+
+
+// import 'dart:async';
+// import 'dart:collection';
+// import 'dart:convert';
+// import 'package:flutter/material.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:http/http.dart' as http;
+// import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
+
+// import '../custom_widget/custom_drawer.dart';
+// import '../custom_widget/custom_end_drawer.dart';
+// import '../network/remote/dio_network_repos.dart';
+
+// class AddressToCoordinates extends StatefulWidget {
+//   const AddressToCoordinates({super.key});
+
+//   @override
+//   AddressToCoordinatesState createState() => AddressToCoordinatesState();
+// }
+
+// class AddressToCoordinatesState extends State<AddressToCoordinates> {
+//   final Completer<GoogleMapController> _controller = Completer();
+
+//   String address = "";
+//   String coordinates = "";
+//   String getAddress = "";
+//   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
+//   double latitude = 0.0, longitude = 0.0;
+//   var pickMarkers = HashSet<Marker>();
+//   late Future getLocs; //get addresses from db(HotLine)
+//   late Future
+//       getLocsAfterGetCoordinatesAndGis; //get addresses from db(after getting coordinates and gis link)
+//   late Future getLocsByHandasahNameAndTechinicianName;
+//   final TextEditingController addressController = TextEditingController();
+//   late Future getHandasatItemsDropdownMenu;
+//   List<String> handasatItemsDropdownMenu = [];
+//   List<String> addHandasahToAddressList = [];
+
+//   // Replace with your actual Google Maps API key
+//   String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
+
+//   @override
+//   void dispose() {
+//     // Dispose the controller when the widget is disposed
+//     addressController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     setState(() {
+//       getLocs = DioNetworkRepos().getLoc();
+//       getLocsAfterGetCoordinatesAndGis =
+//           DioNetworkRepos().getLocByFlagAndIsFinished();
+//       getLocsByHandasahNameAndTechinicianName =
+//           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+//     });
+
+//     getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
+
+//     getLocsByHandasahNameAndTechinicianName.then((value) =>
+//         debugPrint("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
+
+//     //get handasat items dropdown menu from db
+//     getHandasatItemsDropdownMenu =
+//         DioNetworkRepos().fetchHandasatItemsDropdownMenu();
+
+//     //load list
+//     getHandasatItemsDropdownMenu.then((value) {
+//       value.forEach((element) {
+//         element = element.toString();
+//         //add to list
+//         handasatItemsDropdownMenu.add(element);
+//       });
+//       //debug print
+//       debugPrint(
+//           "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+//       debugPrint(value.toString());
+//     });
+//   }
+
+//   // Function to get latitude and longitude from an address using Google Maps Geocoding API
+//   Future<void> _getCoordinatesFromAddress(String address) async {
+//     final url = Uri.parse(
+//         'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$googleMapsApiKey');
+
+//     try {
+//       final response = await http.get(url);
+
+//       if (response.statusCode == 200) {
+//         final data = json.decode(response.body);
+
+//         if (data['results'].isNotEmpty) {
+//           var location = data['results'][0]['geometry']['location'];
+//           setState(() {
+//             coordinates =
+//                 "Latitude: ${location['lat']}, Longitude: ${location['lng']}";
+//             latitude = location['lat']; // latitude
+//             longitude = location['lng']; // longitude
+
+//             //add marker
+//             pickMarkers.add(
+//               Marker(
+//                 markerId: MarkerId(address),
+//                 position: LatLng(latitude, longitude),
+//                 infoWindow: InfoWindow(
+//                   title: address,
+//                   snippet: coordinates,
+//                 ),
+//                 icon: BitmapDescriptor.defaultMarkerWithHue(
+//                     BitmapDescriptor.hueGreen),
+//               ),
+//             );
+//             //
+//             debugPrint(address);
+//             debugPrint(coordinates);
+//             debugPrint(longitude.toString());
+//             debugPrint(latitude.toString());
+
+//             //update locations after getting coordinates
+//             getLocs = DioNetworkRepos().getLoc();
+//             //update locations after getting coordinates and gis link
+//             getLocsAfterGetCoordinatesAndGis =
+//                 DioNetworkRepos().getLocByFlagAndIsFinished();
+//             getLocsByHandasahNameAndTechinicianName =
+//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+//           });
+
+//           //get last gis record from GIS server
+//           int lastRecordNumber = await DioNetworkRepos()
+//               .getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
+//           debugPrint("lastRecordNumber :>> $lastRecordNumber");
+//           int newRecordNumber = lastRecordNumber + 1;
+//           debugPrint("newRecordNumber :>> $newRecordNumber");
+//           //
+//           //create new gis point
+//           String mapLink =
+//               await DioNetworkRepos().createNewGisPointAndGetMapLink(
+//             newRecordNumber,
+//             longitude.toString(),
+//             latitude.toString(),
+//           );
+//           debugPrint("gis_longitude :>> $longitude");
+//           debugPrint("gis_latitude :>> $latitude");
+//           debugPrint("GIS MAP LINK :>> $mapLink");
+
+//           // check if address already exist(UPDATED-IN-29-01-2025)
+//           var addressInList =
+//               await DioNetworkRepos().checkAddressExists(address);
+//           debugPrint(
+//               "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)}");
+//           debugPrint("PRINTED BY USING VAR: $addressInList");
+//           // debugPrint("PRINTED BY USING STRING: $addressInListString");
+//           //
+//           //
+//           if (addressInList == true) {
+//             //  call the function to update locations in database
+//             debugPrint("address already exist >>>>>> $addressInList");
+
+//             //  call the function to update locations in database
+//             //update Locations list after getting coordinates and gis link
+//             await DioNetworkRepos().updateLocations(
+//               address,
+//               longitude,
+//               latitude,
+//               mapLink,
+//             );
+//             //
+//             debugPrint(
+//                 "updated Locations list after getting coordinates and gis link");
+//           } else {
+//             //  call the function to post locations in database
+//             debugPrint("address not exist >>>>>>>>> $addressInList");
+
+//             //  call the function to post locations in database
+//             await DioNetworkRepos().createNewLocation(
+//               address,
+//               longitude,
+//               latitude,
+//               mapLink,
+//             );
+//             //
+//             debugPrint(
+//                 "POSTED new Location In Locations list after getting coordinates and gis link");
+//           }
+
+//           //update Locations list after getting coordinates
+
+//           setState(() {
+//             getLocs = DioNetworkRepos().getLoc();
+//             //update locations after getting coordinates and gis link
+//             getLocsAfterGetCoordinatesAndGis =
+//                 DioNetworkRepos().getLocByFlagAndIsFinished();
+//             getLocsByHandasahNameAndTechinicianName =
+//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+//           });
+//         } else {
+//           setState(() {
+//             coordinates = "Error: No results found";
+//           });
+//         }
+//       } else {
+//         setState(() {
+//           coordinates = "Error: Failed to fetch data";
+//         });
+//       }
+//     } catch (e) {
+//       setState(() {
+//         coordinates = "Error: Unable to get coordinates";
+//       });
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text(
+//           "تحديد موقع عنوان على الخريطة (Google Maps)",
+//           style: TextStyle(color: Colors.white),
+//         ),
+//         centerTitle: true,
+//         elevation: 0,
+//         backgroundColor: Colors.indigo,
+//         iconTheme: const IconThemeData(color: Colors.white, size: 17),
+//       ),
+//       body: Stack(
+//         children: [
+//           GoogleMap(
+//             initialCameraPosition: CameraPosition(
+//               target: alexandriaCoordinates,
+//               zoom: 10.4746,
+//             ),
+//             onMapCreated: (GoogleMapController controller) {
+//               _controller.complete(controller);
+//             },
+//             markers: pickMarkers,
+//             zoomControlsEnabled: true,
+//           ),
+
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     decoration: const InputDecoration(
+//                       constraints: BoxConstraints(
+//                         maxHeight: 70,
+//                         minWidth: 200,
+//                       ),
+//                       filled: true,
+//                       fillColor: Colors.white,
+//                       border: OutlineInputBorder(
+//                         borderRadius: BorderRadius.all(
+//                           Radius.circular(10.0),
+//                         ),
+//                       ),
+//                       hintText: "فضلا أدخل العنوان",
+//                       hintStyle: TextStyle(
+//                         color: Colors.indigo,
+//                         fontSize: 11,
+//                       ),
+//                     ),
+//                     controller:
+//                         addressController, // set the controller to get address input
+//                     style: const TextStyle(
+//                       fontSize: 13,
+//                       color: Colors.indigo,
+//                     ),
+//                     cursorColor: Colors.amber,
+//                     keyboardType: TextInputType.text,
+//                     maxLength: 250,
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: const EdgeInsets.only(bottom: 17.0),
+//                   child: IconButton(
+//                     alignment: Alignment.center,
+//                     onPressed: () async {
+//                       if (addressController.text.isEmpty) {
+//                         ScaffoldMessenger.of(context).showSnackBar(
+//                           SnackBar(
+//                             content: const Text("فضلا أدخل العنوان"),
+//                             backgroundColor: Colors.indigo.shade300,
+//                           ),
+//                         );
+//                       }
+//                       setState(() {
+//                         pickMarkers.clear();
+//                         address = addressController.text;
+//                         _getCoordinatesFromAddress(address);
+//                         addressController.clear();
+//                         //update locations after getting coordinates
+//                         getLocs = DioNetworkRepos().getLoc();
+//                         //update locations after getting coordinates and gis link
+//                         getLocsAfterGetCoordinatesAndGis =
+//                             DioNetworkRepos().getLocByFlagAndIsFinished();
+//                         getLocsByHandasahNameAndTechinicianName =
+//                             DioNetworkRepos()
+//                                 .getLocByHandasahAndTechnician("free", "free");
+//                       });
+//                     },
+//                     icon: const CircleAvatar(
+//                       backgroundColor: Colors.indigo,
+//                       radius: 20,
+//                       child: Icon(
+//                         Icons.search_outlined,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           //CustomDraggableSheet
+//           DraggableScrollableSheetScreen(
+//             getLocs: getLocsAfterGetCoordinatesAndGis,
+//           ), //call draggable sheet
+//           //CustomDraggableSheet
+//         ],
+//       ),
+//       drawer: CustomDrawer(
+//         title: 'الاعطال الواردة من الخط الساخن',
+//         getLocs: getLocs,
+//       ),
+//       endDrawer: CustomEndDrawer(
+//         title: 'تخصيص الهندسة',
+//         getLocs: getLocsByHandasahNameAndTechinicianName,
+//         stringListItems: handasatItemsDropdownMenu,
+//         onPressed: () {
+//           //
+//           setState(() {
+//             getLocsByHandasahNameAndTechinicianName =
+//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+//           });
+//         },
+//         hintText: 'فضلا أختار الهندسة',
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         backgroundColor: Colors.indigo,
+//         onPressed: () {
+//           // pickMarkers.clear();
+//           setState(() {
+//             getLocs = DioNetworkRepos().getLoc();
+//             //update locations after getting coordinates
+//             getLocsAfterGetCoordinatesAndGis =
+//                 DioNetworkRepos().getLocByFlagAndIsFinished();
+//             getLocsByHandasahNameAndTechinicianName =
+//                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+//           });
+//         },
+//         mini: true,
+//         child: const Icon(
+//           Icons.refresh,
+//           color: Colors.white,
+//         ),
+//       ),
+//       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+//     );
+//   }
+// }

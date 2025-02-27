@@ -5,7 +5,6 @@ import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/material.dart';
 
 class DioNetworkRepos {
- 
   final dio = Dio();
 //1-- GET locations(GET by flag 0 (address not set yet))
   Future getLoc() async {
@@ -504,6 +503,53 @@ class DioNetworkRepos {
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
+    }
+  }
+
+//22-- POST locations for tracking (sendLocationToBackend)
+  Future<void> sendLocationToBackend(
+      String address,
+      String technicianName,
+      double latitude,
+      double longitude,
+      double? currentLatitude,
+      double? currentLongitude) async {
+    final response = await dio.post(
+      'http://192.168.17.250:9999/pick-location/api/v1/track-location',
+      data: {
+        'address': address,
+        'latitude': latitude,
+        'longitude': longitude,
+        'technicalName': technicianName,
+        'startLatitude': currentLatitude,
+        'startLongitude': currentLongitude,
+        'currentLatitude': currentLatitude,
+        'currentLongitude': currentLongitude,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint('Location sent successfully');
+    } else {
+      debugPrint('Failed to send location');
+    }
+  }
+
+//23-- UPDATE locations for tracking (updateLocationToBackend)
+  Future<void> updateLocationToBackend(String address,
+      double currentLatitude, double currentLongitude) async {
+    final response = await dio.put(
+      'http://192.168.17.250:9999/pick-location/api/v1/track-location/$address',
+      data: {
+        'currentLatitude': currentLatitude,
+        'currentLongitude': currentLongitude,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint('Location sent successfully');
+    } else {
+      debugPrint('Failed to send location');
     }
   }
 }

@@ -44,6 +44,8 @@ dependencies:
   geocoding: ^2.0.4  # Or the latest version
   http: ^1.2.2  # Or the latest version
   google_maps_flutter: ^2.2.2  # Check for the latest version
+  geolocator: ^10.0.0 # For getting the user's location
+
   # google_maps_flutter: ^2.9.0  # Check for the latest version
   webview_flutter: ^4.2.1
   webview_flutter_web:  # Replace with the latest version 
@@ -65,6 +67,7 @@ dependencies:
 
   # # curved_navigation_bar
   curved_navigation_bar: ^1.0.3
+  location: ^6.0.2
   # drop_down_list_menu: ^0.0.9
   # flutter native splash config
 # flutter_native_splash:

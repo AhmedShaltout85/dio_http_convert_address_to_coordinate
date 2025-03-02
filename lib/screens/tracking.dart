@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
+import 'package:pick_location/network/remote/dio_network_repos.dart';
+import 'package:pick_location/utils/dio_http_constants.dart';
 
 class Tracking extends StatefulWidget {
   final String latitude;
@@ -18,11 +20,16 @@ class Tracking extends StatefulWidget {
 
 class _TrackingState extends State<Tracking> {
   GoogleMapController? mapController;
-  LocationData? currentLocation;
+  // LocationData? currentLocation;
+  double currentLatitude = 0.0;
+  double currentLongitude = 0.0;
+  double startLatitude = 0.0;
+  double startLongitude = 0.0;
   final Set<Marker> markers = {};
   final Set<Polyline> polylines = {};
   final String googleMapsApiKey =
       "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk"; // Replace with your API key
+  late Future getCurrentLocation;
 
   @override
   void initState() {
@@ -31,31 +38,22 @@ class _TrackingState extends State<Tracking> {
   }
 
   Future<void> _getCurrentLocation() async {
-    
-    //   var location = Location();
+    getCurrentLocation = DioNetworkRepos()
+        .getLocationByAddressAndTechnician(widget.address, DataStatic.username);
+    getCurrentLocation.then((value) {
+      setState(() {
+        currentLatitude = value[0]['currentLatitude'];
+        currentLongitude = value[0]['currentLongitude'];
+        startLatitude = value[0]['startLatitude'];
+        startLongitude = value[0]['startLongitude'];
+      });
 
-    //   try {
-    //     var userLocation = await location.getLocation();
-    //     setState(() {
-    //       currentLocation = userLocation;
-    //       markers.add(
-    //         Marker(
-    //           markerId: const MarkerId("current_location"),
-    //           position: LatLng(userLocation.latitude!, userLocation.longitude!),
-    //           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    //         ),
-    //       );
-    //     });
-    //   } catch (e) {
-    //     debugPrint("Error getting location: $e");
+    });
+
+  
   }
 
-  //   location.onLocationChanged.listen((LocationData newLocation) {
-  //     setState(() {
-  //       currentLocation = newLocation;
-  //     });
-  //   });
-  // }
+
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
@@ -64,11 +62,11 @@ class _TrackingState extends State<Tracking> {
   }
 
   void _addDestinationMarker(LatLng point) {
-    point =LatLng(widget.latitude as double, widget.longitude as double);
+    point = LatLng(double.parse(widget.latitude), double.parse(widget.longitude));
     setState(() {
       markers.add(
         Marker(
-          markerId:  MarkerId(widget.address),
+          markerId: MarkerId(widget.address),
           position: point,
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
         ),
@@ -92,29 +90,38 @@ class _TrackingState extends State<Tracking> {
           ),
         ),
       ),
-      body: currentLocation == null
-          ? const Center(child: CircularProgressIndicator())
-          : GoogleMap(
+      body:
+      //  startLatitude == 0 || startLongitude == 0
+      //     ? const Center(child: CircularProgressIndicator())
+      //     :
+           GoogleMap(
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: LatLng(
-                    widget.latitude as double, widget.longitude as double),
+                   double.parse( widget.latitude),double.parse(widget.longitude)),
                 zoom: 15,
               ),
               markers: {
                 Marker(
                   markerId: MarkerId(widget.address),
                   position: LatLng(
-                      widget.latitude as double, widget.longitude as double),
+                      double.parse( widget.latitude),double.parse(widget.longitude)),
                   icon: BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueRed),
                 ),
                 Marker(
-                  markerId: const MarkerId("current_location"),
+                  markerId: const MarkerId("الموقع الحالى"),
                   position: LatLng(
-                      currentLocation!.latitude!, currentLocation!.longitude!),
+                      currentLatitude, currentLongitude),
                   icon: BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueBlue),
+                      BitmapDescriptor.hueOrange),
+                ),
+                Marker(
+                  markerId: const MarkerId("موقع بداية التتبع"),
+                  position: LatLng(
+                      startLatitude, startLongitude),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueGreen),
                 )
               },
               polylines: polylines,
@@ -122,10 +129,10 @@ class _TrackingState extends State<Tracking> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (currentLocation != null) {
+          if (currentLatitude != 0.0 && currentLongitude != 0.0) {
             mapController?.animateCamera(
               CameraUpdate.newLatLng(
-                LatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+                LatLng(currentLatitude, currentLongitude),
               ),
             );
           }

@@ -31,6 +31,7 @@ class _UserScreenState extends State<UserScreen> {
     _fetchData(); // Initial fetch
     _startPeriodicFetch(); // Start periodic fetching
     _getCurrentLocation(); // Get current location
+    _startFetchingLocation(); // Start fetching location every 1 minutes
   }
 
   @override
@@ -60,7 +61,6 @@ class _UserScreenState extends State<UserScreen> {
     var location = Location();
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
-    location.enableBackgroundMode(enable: true);
 
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
@@ -76,19 +76,13 @@ class _UserScreenState extends State<UserScreen> {
       if (_permissionGranted != PermissionStatus.granted) {
         return;
       }
+      // location.enableBackgroundMode(enable: true);
     }
 
     try {
       var userLocation = await location.getLocation();
       setState(() {
         currentLocation = userLocation;
-        // markers.add(
-        //   Marker(
-        //     markerId: const MarkerId("current_location"),
-        //     position: LatLng(userLocation.latitude!, userLocation.longitude!),
-        //     icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        //   ),
-        // );
       });
     } catch (e) {
       debugPrint("Error getting location: $e");
@@ -103,9 +97,12 @@ class _UserScreenState extends State<UserScreen> {
 
   //Function to start fetching updated location
   void _startFetchingLocation() {
-    _getCurrentLocation();
-    DioNetworkRepos().updateLocationToBackend(
-        address, currentLocation!.latitude!, currentLocation!.longitude!);
+    // _getCurrentLocation();
+    const updateInterval = Duration(minutes: 2);
+    _timer = Timer.periodic(updateInterval, (Timer timer) {
+      DioNetworkRepos().updateLocationToBackend(
+          address, currentLocation!.latitude!, currentLocation!.longitude!);
+    });
   }
 
   // Function to start periodic fetching
@@ -128,7 +125,7 @@ class _UserScreenState extends State<UserScreen> {
       appBar: AppBar(
         title: Text(
           '${DataStatic.username} : الاعطال المخصصة للمستخدم',
-          style: const TextStyle(color: Colors.white, fontSize: 10),
+          style: const TextStyle(color: Colors.white, fontSize: 15),
         ),
         centerTitle: true,
         backgroundColor: Colors.indigo,
@@ -195,24 +192,46 @@ class _UserScreenState extends State<UserScreen> {
                                                       WidgetStatePropertyAll(
                                                           Colors.orange),
                                                 ),
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   //update isApproved
+                                                  await DioNetworkRepos()
+                                                      .updateLocAddIsApproved(
+                                                          snapshot.data![index]
+                                                              ['address'],
+                                                          1);
                                                   setState(() {
-                                                    DioNetworkRepos()
-                                                        .updateLocAddIsApproved(
-                                                            snapshot.data![
-                                                                    index]
-                                                                ['address'],
-                                                            1);
                                                     isApproved = 1;
-                                                    //fetch data
-                                                    DioNetworkRepos()
-                                                        .fetchHandasatUsersItemsBroken(
-                                                            DataStatic
-                                                                .handasahName,
-                                                            DataStatic.username,
-                                                            0);
                                                   });
+                                                  //fetch data
+                                                  _fetchData();
+
+                                                  //post current user Location
+                                                  await DioNetworkRepos()
+                                                      .sendLocationToBackend(
+                                                          snapshot.data![index][
+                                                              'address'],
+                                                          snapshot.data![
+                                                                  index][
+                                                              'technical_name'],
+                                                          double.parse(snapshot
+                                                                  .data![index]
+                                                              ['latitude']),
+                                                          double.parse(snapshot
+                                                                  .data![index]
+                                                              ['longitude']),
+                                                          currentLocation
+                                                              ?.latitude,
+                                                          currentLocation
+                                                              ?.longitude);
+                                                  debugPrint(
+                                                      'address: ${snapshot.data![index]['address']}, latitude: ${snapshot.data![index]['latitude']},longitude: ${snapshot.data![index]['longitude']},currentLocation?.latitude: ${currentLocation?.latitude},currentLocation?.longitude: ${currentLocation?.longitude}, technical_name: ${snapshot.data![index]['technical_name']}');
+                                                  // //updated Location 
+                                                  // _startFetchingLocation(); //NOT TESTED
+
+                                                  //refresh UI
+
+                                                  debugPrint(
+                                                      'Updated status to approved and refreshed UI.');
                                                 },
                                                 child: const Text(
                                                   'قيد قبول الشكوى',
@@ -229,32 +248,6 @@ class _UserScreenState extends State<UserScreen> {
                                                 ),
                                                 onPressed: () {
                                                   //active live Location
-
-                                                  setState(() {
-                                                    //post current user Location
-                                                    DioNetworkRepos()
-                                                        .sendLocationToBackend(
-                                                            snapshot.data![
-                                                                    index]
-                                                                ['address'],
-                                                            snapshot.data![
-                                                                    index][
-                                                                'technical_name'],
-                                                            snapshot.data![
-                                                                    index]
-                                                                ['latitude'],
-                                                            snapshot.data![
-                                                                    index]
-                                                                ['longitude'],
-                                                            currentLocation
-                                                                ?.latitude,
-                                                            currentLocation
-                                                                ?.longitude);
-                                                  });
-                                                  debugPrint(
-                                                      'address: ${snapshot.data![index]['address']}, latitude: ${snapshot.data![index]['latitude']},longitude: ${snapshot.data![index]['longitude']},currentLocation?.latitude: ${currentLocation?.latitude},currentLocation?.longitude: ${currentLocation?.longitude}, technical_name: ${snapshot.data![index]['technical_name']}');
-                                                  //updated Location
-                                                  _startFetchingLocation();
                                                 },
                                                 child: const Text(
                                                   'تم قبول الشكوى',
@@ -368,17 +361,18 @@ class _UserScreenState extends State<UserScreen> {
             );
           }),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.indigo,
+        backgroundColor: Colors.cyan,
         onPressed: () {
           _fetchData(); // Manually refresh data
         },
         mini: true,
+        tooltip: 'تحديث',
         child: const Icon(
           Icons.refresh,
           color: Colors.white,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
     );
   }
 }

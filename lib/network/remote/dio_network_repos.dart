@@ -539,7 +539,7 @@ class DioNetworkRepos {
   Future<void> updateLocationToBackend(String address,
       double currentLatitude, double currentLongitude) async {
     final response = await dio.put(
-      'http://192.168.17.250:9999/pick-location/api/v1/track-location/$address',
+      'http://192.168.17.250:9999/pick-location/api/v1/track-location/address/$address',
       data: {
         'currentLatitude': currentLatitude,
         'currentLongitude': currentLongitude,
@@ -552,4 +552,23 @@ class DioNetworkRepos {
       debugPrint('Failed to send location');
     }
   }
+  //23-- Get location for tracking By address And Technician (FETCH-LocationToBackend)
+   Future getLocationByAddressAndTechnician(String address, String technicianName) async {
+    var urlGetCertainLocationByAddressAndTechnician =
+        'http://192.168.17.250:9999/pick-location/api/v1/track-location/address/$address/tech-name/$technicianName';
+    try {
+      var response = await dio.get(urlGetCertainLocationByAddressAndTechnician);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+
 }

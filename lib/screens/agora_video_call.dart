@@ -104,7 +104,7 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
         backgroundColor: Colors.indigo,
         title: Text(
           widget.title,
-          style: const TextStyle(color: Colors.white, fontSize: 10),
+          style: const TextStyle(color: Colors.white, fontSize: 12),
         ),
         centerTitle: true,
         foregroundColor: Colors.white,

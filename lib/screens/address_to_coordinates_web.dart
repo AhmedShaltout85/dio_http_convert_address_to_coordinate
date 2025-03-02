@@ -352,11 +352,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                       ],
                     ),
                   ),
-                  //CustomDraggableSheet
-                  // DraggableScrollableSheetScreen(
-                  //   getLocs: getLocsAfterGetCoordinatesAndGis,
-                  // ), //call draggable sheet
-                  //CustomDraggableSheet
+                 
                 ],
               ),
             ),
@@ -708,31 +704,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 color: Colors.red,
                                               ),
                                             ),
-                                            // IconButton(
-                                            //   onPressed: () {
-                                            //     setState(() {
-                                            //       //update is_finished(close broken locations)
-                                            //       DioNetworkRepos()
-                                            //           .updateLocAddIsFinished(
-                                            //               snapshot.data![index]
-                                            //                   ['address'],
-                                            //               1);
-                                            //     });
-                                            //     // debugPrint(
-                                            //     //     "Start Traking ${snapshot.data![index]['id']}");
-                                            //     // Navigator.push(
-                                            //     //   context,
-                                            //     //   MaterialPageRoute(
-                                            //     //     builder: (context) =>
-                                            //     //         const Tracking(),
-                                            //     //   ),
-                                            //     // );
-                                            //   },
-                                            //   icon: const Icon(
-                                            //     Icons.close_rounded,
-                                            //     color: Colors.blue,
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
                                       ],
@@ -769,19 +740,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         title: 'الاعطال الواردة من الخط الساخن',
         getLocs: getLocs,
       ),
-      // endDrawer: CustomEndDrawer(
-      //   title: 'تخصيص الهندسة',
-      //   getLocs: getLocsByHandasahNameAndTechinicianName,
-      //   stringListItems: handasatItemsDropdownMenu,
-      //   onPressed: () {
-      //     //
-      //     setState(() {
-      //       getLocsByHandasahNameAndTechinicianName =
-      //           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-      //     });
-      //   },
-      //   hintText: 'فضلا أختار الهندسة',
-      // ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.indigo,
         onPressed: () {
@@ -796,6 +754,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           });
         },
         mini: true,
+        tooltip: 'تحديث',
         child: const Icon(
           Icons.refresh,
           color: Colors.white,

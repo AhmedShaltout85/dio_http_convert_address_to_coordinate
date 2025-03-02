@@ -98,7 +98,7 @@ class _UserScreenState extends State<UserScreen> {
   //Function to start fetching updated location
   void _startFetchingLocation() {
     // _getCurrentLocation();
-    const updateInterval = Duration(minutes: 2);
+    const updateInterval = Duration(minutes: 1);
     _timer = Timer.periodic(updateInterval, (Timer timer) {
       DioNetworkRepos().updateLocationToBackend(
           address, currentLocation!.latitude!, currentLocation!.longitude!);
@@ -205,33 +205,80 @@ class _UserScreenState extends State<UserScreen> {
                                                   //fetch data
                                                   _fetchData();
 
-                                                  //post current user Location
-                                                  await DioNetworkRepos()
-                                                      .sendLocationToBackend(
-                                                          snapshot.data![index][
-                                                              'address'],
-                                                          snapshot.data![
-                                                                  index][
-                                                              'technical_name'],
-                                                          double.parse(snapshot
-                                                                  .data![index]
-                                                              ['latitude']),
-                                                          double.parse(snapshot
-                                                                  .data![index]
-                                                              ['longitude']),
-                                                          currentLocation
-                                                              ?.latitude,
-                                                          currentLocation
-                                                              ?.longitude);
+                                                  // check if address already exist(UPDATED-IN-29-01-2025)
+                                                  var addressInList =
+                                                      await DioNetworkRepos()
+                                                          .checkAddressExistsInTracking(
+                                                              address);
                                                   debugPrint(
-                                                      'address: ${snapshot.data![index]['address']}, latitude: ${snapshot.data![index]['latitude']},longitude: ${snapshot.data![index]['longitude']},currentLocation?.latitude: ${currentLocation?.latitude},currentLocation?.longitude: ${currentLocation?.longitude}, technical_name: ${snapshot.data![index]['technical_name']}');
-                                                  // //updated Location 
-                                                  // _startFetchingLocation(); //NOT TESTED
-
-                                                  //refresh UI
-
+                                                      "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExistsInTracking(address)}");
                                                   debugPrint(
-                                                      'Updated status to approved and refreshed UI.');
+                                                      "PRINTED BY USING VAR: $addressInList");
+
+                                                  if (addressInList == true) {
+                                                    //  call the function to update locations in database
+                                                    debugPrint(
+                                                        "address already exist >>>>>> $addressInList");
+
+                                                    //  call the function to update locations in database
+                                                    await DioNetworkRepos()
+                                                        .updateTrackingLocations(
+                                                            address,
+                                                            double
+                                                                .parse(snapshot
+                                                                            .data![
+                                                                        index]
+                                                                    [
+                                                                    'longitude']),
+                                                            double
+                                                                .parse(snapshot
+                                                                            .data![
+                                                                        index]
+                                                                    [
+                                                                    'latitude']),
+                                                            currentLocation!
+                                                                .latitude!,
+                                                            currentLocation!
+                                                                .longitude!,
+                                                            currentLocation
+                                                                ?.latitude,
+                                                            currentLocation
+                                                                ?.longitude,
+                                                            snapshot.data![
+                                                                    index][
+                                                                'technical_name']);
+                                                  } else {
+                                                    //post current user Location
+
+                                                    await DioNetworkRepos()
+                                                        .sendLocationToBackend(
+                                                            snapshot.data![index]
+                                                                ['address'],
+                                                            snapshot.data![
+                                                                    index][
+                                                                'technical_name'],
+                                                            double.parse(snapshot
+                                                                        .data![
+                                                                    index]
+                                                                ['latitude']),
+                                                            double.parse(snapshot
+                                                                        .data![
+                                                                    index]
+                                                                ['longitude']),
+                                                            currentLocation
+                                                                ?.latitude,
+                                                            currentLocation
+                                                                ?.longitude);
+                                                    debugPrint(
+                                                        'address: ${snapshot.data![index]['address']}, latitude: ${snapshot.data![index]['latitude']},longitude: ${snapshot.data![index]['longitude']},currentLocation?.latitude: ${currentLocation?.latitude},currentLocation?.longitude: ${currentLocation?.longitude}, technical_name: ${snapshot.data![index]['technical_name']}');
+                                                    // //updated Location
+                                                    // _startFetchingLocation(); //NOT TESTED
+
+                                                    //refresh UI
+
+                                                    debugPrint(
+                                                        'Updated status to approved and refreshed UI.');
+                                                  }
                                                 },
                                                 child: const Text(
                                                   'قيد قبول الشكوى',
@@ -576,5 +623,3 @@ class _UserScreenState extends State<UserScreen> {
 //     );
 //   }
 // }
-
-

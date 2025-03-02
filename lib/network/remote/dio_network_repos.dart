@@ -147,7 +147,7 @@ class DioNetworkRepos {
     }
   }
 
-//9-- UPDATE locations(wiht-url)
+//9-- UPDATE locations By address(wiht-url)
   Future<void> updateLocations(
       String address, double longitude, double latitude, String url) async {
     try {
@@ -535,9 +535,9 @@ class DioNetworkRepos {
     }
   }
 
-//23-- UPDATE locations for tracking (updateLocationToBackend)
-  Future<void> updateLocationToBackend(String address,
-      double currentLatitude, double currentLongitude) async {
+//23-- UPDATE locations for tracking (update currentLocation To Backend)
+  Future<void> updateLocationToBackend(
+      String address, double currentLatitude, double currentLongitude) async {
     final response = await dio.put(
       'http://192.168.17.250:9999/pick-location/api/v1/track-location/address/$address',
       data: {
@@ -552,18 +552,20 @@ class DioNetworkRepos {
       debugPrint('Failed to send location');
     }
   }
-  //23-- Get location for tracking By address And Technician (FETCH-LocationToBackend)
-   Future getLocationByAddressAndTechnician(String address, String technicianName) async {
+
+  //24-- Get location for tracking By address And Technician (FETCH-LocationToBackend)
+  Future getLocationByAddressAndTechnician(
+      String address, String technicianName) async {
     var urlGetCertainLocationByAddressAndTechnician =
         'http://192.168.17.250:9999/pick-location/api/v1/track-location/address/$address/tech-name/$technicianName';
     try {
       var response = await dio.get(urlGetCertainLocationByAddressAndTechnician);
       if (response.statusCode == 200) {
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
         return response.data;
       } else {
         debugPrint('List is empty');
         return [];
-        // throw Exception('List is empty');
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -571,4 +573,59 @@ class DioNetworkRepos {
     }
   }
 
+  //25-- CHECK if address exists(checkAddressExistsInTracking)
+  Future<bool> checkAddressExistsInTracking(String address) async {
+    String encodedAddress = Uri.encodeComponent(address);
+    String getAddressUrl =
+        // 'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress'; 
+        'http://192.168.17.250:9999/pick-location/api/v1/track-location/get-address/$encodedAddress';
+
+    try {
+      var response = await dio.get(getAddressUrl);
+
+      if (response.statusCode == 200) {
+        debugPrint("PRINTED DATA FROM API: ${response.data}");
+        return true;
+      } else {
+        debugPrint('Address not found');
+        return false;
+      }
+    } on DioException catch (e) {
+      debugPrint("Dio error: ${e.response?.statusCode} - ${e.message}");
+      return false;
+    } catch (e) {
+      debugPrint("Unexpected error: $e");
+      return false;
+    }
+  }
+
+//26-- UPDATE TrackingLocations By address (with ALL DATA)
+
+  Future<void> updateTrackingLocations(
+      String address,
+      double longitude,
+      double latitude,
+      double currentLatitude,
+      double currentLongitude,
+      double? startLatitude,
+      double? startLongitude,
+      String technicianName) async {
+    try {
+      var response = await dio.put(
+          "http://192.168.17.250:9999/pick-location/api/v1/track-location/put-address/$address",
+          data: {
+            "longitude": longitude,
+            "latitude": latitude,
+            "currentLatitude": currentLatitude,
+            "currentLongitude": currentLongitude,
+            "startLatitude": startLatitude,
+            "startLongitude": startLongitude,
+            "technicianName": technicianName
+          });
+      return response.data;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
 }

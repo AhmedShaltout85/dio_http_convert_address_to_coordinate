@@ -43,7 +43,7 @@ class DioNetworkRepos {
 //3-- GET locationsBy handasah(GET by handasah (handasah) and  isFinished 0)
   Future getLocByHandasahAndIsFinished(String handasah, int isFinished) async {
     var urlGetAllByHandasahAndIsFinished =
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasah/is-finished/$isFinished';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/is-finished/$isFinished';
     try {
       var response = await dio.get(urlGetAllByHandasahAndIsFinished);
       if (response.statusCode == 200) {
@@ -63,7 +63,7 @@ class DioNetworkRepos {
   Future getLocByHandasahAndTechnician(
       String handasah, String technician) async {
     var urlGetAllByHandasahAndTechnician =
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician'; //GET by Handasah free and Technician free
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician'; //GET by Handasah free and Technician free
     try {
       var response = await dio.get(urlGetAllByHandasahAndTechnician);
       if (response.statusCode == 200) {
@@ -83,7 +83,7 @@ class DioNetworkRepos {
   Future updateLoc(String address, double longitude, double latitude) async {
     try {
       final response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/address/$address",
           data: {
             "longitude": longitude,
             "latitude": latitude,
@@ -100,7 +100,7 @@ class DioNetworkRepos {
   Future updateLocAddHandasah(String address, String? handasahName) async {
     try {
       final response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$address",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$address",
           data: {
             "handasah_name": handasahName,
           });
@@ -117,7 +117,7 @@ class DioNetworkRepos {
   Future updateLocAddTechnician(String address, String? technicianName) async {
     try {
       final response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/technical/$address",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/technical/$address",
           data: {
             "technical_name": technicianName,
           });
@@ -134,7 +134,7 @@ class DioNetworkRepos {
   Future updateLocAddIsFinished(String address, int isFinished) async {
     try {
       final response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/is-finished/$address",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/is-finished/$address",
           data: {
             "is_finished": isFinished,
           });
@@ -152,7 +152,7 @@ class DioNetworkRepos {
       String address, double longitude, double latitude, String url) async {
     try {
       var response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$address",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/address/$address",
           data: {
             "longitude": longitude,
             "latitude": latitude,
@@ -204,7 +204,8 @@ class DioNetworkRepos {
       String username, String password) async {
     try {
       final response = await dio.get(
-          "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/$username/$password");
+      // "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
       if (response.statusCode == 200) {
         debugPrint("${response.data} from loginByUsernameAndPassword");
         final usernameResponse = response.data['username'];
@@ -235,7 +236,8 @@ class DioNetworkRepos {
     try {
       // Sending GET request with query parameters
       Response response = await dio.get(
-          "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/$username/$password");
+      // "http://192.168.17.250:9999/pick-location/api/v1/users/$username/$password");
 
       if (response.statusCode == 200) {
         // Assuming the API returns JSON data
@@ -278,7 +280,7 @@ class DioNetworkRepos {
     String encodedAddress = Uri.encodeComponent(address);
     String getAddressUrl =
         // 'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress'; //updated 10-02-2025 not tested
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/address/$encodedAddress';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/address/$encodedAddress';
 
     try {
       var response = await dio.get(getAddressUrl);
@@ -304,7 +306,7 @@ class DioNetworkRepos {
       String address, String handasah) async {
     String encodedAddress = Uri.encodeComponent(address);
     String getAddressUrl =
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress/handasah/$handasah';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress/handasah/$handasah';
 
     try {
       var response = await dio.get(getAddressUrl);
@@ -330,7 +332,7 @@ class DioNetworkRepos {
       String address, double longitude, double latitude, String url) async {
     try {
       var response = await dio.post(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc",
           data: {
             "address": address,
             "longitude": longitude,
@@ -355,7 +357,7 @@ class DioNetworkRepos {
 //16-- FETCH Data from the Database(GET dropdown items for handasat)
   Future fetchHandasatItemsDropdownMenu() async {
     var getHandasatUrl =
-        'http://192.168.17.250:9999/pick-location/api/v1/handasah/all';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/handasah/all';
     try {
       var response = await dio.get(getHandasatUrl);
       if (response.statusCode == 200) {
@@ -376,7 +378,7 @@ class DioNetworkRepos {
   //17-- FETCH Data from the Database(GET dropdown items for handasat users)
   Future fetchHandasatUsersItemsDropdownMenu(String handasahName) async {
     var getHnadasatUsersUrl =
-        'http://192.168.17.250:9999/pick-location/api/v1/users/role/3/control-unit/$handasahName';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/role/3/control-unit/$handasahName';
     try {
       var response = await dio.get(getHnadasatUsersUrl);
       if (response.statusCode == 200) {
@@ -400,7 +402,7 @@ class DioNetworkRepos {
   Future<List<Map<String, dynamic>>> fetchHandasatUsersItemsBroken(
       String handasahName, String technicianName, int isFinished) async {
     var getHnadasatUsersListUrl =
-        'http://192.168.17.250:9999/pick-location/api/v1/get-loc/handasah/$handasahName/technical/$technicianName/is-finished/$isFinished';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasahName/technical/$technicianName/is-finished/$isFinished';
     try {
       var response = await dio.get(getHnadasatUsersListUrl);
 
@@ -493,7 +495,7 @@ class DioNetworkRepos {
   Future updateLocAddIsApproved(String address, int isApproved) async {
     try {
       final response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/get-loc/is-approved/$address",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/is-approved/$address",
           data: {
             "is_approved": isApproved,
           });
@@ -515,7 +517,7 @@ class DioNetworkRepos {
       double? currentLatitude,
       double? currentLongitude) async {
     final response = await dio.post(
-      'http://192.168.17.250:9999/pick-location/api/v1/track-location',
+      '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/track-location',
       data: {
         'address': address,
         'latitude': latitude,
@@ -539,7 +541,7 @@ class DioNetworkRepos {
   Future<void> updateLocationToBackend(
       String address, double currentLatitude, double currentLongitude) async {
     final response = await dio.put(
-      'http://192.168.17.250:9999/pick-location/api/v1/track-location/address/$address',
+      '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/track-location/address/$address',
       data: {
         'currentLatitude': currentLatitude,
         'currentLongitude': currentLongitude,
@@ -557,7 +559,7 @@ class DioNetworkRepos {
   Future getLocationByAddressAndTechnician(
       String address, String technicianName) async {
     var urlGetCertainLocationByAddressAndTechnician =
-        'http://192.168.17.250:9999/pick-location/api/v1/track-location/address/$address/tech-name/$technicianName';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/track-location/address/$address/tech-name/$technicianName';
     try {
       var response = await dio.get(urlGetCertainLocationByAddressAndTechnician);
       if (response.statusCode == 200) {
@@ -577,8 +579,8 @@ class DioNetworkRepos {
   Future<bool> checkAddressExistsInTracking(String address) async {
     String encodedAddress = Uri.encodeComponent(address);
     String getAddressUrl =
-        // 'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress'; 
-        'http://192.168.17.250:9999/pick-location/api/v1/track-location/get-address/$encodedAddress';
+        // 'http://192.168.17.250:9999/pick-location/api/v1/get-loc/flag/0/address/$encodedAddress';
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/track-location/get-address/$encodedAddress';
 
     try {
       var response = await dio.get(getAddressUrl);
@@ -612,7 +614,7 @@ class DioNetworkRepos {
       String technicianName) async {
     try {
       var response = await dio.put(
-          "http://192.168.17.250:9999/pick-location/api/v1/track-location/put-address/$address",
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/track-location/put-address/$address",
           data: {
             "longitude": longitude,
             "latitude": latitude,

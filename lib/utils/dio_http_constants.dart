@@ -24,7 +24,7 @@ const String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
 
 const String BASE_URI_IP_ADDRESS = "http://192.168.17.250:9999";
 const String BASE_URI_IP_ADDRESS_LOCAL_HOST = "http://localhost:9999";
-
+// const String BASE_URI_IP_ADDRESS_LOCAL_HOST = "http://172.18.0.101:9999";
 
 //Agora Constants for Video Call
 // const appId = "ffd898c8ae5d4d96be499de1166e6229";
@@ -51,6 +51,6 @@ class DataStatic {
   static int setectedIndax = 0;
 //get user info
   static String username = '';
-  static String password = '';  
+  static String password = '';
   static int userRole = 0;
 }

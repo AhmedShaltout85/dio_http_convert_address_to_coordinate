@@ -44,7 +44,7 @@ dependencies:
   geocoding: ^2.0.4  # Or the latest version
   http: ^1.2.2  # Or the latest version
   google_maps_flutter: ^2.2.2  # Check for the latest version
-  google_maps_flutter_web: 
+  google_maps_flutter_web: ^0.5.11 
   # geolocator: ^10.0.0 # For getting the user's location
 
   # google_maps_flutter: ^2.9.0  # Check for the latest version

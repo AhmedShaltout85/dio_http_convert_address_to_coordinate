@@ -24,6 +24,7 @@ class _UserScreenState extends State<UserScreen> {
   int? isApproved;
   LocationData? currentLocation;
   late String address;
+  StreamSubscription<LocationData>? locationSubscription;
 
   @override
   void initState() {
@@ -88,11 +89,18 @@ class _UserScreenState extends State<UserScreen> {
       debugPrint("Error getting location: $e");
     }
 
-    location.onLocationChanged.listen((LocationData newLocation) {
+    locationSubscription = //not tested
+        location.onLocationChanged.listen((LocationData newLocation) {
       setState(() {
         currentLocation = newLocation;
       });
     });
+  }
+
+// Function to stop fetching location (not tested)
+  void _stopFetchingLocation() {
+    locationSubscription?.cancel();
+    locationSubscription = null;
   }
 
   //Function to start fetching updated location
@@ -370,6 +378,8 @@ class _UserScreenState extends State<UserScreen> {
                                         DataStatic.handasahName,
                                         DataStatic.username,
                                         0); // Manually refresh data after update
+                                        //stop live Location
+                                        _stopFetchingLocation(); //not tested
                                   });
                                 },
                                 icon: const Icon(
@@ -386,6 +396,17 @@ class _UserScreenState extends State<UserScreen> {
                                 icon: const Icon(
                                   Icons.local_convenience_store_outlined,
                                   color: Colors.cyan,
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: 'جرد مخزن',
+                                hoverColor: Colors.yellow,
+                                onPressed: () {
+                                  //
+                                },
+                                icon: const Icon(
+                                  Icons.store_outlined,
+                                  color: Colors.indigo,
                                 ),
                               ),
                             ],

@@ -77,7 +77,6 @@ class _HandasahScreenState extends State<HandasahScreen> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 7,
-        // backgroundColor: Colors.white,
         foregroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
         title: Text(
@@ -113,18 +112,18 @@ class _HandasahScreenState extends State<HandasahScreen> {
           Expanded(
             flex: 3,
             child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: gisHandasahUrl == ""
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.indigo,
-                        ),
-                      )
-                    // : Container()
-                : IframeScreen(
-                    url: gisHandasahUrl,
-                  ), //
-                ),
+              padding: const EdgeInsets.all(8.0),
+              child: gisHandasahUrl == ""
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.indigo,
+                      ),
+                    )
+                  // : Container()
+                  : IframeScreen(
+                      url: gisHandasahUrl,
+                    ), //
+            ),
           ),
           Expanded(
             flex: 1,
@@ -134,7 +133,6 @@ class _HandasahScreenState extends State<HandasahScreen> {
               height: MediaQuery.of(context).size.height,
               color: Colors.black38,
               child: ListView(
-                reverse: true,
                 shrinkWrap: true,
                 children: [
                   const SizedBox(
@@ -409,7 +407,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                 color: Colors.cyan,
                                               ),
                                             ),
-                                             IconButton(
+                                            IconButton(
                                               tooltip: 'جرد مخزن',
                                               hoverColor: Colors.yellow,
                                               onPressed: () async {

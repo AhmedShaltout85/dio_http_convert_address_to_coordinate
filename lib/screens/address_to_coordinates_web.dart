@@ -403,11 +403,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                       children: [
                                         ListTile(
                                           title: Text(
+                                            textAlign: TextAlign.center,
+                                            textDirection: TextDirection.rtl,
                                             snapshot.data![index]['address'],
                                             style: const TextStyle(
-                                                color: Colors.indigo,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12),
+                                              color: Colors.indigo,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13,
+                                            ),
                                           ),
                                           subtitle: Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -620,7 +623,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                   fontSize:
                                                                       fontSize,
                                                                   color: Colors
-                                                                      .green,
+                                                                      .indigo,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,

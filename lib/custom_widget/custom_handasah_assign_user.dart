@@ -89,37 +89,39 @@ class CustomHandasahAssignUser extends StatelessWidget {
                                 color: Colors.indigo,
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.all(10.0),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 7.0),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.indigo, width: 1.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: CustomDropdown(
-                                isExpanded: true,
-                                hintText: hintText,
-                                items: stringListItems,
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    debugPrint('Selected item: $value');
-                                    //updateLocAddHandasah
-                                    DioNetworkRepos().updateLocAddTechnician(
-                                      data['address'] ?? '',
-                                      value,
-                                    );
-                                    debugPrint('updated item: $value');
-                                    //
-                                  }
-                                  // else if (data['handasah_name'] == value) {
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.all(10.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 7.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.indigo, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: CustomDropdown(
+                                  isExpanded: true,
+                                  hintText: hintText,
+                                  items: stringListItems,
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      debugPrint('Selected item: $value');
+                                      //updateLocAddHandasah
+                                      DioNetworkRepos().updateLocAddTechnician(
+                                        data['address'] ?? '',
+                                        value,
+                                      );
+                                      debugPrint('updated item: $value');
+                                      //
+                                    }
+                                    // else if (data['handasah_name'] == value) {
 
-                                  //   snapshot.data.remove(data['address']);
-                                  //   debugPrint('removed item: $value');
-                                  // }
-                                },
-                                // onChanged: onChanged,
+                                    //   snapshot.data.remove(data['address']);
+                                    //   debugPrint('removed item: $value');
+                                    // }
+                                  },
+                                  // onChanged: onChanged,
+                                ),
                               ),
                             ),
                           ],

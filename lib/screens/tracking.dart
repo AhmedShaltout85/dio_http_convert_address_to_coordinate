@@ -29,8 +29,8 @@ class _TrackingState extends State<Tracking> {
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double currentLatitude = 0.0;
   double currentLongitude = 0.0;
-  double startLatitude = 0.0;
-  double startLongitude = 0.0;
+  // double startLatitude = 0.0;
+  // double startLongitude = 0.0;
   final Set<Marker> markers = {};
   final String googleMapsApiKey =
       "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk"; // Replace with your API key
@@ -39,11 +39,10 @@ class _TrackingState extends State<Tracking> {
     LatLng end =
         LatLng(double.parse(widget.latitude), double.parse(widget.longitude));
     LatLng current = LatLng(currentLatitude, currentLongitude);
-    LatLng start = LatLng(startLatitude, startLongitude);
 
     return Polyline(
       polylineId: const PolylineId('polyline'),
-      points: [start, current, end],
+      points: [current, end],
       color: Colors.blue,
       width: 5,
     );
@@ -58,39 +57,49 @@ class _TrackingState extends State<Tracking> {
     });
   }
 
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel periodic fetch and location update timer
+    super.dispose();
+  }
+
   /// current and start latitude and longitude.
   Future<void> _getCurrentLocation() async {
     debugPrint(widget.address);
     debugPrint(widget.technicianName);
+    if (currentLatitude == 0.0 || currentLongitude == 0.0) {
+      currentLatitude = double.parse(widget.latitude);
+      currentLongitude = double.parse(widget.longitude);
+    } else {
+      getCurrentLocation = DioNetworkRepos().getLocationByAddressAndTechnician(
+          widget.address, widget.technicianName);
 
-    getCurrentLocation = DioNetworkRepos().getLocationByAddressAndTechnician(
-        widget.address, widget.technicianName);
-
-    getCurrentLocation.then((value) {
-      debugPrint("print from ui: in Location Tracking $value");
-      // debugPrint("ID: ${value['id']}");
-      debugPrint("Address: ${value['address']}");
-      debugPrint("Latitude: ${value['latitude']}");
-      debugPrint("Longitude: ${value['longitude']}");
-      debugPrint("Technical Name: ${value['technicalName']}");
-      debugPrint("Start Latitude: ${value['startLatitude']}");
-      debugPrint("Start Longitude: ${value['startLongitude']}");
-      debugPrint("Current Latitude: ${value['currentLatitude']}");
-      debugPrint("Current Longitude: ${value['currentLongitude']}");
-      setState(() {
-        currentLatitude = double.parse(value['currentLatitude']);
-        currentLongitude = double.parse(value['currentLongitude']);
-        startLatitude = double.parse(value['startLatitude']);
-        startLongitude = double.parse(value['startLongitude']);
+      getCurrentLocation.then((value) {
+        debugPrint("print from ui: in Location Tracking $value");
+        // debugPrint("ID: ${value['id']}");
+        debugPrint("Address: ${value['address']}");
+        debugPrint("Latitude: ${value['latitude']}");
+        debugPrint("Longitude: ${value['longitude']}");
+        debugPrint("Technical Name: ${value['technicalName']}");
+        debugPrint("Start Latitude: ${value['startLatitude']}");
+        debugPrint("Start Longitude: ${value['startLongitude']}");
+        debugPrint("Current Latitude: ${value['currentLatitude']}");
+        debugPrint("Current Longitude: ${value['currentLongitude']}");
+        setState(() {
+          currentLatitude = double.parse(value['currentLatitude']);
+          currentLongitude = double.parse(value['currentLongitude']);
+          // startLatitude = double.parse(value['startLatitude']);
+          // startLongitude = double.parse(value['startLongitude']);
+        });
       });
-    });
+    }
   }
 
   Future<void> _moveCamera() async {
     final GoogleMapController controller = await _controller.future;
     CameraPosition cameraPosition = CameraPosition(
       target: LatLng(currentLatitude, currentLongitude),
-      zoom: 13,
+      zoom: 14,
     );
     controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }

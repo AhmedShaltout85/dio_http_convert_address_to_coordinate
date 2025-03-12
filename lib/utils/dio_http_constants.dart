@@ -24,7 +24,10 @@ const String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
 
 const String BASE_URI_IP_ADDRESS = "http://192.168.17.250:9999";
 const String BASE_URI_IP_ADDRESS_LOCAL_HOST = "http://localhost:9999";
+const String BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES = "http://localhost:9998";
 // const String BASE_URI_IP_ADDRESS_LOCAL_HOST = "http://172.18.0.101:9999";
+// const String BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES = "http://172.18.0.101:9998";
+// const String BASE_URI_IP_ADDRESS_LOCAL_HOST = "http://41.33.226.211:8099";
 
 //Agora Constants for Video Call
 // const appId = "ffd898c8ae5d4d96be499de1166e6229";

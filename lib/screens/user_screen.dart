@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
 import 'dart:async'; // Import Timer
 import 'package:flutter/foundation.dart';
@@ -7,6 +7,7 @@ import 'package:location/location.dart';
 
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
+import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import '../custom_widget/custom_web_view.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -24,7 +25,9 @@ class _UserScreenState extends State<UserScreen> {
   int? isApproved;
   LocationData? currentLocation;
   late String address;
-  StreamSubscription<LocationData>? locationSubscription;
+  String storeName = "";
+
+  // StreamSubscription<LocationData>? locationSubscription;
 
   @override
   void initState() {
@@ -89,19 +92,19 @@ class _UserScreenState extends State<UserScreen> {
       debugPrint("Error getting location: $e");
     }
 
-    locationSubscription = //not tested
-        location.onLocationChanged.listen((LocationData newLocation) {
+    // locationSubscription = //not tested
+    location.onLocationChanged.listen((LocationData newLocation) {
       setState(() {
         currentLocation = newLocation;
       });
     });
   }
 
-// Function to stop fetching location (not tested)
-  void _stopFetchingLocation() {
-    locationSubscription?.cancel();
-    locationSubscription = null;
-  }
+// // Function to stop fetching location (not tested)
+//   void _stopFetchingLocation() {
+//     locationSubscription?.cancel();
+//     locationSubscription = null;
+//   }
 
   //Function to start fetching updated location
   void _startFetchingLocation() {
@@ -378,8 +381,8 @@ class _UserScreenState extends State<UserScreen> {
                                         DataStatic.handasahName,
                                         DataStatic.username,
                                         0); // Manually refresh data after update
-                                        //stop live Location
-                                        _stopFetchingLocation(); //not tested
+                                    // //stop live Location
+                                    // _stopFetchingLocation(); //not tested
                                   });
                                 },
                                 icon: const Icon(
@@ -401,8 +404,34 @@ class _UserScreenState extends State<UserScreen> {
                               IconButton(
                                 tooltip: 'جرد مخزن',
                                 hoverColor: Colors.yellow,
-                                onPressed: () {
+                                onPressed: () async {
                                   //
+                                  //get store name by handasah
+                                  debugPrint(
+                                      "Store Name before get: $storeName");
+                                  debugPrint(
+                                      "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
+                                  await DioNetworkRepos()
+                                      .getStoreNameByHandasahName(snapshot
+                                          .data![index]['handasah_name'])
+                                      .then((value) {
+                                    // setState(() {
+                                    debugPrint(value['storeName']);
+                                    storeName = value['storeName'];
+                                    // });
+                                  });
+                                  debugPrint(
+                                      "Store Name after get: $storeName");
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          IntegrationWithStoresGetAllQty(
+                                        storeName: storeName,
+                                      ),
+                                    ),
+                                  );
                                 },
                                 icon: const Icon(
                                   Icons.store_outlined,

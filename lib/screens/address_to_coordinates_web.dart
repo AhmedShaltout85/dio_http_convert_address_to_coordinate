@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
@@ -6,9 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
+import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/tracking.dart';
-// import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
-// import 'package:pick_location/screens/tracking.dart';
 
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_drawer.dart';
@@ -23,6 +24,7 @@ class AddressToCoordinates extends StatefulWidget {
 }
 
 class AddressToCoordinatesState extends State<AddressToCoordinates> {
+  String storeName = "";
   final Completer<GoogleMapController> _controller = Completer();
 
   String address = "";
@@ -391,6 +393,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return ListView.builder(
+                              reverse: true,
                               shrinkWrap: true,
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
@@ -785,8 +788,36 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             IconButton(
                                               tooltip: 'جرد مخزن',
                                               hoverColor: Colors.yellow,
-                                              onPressed: () {
-                                                //
+                                              onPressed: () async {
+                                                //get store name by handasah
+                                                debugPrint(
+                                                    "Store Name before get: $storeName");
+                                                debugPrint(
+                                                    "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
+                                                await DioNetworkRepos()
+                                                    .getStoreNameByHandasahName(
+                                                        snapshot.data![index]
+                                                            ['handasah_name'])
+                                                    .then((value) {
+                                                  // setState(() {
+                                                  debugPrint(
+                                                      value['storeName']);
+                                                  storeName =
+                                                      value['storeName'];
+                                                  // });
+                                                });
+                                                debugPrint(
+                                                    "Store Name after get: $storeName");
+
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        IntegrationWithStoresGetAllQty(
+                                                      storeName: storeName,
+                                                    ),
+                                                  ),
+                                                );
                                               },
                                               icon: const Icon(
                                                 Icons.store_outlined,

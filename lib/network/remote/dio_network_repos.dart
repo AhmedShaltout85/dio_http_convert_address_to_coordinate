@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/material.dart';
 
+// import '../../model/store_item_model.dart';
+
 class DioNetworkRepos {
   final dio = Dio();
 //1-- GET locations(GET by flag 0 (address not set yet))
@@ -630,4 +632,72 @@ class DioNetworkRepos {
       throw Exception(e);
     }
   }
+
+  //27-- GET StoreNameByHandsah_Name(GET STRORE NAME BY HANDASAH NAME)
+  Future getStoreNameByHandasahName(String handasahName) async {
+    var storesNameByHandasahUrl =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/handasah/handasah-name/$handasahName';
+    try {
+      var response = await dio.get(storesNameByHandasahUrl);
+      if (response.statusCode == 200) {
+        debugPrint("PRINTED DATA FROM API :  ${response.data}");
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+
+  //28-- GET StoreQty(GET STORE QTY)
+  Future getStoreAllItemsQty(String storeName) async {
+    var storesQtyUrl =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/s-name/$storeName';
+        // 'http://localhost:9998/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/store-name/$storeName';
+    // '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/store-name/$storeName';
+    try {
+      var response = await dio.get(storesQtyUrl);
+      if (response.statusCode == 200) {
+        debugPrint("PRINTED STORE ALL DATA FROM API :  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+  //29-- GET StoreQty(GET STORE QTY)
+  Future getStoreAllItemsQtyFromStoreServer() async {
+    var storesQtyUrl =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/all';
+    // '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/store-name/$storeName';
+    try {
+      var response = await dio.get(storesQtyUrl);
+      if (response.statusCode == 200) {
+        debugPrint("PRINTED STORE ALL DATA FROM API :  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+
+
+
+
 }

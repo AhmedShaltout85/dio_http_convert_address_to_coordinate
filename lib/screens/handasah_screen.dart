@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
+import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
@@ -25,6 +28,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
   late Future getHandasatUsersItemsDropdownMenu;
   List<String> handasatUsersItemsDropdownMenu = [];
   double fontSize = 12.0;
+  String storeName = "";
 
   @override
   void initState() {
@@ -109,18 +113,18 @@ class _HandasahScreenState extends State<HandasahScreen> {
           Expanded(
             flex: 3,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: gisHandasahUrl == ""
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.indigo,
-                      ),
-                    )
-                  // : Container()
-                  : IframeScreen(
-                      url: gisHandasahUrl,
-                    ), //
-            ),
+                padding: const EdgeInsets.all(8.0),
+                child: gisHandasahUrl == ""
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.indigo,
+                        ),
+                      )
+                    // : Container()
+                : IframeScreen(
+                    url: gisHandasahUrl,
+                  ), //
+                ),
           ),
           Expanded(
             flex: 1,
@@ -130,6 +134,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
               height: MediaQuery.of(context).size.height,
               color: Colors.black38,
               child: ListView(
+                reverse: true,
                 shrinkWrap: true,
                 children: [
                   const SizedBox(
@@ -154,6 +159,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return ListView.builder(
+                            reverse: true,
                             shrinkWrap: true,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
@@ -401,6 +407,45 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                               icon: const Icon(
                                                 Icons.store_sharp,
                                                 color: Colors.cyan,
+                                              ),
+                                            ),
+                                             IconButton(
+                                              tooltip: 'جرد مخزن',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () async {
+                                                //get store name by handasah
+                                                debugPrint(
+                                                    "Store Name before get: $storeName");
+                                                debugPrint(
+                                                    "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
+                                                await DioNetworkRepos()
+                                                    .getStoreNameByHandasahName(
+                                                        snapshot.data![index]
+                                                            ['handasah_name'])
+                                                    .then((value) {
+                                                  // setState(() {
+                                                  debugPrint(
+                                                      value['storeName']);
+                                                  storeName =
+                                                      value['storeName'];
+                                                  // });
+                                                });
+                                                debugPrint(
+                                                    "Store Name after get: $storeName");
+
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        IntegrationWithStoresGetAllQty(
+                                                      storeName: storeName,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                Icons.store_outlined,
+                                                color: Colors.indigo,
                                               ),
                                             ),
                                           ]),

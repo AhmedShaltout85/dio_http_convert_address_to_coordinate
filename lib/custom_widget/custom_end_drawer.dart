@@ -61,6 +61,7 @@ class CustomEndDrawer extends StatelessWidget {
                 }
 
                 return ListView.builder(
+                  reverse: true,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data!.length,

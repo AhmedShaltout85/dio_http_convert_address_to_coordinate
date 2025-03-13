@@ -430,7 +430,12 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                 });
                                                 debugPrint(
                                                     "Store Name after get: $storeName");
+                                                       //excute tempStoredProcedure
+                                                DioNetworkRepos()
+                                                    .excuteTempStoreQty(
+                                                        storeName);
 
+                                            //     //navigate to IntegrationWithStoresGetAllQty
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(

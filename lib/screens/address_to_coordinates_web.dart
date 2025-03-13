@@ -11,6 +11,7 @@ import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/tracking.dart';
 
+import '../custom_widget/custom_alert_dailog.dart';
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_drawer.dart';
 import '../custom_widget/custom_end_drawer.dart';
@@ -402,14 +403,66 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                     child: Column(
                                       children: [
                                         ListTile(
-                                          title: Text(
-                                            textAlign: TextAlign.center,
-                                            textDirection: TextDirection.rtl,
-                                            snapshot.data![index]['address'],
-                                            style: const TextStyle(
-                                              color: Colors.indigo,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 13,
+                                          title: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 7.0, horizontal: 3.0),
+                                            child: Row(
+                                              children: [
+                                                IconButton(
+                                                  tooltip:
+                                                      "إضافة بيانات الشكوى",
+                                                  onPressed: () {
+                                                    //
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          CustomReusableAlertDialog(
+                                                        title:
+                                                            "تحديث بيانات الشكوى",
+                                                        fieldLabels: const [
+                                                          "إسم المبلغ",
+                                                          "نوع الكسر",
+                                                          "رقم الموبيل"
+                                                        ],
+                                                        onSubmit: (values) {
+                                                          debugPrint(
+                                                              "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
+                                                          DioNetworkRepos()
+                                                              .updateLocationBrokenByAddress(
+                                                                  snapshot.data![
+                                                                          index]
+                                                                      [
+                                                                      'address'],
+                                                                  values[0],
+                                                                  values[1],
+                                                                  values[2]);
+                                                          debugPrint(
+                                                              "User Input: updated Caller Name, Phone, And Borken Number");
+                                                        },
+                                                      ),
+                                                    );
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.add_circle_outlined,
+                                                    color: Colors.indigo,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    textAlign: TextAlign.right,
+                                                    textDirection:
+                                                        TextDirection.rtl,
+                                                    snapshot.data![index]
+                                                        ['address'],
+                                                    style: const TextStyle(
+                                                      color: Colors.indigo,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 13,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           subtitle: Padding(
@@ -811,6 +864,11 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 });
                                                 debugPrint(
                                                     "Store Name after get: $storeName");
+
+                                                //excute tempStoredProcedure
+                                                DioNetworkRepos()
+                                                    .excuteTempStoreQty(
+                                                        storeName);
 
                                                 Navigator.push(
                                                   context,

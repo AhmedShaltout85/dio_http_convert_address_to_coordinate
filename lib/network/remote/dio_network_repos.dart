@@ -654,13 +654,12 @@ class DioNetworkRepos {
   }
 
   //28-- GET StoreQty(GET STORE QTY)
-  Future getStoreAllItemsQty(String storeName) async {
-    var storesQtyUrl =
-        '$BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/s-name/$storeName';
-        // 'http://localhost:9998/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/store-name/$storeName';
-    // '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/store-name/$storeName';
+  Future excuteTempStoreQty(String storeName) async {
+    var tempStoresQtyUrl =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/t-store-name/$storeName';
+    // http: //localhost:9998/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/t-store-name/مخزن فرع البلد
     try {
-      var response = await dio.get(storesQtyUrl);
+      var response = await dio.get(tempStoresQtyUrl);
       if (response.statusCode == 200) {
         debugPrint("PRINTED STORE ALL DATA FROM API :  ${response.data}");
 
@@ -675,11 +674,11 @@ class DioNetworkRepos {
       // throw Exception(e);
     }
   }
+
   //29-- GET StoreQty(GET STORE QTY)
   Future getStoreAllItemsQtyFromStoreServer() async {
     var storesQtyUrl =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/all';
-    // '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location-integration-w-stores/api/v1/pick-loc-w-stores/store-name/$storeName';
     try {
       var response = await dio.get(storesQtyUrl);
       if (response.statusCode == 200) {
@@ -697,7 +696,24 @@ class DioNetworkRepos {
     }
   }
 
+//30-- update Location Broken By address(ADD Caller Name, Caller phone, Broken type)
+  // http: //localhost:9999/pick-location/api/v1/get-loc/add-details/61 طريق الحرية الاسكندرية
 
-
-
+  Future updateLocationBrokenByAddress(String address, String callerName,
+      String brokenType, String callerPhone) async {
+    try {
+      final response = await dio.put(
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/add-details/$address",
+          data: {
+            "caller_name": callerName,
+            "caller_phone": callerPhone,
+            "broker_type": brokenType
+          });
+      debugPrint(response.data.toString());
+      return response.data;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
 }

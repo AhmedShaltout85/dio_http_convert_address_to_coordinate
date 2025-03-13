@@ -28,17 +28,20 @@ class _IntegrationWithStoresGetAllQtyState
   void initState() {
     super.initState();
     setState(() {
+      //execute tempStoreQty to get all store items
+      // DioNetworkRepos().excuteTempStoreQty(widget.storeName);
       //get all store items qty
       getAllStoreItemsQty =
           DioNetworkRepos().getStoreAllItemsQtyFromStoreServer();
+      getAllStoreItemsQty.then(
+        (value) {
+          value.forEach((element) {
+            debugPrint(
+                "PRINTED STORE ALL DATA FROM UI single element: $element");
+          });
+        },
+      );
     });
-    getAllStoreItemsQty.then(
-      (value) {
-        value.forEach((element) {
-          debugPrint("PRINTED STORE ALL DATA FROM UI single element: $element");
-        });
-      },
-    );
   }
 
   @override

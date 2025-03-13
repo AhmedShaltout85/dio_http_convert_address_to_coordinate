@@ -67,32 +67,32 @@ class _TrackingState extends State<Tracking> {
   Future<void> _getCurrentLocation() async {
     debugPrint(widget.address);
     debugPrint(widget.technicianName);
-    if (currentLatitude == 0.0 || currentLongitude == 0.0) {
-      currentLatitude = double.parse(widget.latitude);
-      currentLongitude = double.parse(widget.longitude);
-    } else {
-      getCurrentLocation = DioNetworkRepos().getLocationByAddressAndTechnician(
-          widget.address, widget.technicianName);
+    // if (currentLatitude == 0.0 || currentLongitude == 0.0) {
+    //   currentLatitude = double.parse(widget.latitude);
+    //   currentLongitude = double.parse(widget.longitude);
+    // } else {
+    getCurrentLocation = DioNetworkRepos().getLocationByAddressAndTechnician(
+        widget.address, widget.technicianName);
 
-      getCurrentLocation.then((value) {
-        debugPrint("print from ui: in Location Tracking $value");
-        // debugPrint("ID: ${value['id']}");
-        debugPrint("Address: ${value['address']}");
-        debugPrint("Latitude: ${value['latitude']}");
-        debugPrint("Longitude: ${value['longitude']}");
-        debugPrint("Technical Name: ${value['technicalName']}");
-        debugPrint("Start Latitude: ${value['startLatitude']}");
-        debugPrint("Start Longitude: ${value['startLongitude']}");
-        debugPrint("Current Latitude: ${value['currentLatitude']}");
-        debugPrint("Current Longitude: ${value['currentLongitude']}");
-        setState(() {
-          currentLatitude = double.parse(value['currentLatitude']);
-          currentLongitude = double.parse(value['currentLongitude']);
-          // startLatitude = double.parse(value['startLatitude']);
-          // startLongitude = double.parse(value['startLongitude']);
-        });
+    getCurrentLocation.then((value) {
+      debugPrint("print from ui: in Location Tracking $value");
+      // debugPrint("ID: ${value['id']}");
+      debugPrint("Address: ${value['address']}");
+      debugPrint("Latitude: ${value['latitude']}");
+      debugPrint("Longitude: ${value['longitude']}");
+      debugPrint("Technical Name: ${value['technicalName']}");
+      debugPrint("Start Latitude: ${value['startLatitude']}");
+      debugPrint("Start Longitude: ${value['startLongitude']}");
+      debugPrint("Current Latitude: ${value['currentLatitude']}");
+      debugPrint("Current Longitude: ${value['currentLongitude']}");
+      setState(() {
+        currentLatitude = double.parse(value['currentLatitude']);
+        currentLongitude = double.parse(value['currentLongitude']);
+        // startLatitude = double.parse(value['startLatitude']);
+        // startLongitude = double.parse(value['startLongitude']);
       });
-    }
+    });
+    // }
   }
 
   Future<void> _moveCamera() async {
@@ -131,50 +131,52 @@ class _TrackingState extends State<Tracking> {
           ),
         ),
       ),
-      body: GoogleMap(
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        initialCameraPosition: CameraPosition(
-          target: alexandriaCoordinates,
-          zoom: 13,
-        ),
-        markers: {
-          Marker(
-            markerId: MarkerId(widget.address),
-            position: LatLng(
-                double.parse(widget.latitude), double.parse(widget.longitude)),
-            infoWindow: InfoWindow(
-                title: widget.address,
-                snippet: "${widget.latitude}, ${widget.longitude}"),
-            icon:
-                BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-          ),
-          Marker(
-            markerId: const MarkerId("الموقع الحالى"),
-            position: LatLng(currentLatitude, currentLongitude),
-            infoWindow: InfoWindow(
-                title: "الموقع الحالى",
-                // title: widget.address,
-                snippet: "$currentLatitude, $currentLongitude"),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueOrange),
-          ),
-          // Marker(
-          //   markerId: const MarkerId("موقع بداية التتبع"),
-          //   position: LatLng(startLatitude, startLongitude),
-          //   infoWindow: InfoWindow(
-          //       title: "موقع بداية التتبع",
-          //       // title: widget.address,
-          //       snippet: "$startLatitude, $startLongitude"),
-          //   icon: BitmapDescriptor.defaultMarkerWithHue(
-          //       BitmapDescriptor.hueGreen),
-          // )
-        },
-        polylines: {
-          _addPolyline(),
-        },
-      ),
+      body: currentLatitude == 0.0 || currentLongitude == 0.0
+          ? const CircularProgressIndicator()
+          : GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              initialCameraPosition: CameraPosition(
+                target: alexandriaCoordinates,
+                zoom: 13,
+              ),
+              markers: {
+                Marker(
+                  markerId: MarkerId(widget.address),
+                  position: LatLng(double.parse(widget.latitude),
+                      double.parse(widget.longitude)),
+                  infoWindow: InfoWindow(
+                      title: widget.address,
+                      snippet: "${widget.latitude}, ${widget.longitude}"),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueRed),
+                ),
+                Marker(
+                  markerId: const MarkerId("موقع الفنى الحالى"),
+                  position: LatLng(currentLatitude, currentLongitude),
+                  infoWindow: InfoWindow(
+                      title: "موقع الفنى الحالى",
+                      // title: widget.address,
+                      snippet: "$currentLatitude, $currentLongitude"),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueOrange),
+                ),
+                // Marker(
+                //   markerId: const MarkerId("موقع بداية التتبع"),
+                //   position: LatLng(startLatitude, startLongitude),
+                //   infoWindow: InfoWindow(
+                //       title: "موقع بداية التتبع",
+                //       // title: widget.address,
+                //       snippet: "$startLatitude, $startLongitude"),
+                //   icon: BitmapDescriptor.defaultMarkerWithHue(
+                //       BitmapDescriptor.hueGreen),
+                // )
+              },
+              polylines: {
+                _addPolyline(),
+              },
+            ),
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: Colors.indigo,
       //   onPressed: () {

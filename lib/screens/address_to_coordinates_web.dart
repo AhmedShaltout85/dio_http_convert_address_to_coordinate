@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:pick_location/screens/address_details.dart';
+// import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/tracking.dart';
@@ -15,6 +15,7 @@ import '../custom_widget/custom_alert_dailog.dart';
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_drawer.dart';
 import '../custom_widget/custom_end_drawer.dart';
+import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
 
 class AddressToCoordinates extends StatefulWidget {
@@ -845,40 +846,59 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               tooltip: 'جرد مخزن',
                                               hoverColor: Colors.yellow,
                                               onPressed: () async {
-                                                //get store name by handasah
-                                                debugPrint(
-                                                    "Store Name before get: $storeName");
-                                                debugPrint(
-                                                    "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
-                                                await DioNetworkRepos()
-                                                    .getStoreNameByHandasahName(
-                                                        snapshot.data![index]
-                                                            ['handasah_name'])
-                                                    .then((value) {
-                                                  // setState(() {
+                                                //if store name is empty
+                                                if (snapshot.data![index]
+                                                        ['handasah_name'] ==
+                                                    'free') {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text(
+                                                      'عفوا, لايمكن إظهار جرد المخزن قبل تخصيص الهندسه',
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    )),
+                                                  );
+                                                } else {
+                                                  //get store name by handasah
                                                   debugPrint(
-                                                      value['storeName']);
-                                                  storeName =
-                                                      value['storeName'];
-                                                  // });
-                                                });
-                                                debugPrint(
-                                                    "Store Name after get: $storeName");
+                                                      "Store Name before get: $storeName");
+                                                  debugPrint(
+                                                      "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
 
-                                                //excute tempStoredProcedure
-                                                DioNetworkRepos()
-                                                    .excuteTempStoreQty(
-                                                        storeName);
-                                            //navigate to IntegrationWithStoresGetAllQty
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        IntegrationWithStoresGetAllQty(
-                                                      storeName: storeName,
+                                                  //navigate to IntegrationWithStoresGetAllQty
+                                                  await DioNetworkRepos()
+                                                      .getStoreNameByHandasahName(
+                                                          snapshot.data![index]
+                                                              ['handasah_name'])
+                                                      .then((value) {
+                                                    // setState(() {
+                                                    debugPrint(
+                                                        value['storeName']);
+                                                    storeName =
+                                                        value['storeName'];
+                                                    // });
+                                                  });
+                                                  debugPrint(
+                                                      "Store Name after get: $storeName");
+
+                                                  //excute tempStoredProcedure
+                                                  DioNetworkRepos()
+                                                      .excuteTempStoreQty(
+                                                          storeName);
+                                                  //navigate to IntegrationWithStoresGetAllQty
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          IntegrationWithStoresGetAllQty(
+                                                        storeName: storeName,
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
                                               },
                                               icon: const Icon(
                                                 Icons.store_outlined,
@@ -892,14 +912,43 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                   ),
                                   onTap: () {
                                     debugPrint("${snapshot.data[index]['id']}");
-                                    // open address details
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AddressDetails(),
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          CustomReusableTextAlertDialog(
+                                        title: 'بيانات العطل',
+                                        messages: [
+                                          'العنوان :  ${snapshot.data[index]['address']}',
+                                          'الاحداثئات :  ${snapshot.data[index]['latitude']} , ${snapshot.data[index]['longitude']}',
+                                          'الهندسة :  ${snapshot.data[index]['handasah_name']}',
+                                          'إسم فنى الهندسة :  ${snapshot.data[index]['technical_name']}',
+                                          'رابط :  ${snapshot.data[index]['gis_url']}',
+                                          'إسم المبلغ :  ${snapshot.data[index]['caller_name']}',
+                                          ' رقم هاتف المبلغ:  ${snapshot.data[index]['caller_phone']}',
+                                          'نوع الكسر :  ${snapshot.data[index]['broker_type']}',
+                                        ],
+                                        actions: [
+                                          Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: const Text('Close'),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     );
+
+                                    // open address details
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         const AddressDetails(),
+                                    //   ),
+                                    // );
                                   },
                                 );
                               },

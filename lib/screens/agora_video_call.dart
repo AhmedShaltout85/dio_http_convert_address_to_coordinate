@@ -89,7 +89,7 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'فضلا قم بتفعيل صلاحيات الكاميرا والميكروفون',
+            'فضلا قم بتوصيل ,وتفعيل صلاحيات الكاميرا والميكروفون',
             textDirection: TextDirection.rtl,
             textAlign: TextAlign.center,
           ),

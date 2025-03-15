@@ -49,7 +49,7 @@ class _IntegrationWithStoresGetAllQtyState
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.storeName,
+          "جرد : ${widget.storeName}",
           style: const TextStyle(
             color: Colors.indigo,
           ),

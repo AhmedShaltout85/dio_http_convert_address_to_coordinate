@@ -1,11 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
-import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
+// import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
+import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
 
 class HandasahScreen extends StatefulWidget {
@@ -29,6 +32,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
   List<String> handasatUsersItemsDropdownMenu = [];
   double fontSize = 12.0;
   String storeName = "";
+  Timer? _timer; // Timer for periodic fetching
+  int length = 0;
 
   @override
   void initState() {
@@ -69,6 +74,28 @@ class _HandasahScreenState extends State<HandasahScreen> {
           "handasatItemsDropdownMenu from UI: $handasatUsersItemsDropdownMenu");
       debugPrint(value.toString());
     });
+    //
+    _startPeriodicFetch();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel periodic fetch and location update timer
+    // Dispose the controller when the widget is disposed
+    super.dispose();
+  }
+
+  void _startPeriodicFetch() {
+    const Duration fetchInterval =
+        Duration(seconds: 10); // Fetch every 10 seconds
+    _timer = Timer.periodic(fetchInterval, (Timer timer) {
+      setState(() {
+        getLocsByHandasahNameAndIsFinished =
+            DioNetworkRepos().getLocByHandasahAndIsFinished(handasahName, 0);
+        getLocByHandasahAndTechnician = DioNetworkRepos()
+            .getLocByHandasahAndTechnician(handasahName, 'free');
+      });
+    });
   }
 
   @override
@@ -84,7 +111,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
           style: const TextStyle(color: Colors.indigo),
         ),
       ),
-      body: Row(
+      body:
+          // length > 0
+          //     ?
+          Row(
         children: [
           Expanded(
             flex: 1,
@@ -119,10 +149,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         color: Colors.indigo,
                       ),
                     )
-                  // : Container()
-                  : IframeScreen(
-                      url: gisHandasahUrl,
-                    ), //
+                  : Container()
+                  // : IframeScreen(
+                  //     url: gisHandasahUrl,
+                  //   ), //
             ),
           ),
           Expanded(
@@ -155,6 +185,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                   FutureBuilder(
                       future: getLocsByHandasahNameAndIsFinished,
                       builder: (context, snapshot) {
+                        length = snapshot.data!.length;
                         if (snapshot.hasData) {
                           return ListView.builder(
                             reverse: true,
@@ -178,6 +209,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                     children: [
                                       ListTile(
                                         title: Text(
+                                          textAlign: TextAlign.center,
                                           snapshot.data![index]['address'],
                                           style: const TextStyle(
                                               color: Colors.indigo,
@@ -430,12 +462,12 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                 });
                                                 debugPrint(
                                                     "Store Name after get: $storeName");
-                                                       //excute tempStoredProcedure
+                                                //excute tempStoredProcedure
                                                 DioNetworkRepos()
                                                     .excuteTempStoreQty(
                                                         storeName);
 
-                                            //     //navigate to IntegrationWithStoresGetAllQty
+                                                //     //navigate to IntegrationWithStoresGetAllQty
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -449,6 +481,47 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                               icon: const Icon(
                                                 Icons.store_outlined,
                                                 color: Colors.indigo,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              tooltip: 'عرض بيانات الشكوى',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      CustomReusableTextAlertDialog(
+                                                    title: 'بيانات العطل',
+                                                    messages: [
+                                                      'العنوان :  ${snapshot.data[index]['address']}',
+                                                      'الاحداثئات :  ${snapshot.data[index]['latitude']} , ${snapshot.data[index]['longitude']}',
+                                                      'الهندسة :  ${snapshot.data[index]['handasah_name']}',
+                                                      'إسم فنى الهندسة :  ${snapshot.data[index]['technical_name']}',
+                                                      'رابط :  ${snapshot.data[index]['gis_url']}',
+                                                      'إسم المبلغ :  ${snapshot.data[index]['caller_name']}',
+                                                      ' رقم هاتف المبلغ:  ${snapshot.data[index]['caller_phone']}',
+                                                      'نوع الكسر :  ${snapshot.data[index]['broker_type']}',
+                                                    ],
+                                                    actions: [
+                                                      Align(
+                                                        alignment: Alignment
+                                                            .bottomLeft,
+                                                        child: TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(),
+                                                          child: const Text(
+                                                              'Close'),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                Icons.info,
+                                                color: Colors.blueAccent,
                                               ),
                                             ),
                                           ]),
@@ -470,6 +543,9 @@ class _HandasahScreenState extends State<HandasahScreen> {
           ),
         ],
       ),
+      // : const Center(
+      //     child: CircularProgressIndicator(),
+      //   ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {

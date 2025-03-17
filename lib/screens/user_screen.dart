@@ -33,9 +33,9 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
+    _getCurrentLocation(); // Get current location
     _fetchData(); // Initial fetch
     _startPeriodicFetch(); // Start periodic fetching
-    _getCurrentLocation(); // Get current location
     _startFetchingLocation(); // Start fetching location every 1 minutes
   }
 
@@ -112,7 +112,7 @@ class _UserScreenState extends State<UserScreen> {
   //Function to start fetching updated location
   void _startFetchingLocation() {
     // _getCurrentLocation();
-    const updateInterval = Duration(minutes: 1);
+    const updateInterval = Duration(seconds: 10);
     if (currentLocation != null) {
       _timer = Timer.periodic(updateInterval, (Timer timer) {
         DioNetworkRepos().updateLocationToBackend(
@@ -175,6 +175,7 @@ class _UserScreenState extends State<UserScreen> {
                         children: [
                           ListTile(
                             title: Text(
+                              textAlign: TextAlign.center,
                               snapshot.data![index]['address'],
                               style: const TextStyle(
                                   color: Colors.indigo,
@@ -323,6 +324,54 @@ class _UserScreenState extends State<UserScreen> {
                                     ),
                                   ),
                                 ),
+                          ListTile(
+                            title: Text(
+                              'الاحداثئات :  ${snapshot.data![index]['latitude']} , ${snapshot.data![index]['longitude']}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.indigo,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              'إسم المبلغ :  ${snapshot.data![index]['caller_name']}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.indigo,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              ' رقم هاتف المبلغ:  ${snapshot.data![index]['caller_phone']}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.indigo,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              'نوع الكسر :  ${snapshot.data![index]['broker_type']}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.indigo,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -409,9 +458,8 @@ class _UserScreenState extends State<UserScreen> {
                                   //excute tempStoredProcedure
                                   DioNetworkRepos()
                                       .excuteTempStoreQty(storeName);
-                                      
 
-                                //navigate to IntegrationWithStoresGetAllQty
+                                  //navigate to IntegrationWithStoresGetAllQty
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

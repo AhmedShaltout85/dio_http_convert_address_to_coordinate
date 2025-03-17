@@ -82,11 +82,9 @@ class _CustomReusableAlertDialogState extends State<CustomReusableAlertDialog> {
             widget.onSubmit(values); // Pass values to callback
             Navigator.of(context).pop(); // Close dialog
           },
-          child: const Text("Submit"),
+          child: const Text("تحديث"),
         ),
       ],
     );
   }
 }
-
-

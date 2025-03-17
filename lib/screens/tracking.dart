@@ -131,7 +131,7 @@ class _TrackingState extends State<Tracking> {
           ),
         ),
       ),
-      body: currentLatitude == 0.0 || currentLongitude == 0.0
+      body: currentLatitude == 0.0 || currentLongitude == 0.0 
           ? const CircularProgressIndicator()
           : GoogleMap(
               onMapCreated: (GoogleMapController controller) {

@@ -344,6 +344,9 @@ class DioNetworkRepos {
             "is_finished": 0,
             "handasah_name": "free",
             "technical_name": "free",
+            "caller_name":"لم يدرج",
+            "caller_phone":"لم يدرج",
+            "broker_type":"لم يدرج نوع الكسر",
           });
       if (response.statusCode == 201) {
         return response.data;

@@ -47,17 +47,35 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   // Replace with your actual Google Maps API key
   String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
   double fontSize = 12.0;
+  Timer? _timer; // Timer for periodic fetching
 
   @override
   void dispose() {
+    _timer?.cancel(); // Cancel periodic fetch and location update timer
     // Dispose the controller when the widget is disposed
     addressController.dispose();
     super.dispose();
   }
 
+  //update in periodic time
+  void _startPeriodicFetch() {
+    const Duration fetchInterval =
+        Duration(seconds: 10); // Fetch every 10 seconds
+    _timer = Timer.periodic(fetchInterval, (Timer timer) {
+      setState(() {
+        getLocs = DioNetworkRepos().getLoc();
+        getLocsAfterGetCoordinatesAndGis =
+            DioNetworkRepos().getLocByFlagAndIsFinished();
+        getLocsByHandasahNameAndTechinicianName =
+            DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
     setState(() {
       getLocs = DioNetworkRepos().getLoc();
       getLocsAfterGetCoordinatesAndGis =
@@ -87,6 +105,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
       debugPrint(value.toString());
     });
+    //start periodic fetch
+    _startPeriodicFetch();
   }
 
   // Function to get latitude and longitude from an address using Google Maps Geocoding API
@@ -313,7 +333,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                             ),
                             cursorColor: Colors.amber,
                             keyboardType: TextInputType.text,
-                            maxLength: 250,
+                            maxLength: 250, textAlign: TextAlign.right,
+                            textDirection: TextDirection.rtl,
                           ),
                         ),
                         Padding(
@@ -399,340 +420,409 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                               shrinkWrap: true,
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
-                                return InkWell(
-                                  child: Card(
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          title: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 7.0, horizontal: 3.0),
-                                            child: Row(
-                                              children: [
-                                                IconButton(
-                                                  tooltip:
-                                                      "إضافة بيانات الشكوى",
-                                                  onPressed: () {
-                                                    //
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          CustomReusableAlertDialog(
-                                                        title:
-                                                            "تحديث بيانات الشكوى",
-                                                        fieldLabels: const [
-                                                          "إسم المبلغ",
-                                                          "نوع الكسر",
-                                                          "رقم الموبيل"
-                                                        ],
-                                                        onSubmit: (values) {
-                                                          debugPrint(
-                                                              "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
-                                                          DioNetworkRepos()
-                                                              .updateLocationBrokenByAddress(
-                                                                  snapshot.data![
-                                                                          index]
-                                                                      [
-                                                                      'address'],
-                                                                  values[0],
-                                                                  values[1],
-                                                                  values[2]);
-                                                          debugPrint(
-                                                              "User Input: updated Caller Name, Phone, And Borken Number");
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.add_circle_outlined,
+                                return Card(
+                                  child: Column(
+                                    children: [
+                                      ListTile(
+                                        title: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 7.0, horizontal: 3.0),
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                tooltip: "إضافة بيانات الشكوى",
+                                                onPressed: () {
+                                                  //
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        CustomReusableAlertDialog(
+                                                      title:
+                                                          "تحديث بيانات الشكوى",
+                                                      fieldLabels: const [
+                                                        "إسم المبلغ",
+                                                        "نوع الكسر",
+                                                        "رقم الموبيل"
+                                                      ],
+                                                      onSubmit: (values) {
+                                                        debugPrint(
+                                                            "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
+                                                        DioNetworkRepos()
+                                                            .updateLocationBrokenByAddress(
+                                                                snapshot.data![
+                                                                        index]
+                                                                    ['address'],
+                                                                values[0],
+                                                                values[1],
+                                                                values[2]);
+                                                        debugPrint(
+                                                            "User Input: updated Caller Name, Phone, And Borken Number");
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  Icons.add_circle_outlined,
+                                                  color: Colors.indigo,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  textAlign: TextAlign.right,
+                                                  textDirection:
+                                                      TextDirection.rtl,
+                                                  snapshot.data![index]
+                                                      ['address'],
+                                                  style: const TextStyle(
                                                     color: Colors.indigo,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 13,
                                                   ),
                                                 ),
-                                                Expanded(
-                                                  child: Text(
-                                                    textAlign: TextAlign.right,
-                                                    textDirection:
-                                                        TextDirection.rtl,
-                                                    snapshot.data![index]
-                                                        ['address'],
-                                                    style: const TextStyle(
-                                                      color: Colors.indigo,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          subtitle: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 7.0, horizontal: 3.0),
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    snapshot.data![index][
-                                                                'handasah_name'] ==
-                                                            'free'
-                                                        ? Expanded(
-                                                            child: Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(3.0),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          3.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .orange,
-                                                                    width: 1.0),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                              ),
-                                                              child: Text(
-                                                                "قيد تخصيص هندسة",
-                                                                style:
-                                                                    TextStyle(
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .visible,
-                                                                  fontSize:
-                                                                      fontSize,
-                                                                  color: Colors
-                                                                      .indigo,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Expanded(
-                                                            child: Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(3.0),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          1.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .green,
-                                                                    width: 1.0),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                              ),
-                                                              child: Text(
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                "${snapshot.data![index]['handasah_name']}",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      fontSize,
-                                                                  color: Colors
-                                                                      .indigo,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                    snapshot.data![index][
-                                                                'technical_name'] ==
-                                                            "free"
-                                                        ? Expanded(
-                                                            child: Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(3.0),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          3.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .orange,
-                                                                    width: 1.0),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                              ),
-                                                              child: Text(
-                                                                "قيد تخصيص فنى",
-                                                                style:
-                                                                    TextStyle(
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .visible,
-                                                                  fontSize:
-                                                                      fontSize,
-                                                                  color: Colors
-                                                                      .indigo,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        : Expanded(
-                                                            child: Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(3.0),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          3.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .green,
-                                                                    width: 1.0),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                              ),
-                                                              child: Text(
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                "${snapshot.data![index]['technical_name']}",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      fontSize,
-                                                                  color: Colors
-                                                                      .indigo,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: snapshot.data![
-                                                                      index][
-                                                                  'is_approved'] ==
-                                                              1
-                                                          ? Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(3.0),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          3.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .green,
-                                                                    width: 1.0),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                              ),
-                                                              child: Text(
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                'تم قبول الشكوى',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      fontSize,
-                                                                  color: Colors
-                                                                      .indigo,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(3.0),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          3.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .orange,
-                                                                    width: 1.0),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5.0),
-                                                              ),
-                                                              child: Text(
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                'قيد قبول الشكوى',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      fontSize,
-                                                                  color: Colors
-                                                                      .indigo,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            IconButton(
+                                        subtitle: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 7.0, horizontal: 3.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  snapshot.data![index][
+                                                              'handasah_name'] ==
+                                                          'free'
+                                                      ? Expanded(
+                                                          child: Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        3.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .orange,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              "قيد تخصيص هندسة",
+                                                              style: TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .visible,
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Expanded(
+                                                          child: Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        1.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .green,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              "${snapshot.data![index]['handasah_name']}",
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  snapshot.data![index][
+                                                              'technical_name'] ==
+                                                          "free"
+                                                      ? Expanded(
+                                                          child: Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        3.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .orange,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              "قيد تخصيص فنى",
+                                                              style: TextStyle(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .visible,
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Expanded(
+                                                          child: Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        3.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .green,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              "${snapshot.data![index]['technical_name']}",
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: snapshot.data![index]
+                                                                [
+                                                                'is_approved'] ==
+                                                            1
+                                                        ? Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        3.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .green,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              'تم قبول الشكوى',
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        3.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .orange,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              'قيد قبول الشكوى',
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                  ),
+                                                  Expanded(
+                                                    child: snapshot.data![index]
+                                                                [
+                                                                'broker_type'] !=
+                                                            "لم يدرج نوع الكسر"
+                                                        ? Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        3.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .green,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              '${snapshot.data![index]['broker_type']}',
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        3.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .orange,
+                                                                  width: 1.0),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              'لم يدرج نوع الكسر',
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: IconButton(
                                               tooltip:
                                                   'التوجهه للخريطة GIS Map',
                                               hoverColor: Colors.yellow,
@@ -775,7 +865,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 color: Colors.blue,
                                               ),
                                             ),
-                                            IconButton(
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
                                               tooltip: 'أجراء مكالمة فيديو',
                                               hoverColor: Colors.yellow,
                                               onPressed: () {
@@ -798,7 +890,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 color: Colors.green,
                                               ),
                                             ),
-                                            IconButton(
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
                                               tooltip: 'بدء تتبع فنى الهندسة',
                                               hoverColor: Colors.yellow,
                                               onPressed: () {
@@ -842,7 +936,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 color: Colors.red,
                                               ),
                                             ),
-                                            IconButton(
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
                                               tooltip: 'جرد مخزن',
                                               hoverColor: Colors.yellow,
                                               onPressed: () async {
@@ -905,51 +1001,54 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 color: Colors.indigo,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    debugPrint("${snapshot.data[index]['id']}");
-
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) =>
-                                          CustomReusableTextAlertDialog(
-                                        title: 'بيانات العطل',
-                                        messages: [
-                                          'العنوان :  ${snapshot.data[index]['address']}',
-                                          'الاحداثئات :  ${snapshot.data[index]['latitude']} , ${snapshot.data[index]['longitude']}',
-                                          'الهندسة :  ${snapshot.data[index]['handasah_name']}',
-                                          'إسم فنى الهندسة :  ${snapshot.data[index]['technical_name']}',
-                                          'رابط :  ${snapshot.data[index]['gis_url']}',
-                                          'إسم المبلغ :  ${snapshot.data[index]['caller_name']}',
-                                          ' رقم هاتف المبلغ:  ${snapshot.data[index]['caller_phone']}',
-                                          'نوع الكسر :  ${snapshot.data[index]['broker_type']}',
-                                        ],
-                                        actions: [
-                                          Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: const Text('Close'),
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
+                                              tooltip: 'عرض بيانات الشكوى',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      CustomReusableTextAlertDialog(
+                                                    title: 'بيانات العطل',
+                                                    messages: [
+                                                      'العنوان :  ${snapshot.data![index]['address']}',
+                                                      'الاحداثئات :  ${snapshot.data![index]['latitude']} , ${snapshot.data[index]['longitude']}',
+                                                      'الهندسة :  ${snapshot.data![index]['handasah_name']}',
+                                                      'إسم فنى الهندسة :  ${snapshot.data![index]['technical_name']}',
+                                                      'Gis-Link :  ${snapshot.data![index]['gis_url']}',
+                                                      'إسم المبلغ :  ${snapshot.data![index]['caller_name']}',
+                                                      ' رقم هاتف المبلغ:  ${snapshot.data![index]['caller_phone']}',
+                                                      'نوع الكسر :  ${snapshot.data![index]['broker_type']}',
+                                                    ],
+                                                    actions: [
+                                                      Align(
+                                                        alignment: Alignment
+                                                            .bottomLeft,
+                                                        child: TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(),
+                                                          child: const Text(
+                                                              'Close'),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                Icons.info,
+                                                color: Colors.blueAccent,
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    );
-
-                                    // open address details
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) =>
-                                    //         const AddressDetails(),
-                                    //   ),
-                                    // );
-                                  },
+                                    ],
+                                  ),
                                 );
                               },
                               // physics: const NeverScrollableScrollPhysics(),

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
       ),
 
-      home: const LandingScreen(), //TESTED (WORKING)
+      home: const LandingScreen(),
     );
   }
 }

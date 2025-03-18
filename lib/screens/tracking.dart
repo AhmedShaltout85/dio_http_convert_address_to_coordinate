@@ -29,8 +29,7 @@ class _TrackingState extends State<Tracking> {
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double currentLatitude = 0.0;
   double currentLongitude = 0.0;
-  // double startLatitude = 0.0;
-  // double startLongitude = 0.0;
+
   final Set<Marker> markers = {};
   final String googleMapsApiKey =
       "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk"; // Replace with your API key
@@ -67,16 +66,12 @@ class _TrackingState extends State<Tracking> {
   Future<void> _getCurrentLocation() async {
     debugPrint(widget.address);
     debugPrint(widget.technicianName);
-    // if (currentLatitude == 0.0 || currentLongitude == 0.0) {
-    //   currentLatitude = double.parse(widget.latitude);
-    //   currentLongitude = double.parse(widget.longitude);
-    // } else {
+
     getCurrentLocation = DioNetworkRepos().getLocationByAddressAndTechnician(
         widget.address, widget.technicianName);
 
     getCurrentLocation.then((value) {
       debugPrint("print from ui: in Location Tracking $value");
-      // debugPrint("ID: ${value['id']}");
       debugPrint("Address: ${value['address']}");
       debugPrint("Latitude: ${value['latitude']}");
       debugPrint("Longitude: ${value['longitude']}");
@@ -88,8 +83,6 @@ class _TrackingState extends State<Tracking> {
       setState(() {
         currentLatitude = double.parse(value['currentLatitude']);
         currentLongitude = double.parse(value['currentLongitude']);
-        // startLatitude = double.parse(value['startLatitude']);
-        // startLongitude = double.parse(value['startLongitude']);
       });
     });
     // }
@@ -131,8 +124,10 @@ class _TrackingState extends State<Tracking> {
           ),
         ),
       ),
-      body: currentLatitude == 0.0 || currentLongitude == 0.0 
-          ? const CircularProgressIndicator()
+      body: currentLatitude == 0.0 || currentLongitude == 0.0
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
           : GoogleMap(
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
@@ -162,42 +157,11 @@ class _TrackingState extends State<Tracking> {
                   icon: BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueOrange),
                 ),
-                // Marker(
-                //   markerId: const MarkerId("موقع بداية التتبع"),
-                //   position: LatLng(startLatitude, startLongitude),
-                //   infoWindow: InfoWindow(
-                //       title: "موقع بداية التتبع",
-                //       // title: widget.address,
-                //       snippet: "$startLatitude, $startLongitude"),
-                //   icon: BitmapDescriptor.defaultMarkerWithHue(
-                //       BitmapDescriptor.hueGreen),
-                // )
               },
               polylines: {
                 _addPolyline(),
               },
             ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.indigo,
-      //   onPressed: () {
-      //     _getCurrentLocation();
-      //     if (currentLatitude != 0.0 && currentLongitude != 0.0) {
-      //       // _controller.future.then((controller) => controller.animateCamera(
-      //       //       CameraUpdate.newLatLng(
-      //       //         LatLng(currentLatitude, currentLongitude),
-      //       //       ),
-      //       //     ));
-      //       _moveCamera(); // Move camera to the updated location
-      //     }
-      //   },
-      //   mini: true,
-      //   tooltip: "تحديد الموقع الحالى",
-      //   child: const Icon(
-      //     Icons.refresh,
-      //     color: Colors.white,
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
-// import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
+import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
 import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -149,10 +149,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         color: Colors.indigo,
                       ),
                     )
-                  : Container()
-                  // : IframeScreen(
-                  //     url: gisHandasahUrl,
-                  //   ), //
+                  // : Container()
+                  : IframeScreen(
+                      url: gisHandasahUrl,
+                    ), //
             ),
           ),
           Expanded(
@@ -543,28 +543,26 @@ class _HandasahScreenState extends State<HandasahScreen> {
           ),
         ],
       ),
-      // : const Center(
-      //     child: CircularProgressIndicator(),
+      
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     setState(() {
+      //       getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
+      //           .getLocByHandasahAndIsFinished(handasahName, 0);
+      //       getLocByHandasahAndTechnician = DioNetworkRepos()
+      //           .getLocByHandasahAndTechnician(handasahName, 'free');
+      //       gisHandasahUrl = "";
+      //     });
+      //   },
+      //   backgroundColor: Colors.cyan,
+      //   mini: true,
+      //   tooltip: 'تحديث',
+      //   child: const Icon(
+      //     Icons.refresh,
+      //     color: Colors.white,
       //   ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
-                .getLocByHandasahAndIsFinished(handasahName, 0);
-            getLocByHandasahAndTechnician = DioNetworkRepos()
-                .getLocByHandasahAndTechnician(handasahName, 'free');
-            gisHandasahUrl = "";
-          });
-        },
-        backgroundColor: Colors.cyan,
-        mini: true,
-        tooltip: 'تحديث',
-        child: const Icon(
-          Icons.refresh,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
     );
   }
 }

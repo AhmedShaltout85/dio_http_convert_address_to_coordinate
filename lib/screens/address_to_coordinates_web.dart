@@ -1003,6 +1003,28 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             ),
                                           ),
                                           Expanded(
+                                            child:   IconButton(
+                                              tooltip: 'إبلاغ كسورات معامل',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.report_gmailerrorred,
+                                                color: Colors.cyan,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child:   IconButton(
+                                              tooltip: 'تتبع سيارات الطوارئ',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.car_rental,
+                                                color: Colors.purple,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
                                             child: IconButton(
                                               tooltip: 'عرض بيانات الشكوى',
                                               hoverColor: Colors.yellow,
@@ -1069,27 +1091,27 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         title: 'الاعطال الواردة من الخط الساخن',
         getLocs: getLocs,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.cyan,
-        onPressed: () {
-          // pickMarkers.clear();
-          setState(() {
-            getLocs = DioNetworkRepos().getLoc();
-            //update locations after getting coordinates
-            getLocsAfterGetCoordinatesAndGis =
-                DioNetworkRepos().getLocByFlagAndIsFinished();
-            getLocsByHandasahNameAndTechinicianName =
-                DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-          });
-        },
-        mini: true,
-        tooltip: 'تحديث',
-        child: const Icon(
-          Icons.refresh,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.cyan,
+      //   onPressed: () {
+      //     // pickMarkers.clear();
+      //     setState(() {
+      //       getLocs = DioNetworkRepos().getLoc();
+      //       //update locations after getting coordinates
+      //       getLocsAfterGetCoordinatesAndGis =
+      //           DioNetworkRepos().getLocByFlagAndIsFinished();
+      //       getLocsByHandasahNameAndTechinicianName =
+      //           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+      //     });
+      //   },
+      //   mini: true,
+      //   tooltip: 'تحديث',
+      //   child: const Icon(
+      //     Icons.refresh,
+      //     color: Colors.white,
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
     );
   }
 }

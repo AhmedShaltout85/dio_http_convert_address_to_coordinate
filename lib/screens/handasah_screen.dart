@@ -145,8 +145,9 @@ class _HandasahScreenState extends State<HandasahScreen> {
               padding: const EdgeInsets.all(8.0),
               child: gisHandasahUrl == ""
                   ? const Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.indigo,
+                      child: Text(
+                        'عرض رابط GIS',
+                        style: TextStyle(fontSize: 20, color: Colors.indigo),
                       ),
                     )
                   // : Container()
@@ -182,11 +183,396 @@ class _HandasahScreenState extends State<HandasahScreen> {
                       ),
                     ),
                   ),
+
+                  // FutureBuilder(
+                  //     future: getLocsByHandasahNameAndIsFinished,
+                  //     builder: (context, snapshot) {
+                  //       length = snapshot.data!.length;
+                  //       if (snapshot.connectionState ==
+                  //           ConnectionState.waiting) {
+                  //         return const Center(
+                  //           child: CircularProgressIndicator(),
+                  //         );
+                  //       } else if (snapshot.connectionState ==
+                  //           ConnectionState.done) {
+                  //         if (snapshot.hasData) {
+                  //           return ListView.builder(
+                  //             reverse: true,
+                  //             shrinkWrap: true,
+                  //             itemCount: snapshot.data!.length,
+                  //             itemBuilder: (context, index) {
+                  //               return InkWell(
+                  //                 onTap: () {
+                  //                   // This assigns the selected item to gisHandasahUrl
+                  //                   setState(() {
+                  //                     debugPrint(
+                  //                         "Previous URL: $gisHandasahUrl"); // Debugging
+                  //                     gisHandasahUrl =
+                  //                         snapshot.data![index]['gis_url'];
+                  //                     debugPrint(
+                  //                         "New URL: $gisHandasahUrl"); // Debugging
+                  //                   });
+                  //                 },
+                  //                 child: Card(
+                  //                   child: Column(
+                  //                     children: [
+                  //                       ListTile(
+                  //                         title: Text(
+                  //                           textAlign: TextAlign.center,
+                  //                           snapshot.data![index]['address'],
+                  //                           style: const TextStyle(
+                  //                               color: Colors.indigo,
+                  //                               fontSize: 12,
+                  //                               fontWeight: FontWeight.bold),
+                  //                         ),
+                  //                         subtitle: Padding(
+                  //                           padding: const EdgeInsets.symmetric(
+                  //                               vertical: 7.0, horizontal: 3.0),
+                  //                           child: Column(
+                  //                             children: [
+                  //                               Row(
+                  //                                 mainAxisAlignment:
+                  //                                     MainAxisAlignment
+                  //                                         .spaceBetween,
+                  //                                 children: [
+                  //                                   Expanded(
+                  //                                     child: Container(
+                  //                                       margin: const EdgeInsets
+                  //                                           .all(3.0),
+                  //                                       padding:
+                  //                                           const EdgeInsets
+                  //                                               .symmetric(
+                  //                                               horizontal:
+                  //                                                   1.0),
+                  //                                       decoration:
+                  //                                           BoxDecoration(
+                  //                                         border: Border.all(
+                  //                                             color:
+                  //                                                 Colors.green,
+                  //                                             width: 1.0),
+                  //                                         borderRadius:
+                  //                                             BorderRadius
+                  //                                                 .circular(
+                  //                                                     5.0),
+                  //                                       ),
+                  //                                       child: Text(
+                  //                                         textAlign:
+                  //                                             TextAlign.center,
+                  //                                         "${snapshot.data![index]['handasah_name']}",
+                  //                                         style: TextStyle(
+                  //                                           fontSize: fontSize,
+                  //                                           color:
+                  //                                               Colors.indigo,
+                  //                                           fontWeight:
+                  //                                               FontWeight.bold,
+                  //                                         ),
+                  //                                       ),
+                  //                                     ),
+                  //                                   ),
+                  //                                   snapshot.data![index][
+                  //                                               'technical_name'] ==
+                  //                                           "free"
+                  //                                       ? Expanded(
+                  //                                           child: Container(
+                  //                                             margin:
+                  //                                                 const EdgeInsets
+                  //                                                     .all(3.0),
+                  //                                             padding:
+                  //                                                 const EdgeInsets
+                  //                                                     .symmetric(
+                  //                                                     horizontal:
+                  //                                                         3.0),
+                  //                                             decoration:
+                  //                                                 BoxDecoration(
+                  //                                               border: Border.all(
+                  //                                                   color: Colors
+                  //                                                       .orange,
+                  //                                                   width: 1.0),
+                  //                                               borderRadius:
+                  //                                                   BorderRadius
+                  //                                                       .circular(
+                  //                                                           5.0),
+                  //                                             ),
+                  //                                             child: Text(
+                  //                                               "قيد تخصيص فنى",
+                  //                                               style:
+                  //                                                   TextStyle(
+                  //                                                 overflow:
+                  //                                                     TextOverflow
+                  //                                                         .visible,
+                  //                                                 fontSize:
+                  //                                                     fontSize,
+                  //                                                 color: Colors
+                  //                                                     .indigo,
+                  //                                                 fontWeight:
+                  //                                                     FontWeight
+                  //                                                         .bold,
+                  //                                               ),
+                  //                                             ),
+                  //                                           ),
+                  //                                         )
+                  //                                       : Expanded(
+                  //                                           child: Container(
+                  //                                             margin:
+                  //                                                 const EdgeInsets
+                  //                                                     .all(3.0),
+                  //                                             padding:
+                  //                                                 const EdgeInsets
+                  //                                                     .symmetric(
+                  //                                                     horizontal:
+                  //                                                         3.0),
+                  //                                             decoration:
+                  //                                                 BoxDecoration(
+                  //                                               border: Border.all(
+                  //                                                   color: Colors
+                  //                                                       .green,
+                  //                                                   width: 1.0),
+                  //                                               borderRadius:
+                  //                                                   BorderRadius
+                  //                                                       .circular(
+                  //                                                           5.0),
+                  //                                             ),
+                  //                                             child: Text(
+                  //                                               textAlign:
+                  //                                                   TextAlign
+                  //                                                       .center,
+                  //                                               "${snapshot.data![index]['technical_name']}",
+                  //                                               style:
+                  //                                                   TextStyle(
+                  //                                                 fontSize:
+                  //                                                     fontSize,
+                  //                                                 color: Colors
+                  //                                                     .indigo,
+                  //                                                 fontWeight:
+                  //                                                     FontWeight
+                  //                                                         .bold,
+                  //                                               ),
+                  //                                             ),
+                  //                                           ),
+                  //                                         ),
+                  //                                 ],
+                  //                               ),
+                  //                               Row(children: [
+                  //                                 Expanded(
+                  //                                   child: snapshot.data![index]
+                  //                                               [
+                  //                                               'is_approved'] ==
+                  //                                           1
+                  //                                       ? Container(
+                  //                                           margin:
+                  //                                               const EdgeInsets
+                  //                                                   .all(3.0),
+                  //                                           padding:
+                  //                                               const EdgeInsets
+                  //                                                   .symmetric(
+                  //                                                   horizontal:
+                  //                                                       3.0),
+                  //                                           decoration:
+                  //                                               BoxDecoration(
+                  //                                             border: Border.all(
+                  //                                                 color: Colors
+                  //                                                     .green,
+                  //                                                 width: 1.0),
+                  //                                             borderRadius:
+                  //                                                 BorderRadius
+                  //                                                     .circular(
+                  //                                                         5.0),
+                  //                                           ),
+                  //                                           child: Text(
+                  //                                             textAlign:
+                  //                                                 TextAlign
+                  //                                                     .center,
+                  //                                             'تم قبول الشكوى',
+                  //                                             style: TextStyle(
+                  //                                               fontSize:
+                  //                                                   fontSize,
+                  //                                               color: Colors
+                  //                                                   .indigo,
+                  //                                               fontWeight:
+                  //                                                   FontWeight
+                  //                                                       .bold,
+                  //                                             ),
+                  //                                           ),
+                  //                                         )
+                  //                                       : Container(
+                  //                                           margin:
+                  //                                               const EdgeInsets
+                  //                                                   .all(3.0),
+                  //                                           padding:
+                  //                                               const EdgeInsets
+                  //                                                   .symmetric(
+                  //                                                   horizontal:
+                  //                                                       3.0),
+                  //                                           decoration:
+                  //                                               BoxDecoration(
+                  //                                             border: Border.all(
+                  //                                                 color: Colors
+                  //                                                     .orange,
+                  //                                                 width: 1.0),
+                  //                                             borderRadius:
+                  //                                                 BorderRadius
+                  //                                                     .circular(
+                  //                                                         5.0),
+                  //                                           ),
+                  //                                           child: Text(
+                  //                                             textAlign:
+                  //                                                 TextAlign
+                  //                                                     .center,
+                  //                                             'قيد قبول الشكوى',
+                  //                                             style: TextStyle(
+                  //                                               fontSize:
+                  //                                                   fontSize,
+                  //                                               color: Colors
+                  //                                                   .indigo,
+                  //                                               fontWeight:
+                  //                                                   FontWeight
+                  //                                                       .bold,
+                  //                                             ),
+                  //                                           ),
+                  //                                         ),
+                  //                                 ),
+                  //                               ])
+                  //                             ],
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                       Row(
+                  //                           mainAxisAlignment:
+                  //                               MainAxisAlignment.center,
+                  //                           children: [
+                  //                             IconButton(
+                  //                               tooltip: 'إبلاغ كسورات معامل',
+                  //                               hoverColor: Colors.yellow,
+                  //                               onPressed: () {},
+                  //                               icon: const Icon(
+                  //                                 Icons.report_gmailerrorred,
+                  //                                 color: Colors.purple,
+                  //                               ),
+                  //                             ),
+                  //                             IconButton(
+                  //                               tooltip: 'مهمات مخازن مطلوبة',
+                  //                               hoverColor: Colors.yellow,
+                  //                               onPressed: () {},
+                  //                               icon: const Icon(
+                  //                                 Icons.store_sharp,
+                  //                                 color: Colors.cyan,
+                  //                               ),
+                  //                             ),
+                  //                             IconButton(
+                  //                               tooltip: 'جرد مخزن',
+                  //                               hoverColor: Colors.yellow,
+                  //                               onPressed: () async {
+                  //                                 //get store name by handasah
+                  //                                 debugPrint(
+                  //                                     "Store Name before get: $storeName");
+                  //                                 debugPrint(
+                  //                                     "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
+                  //                                 await DioNetworkRepos()
+                  //                                     .getStoreNameByHandasahName(
+                  //                                         snapshot.data![index]
+                  //                                             ['handasah_name'])
+                  //                                     .then((value) {
+                  //                                   // setState(() {
+                  //                                   debugPrint(
+                  //                                       value['storeName']);
+                  //                                   storeName =
+                  //                                       value['storeName'];
+                  //                                   // });
+                  //                                 });
+                  //                                 debugPrint(
+                  //                                     "Store Name after get: $storeName");
+                  //                                 //excute tempStoredProcedure
+                  //                                 DioNetworkRepos()
+                  //                                     .excuteTempStoreQty(
+                  //                                         storeName);
+
+                  //                                 //     //navigate to IntegrationWithStoresGetAllQty
+                  //                                 Navigator.push(
+                  //                                   context,
+                  //                                   MaterialPageRoute(
+                  //                                     builder: (context) =>
+                  //                                         IntegrationWithStoresGetAllQty(
+                  //                                       storeName: storeName,
+                  //                                     ),
+                  //                                   ),
+                  //                                 );
+                  //                               },
+                  //                               icon: const Icon(
+                  //                                 Icons.store_outlined,
+                  //                                 color: Colors.indigo,
+                  //                               ),
+                  //                             ),
+                  //                             IconButton(
+                  //                               tooltip: 'عرض بيانات الشكوى',
+                  //                               hoverColor: Colors.yellow,
+                  //                               onPressed: () {
+                  //                                 showDialog(
+                  //                                   context: context,
+                  //                                   builder: (context) =>
+                  //                                       CustomReusableTextAlertDialog(
+                  //                                     title: 'بيانات العطل',
+                  //                                     messages: [
+                  //                                       'العنوان :  ${snapshot.data[index]['address']}',
+                  //                                       'الاحداثئات :  ${snapshot.data[index]['latitude']} , ${snapshot.data[index]['longitude']}',
+                  //                                       'الهندسة :  ${snapshot.data[index]['handasah_name']}',
+                  //                                       'إسم فنى الهندسة :  ${snapshot.data[index]['technical_name']}',
+                  //                                       'رابط :  ${snapshot.data[index]['gis_url']}',
+                  //                                       'إسم المبلغ :  ${snapshot.data[index]['caller_name']}',
+                  //                                       ' رقم هاتف المبلغ:  ${snapshot.data[index]['caller_phone']}',
+                  //                                       'نوع الكسر :  ${snapshot.data[index]['broker_type']}',
+                  //                                     ],
+                  //                                     actions: [
+                  //                                       Align(
+                  //                                         alignment: Alignment
+                  //                                             .bottomLeft,
+                  //                                         child: TextButton(
+                  //                                           onPressed: () =>
+                  //                                               Navigator.of(
+                  //                                                       context)
+                  //                                                   .pop(),
+                  //                                           child: const Text(
+                  //                                               'Close'),
+                  //                                         ),
+                  //                                       ),
+                  //                                     ],
+                  //                                   ),
+                  //                                 );
+                  //                               },
+                  //                               icon: const Icon(
+                  //                                 Icons.info,
+                  //                                 color: Colors.blueAccent,
+                  //                               ),
+                  //                             ),
+                  //                           ]),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               );
+                  //             },
+                  //             physics: const NeverScrollableScrollPhysics(),
+                  //           );
+                  //         }
+                  //       } else if (snapshot.hasError) {
+                  //         return Text('Error: ${snapshot.error}');
+                  //       }
+                  //       return const Center(
+                  //         child: CircularProgressIndicator(),
+                  //       );
+                  //     }),
                   FutureBuilder(
-                      future: getLocsByHandasahNameAndIsFinished,
-                      builder: (context, snapshot) {
-                        length = snapshot.data!.length;
-                        if (snapshot.hasData) {
+                    future: getLocsByHandasahNameAndIsFinished,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.done) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (snapshot.hasData) {
+                          // Update length only if data is available
+                          length = snapshot.data!.length;
                           return ListView.builder(
                             reverse: true,
                             shrinkWrap: true,
@@ -194,14 +580,11 @@ class _HandasahScreenState extends State<HandasahScreen> {
                             itemBuilder: (context, index) {
                               return InkWell(
                                 onTap: () {
-                                  // This assigns the selected item to gisHandasahUrl
                                   setState(() {
-                                    debugPrint(
-                                        "Previous URL: $gisHandasahUrl"); // Debugging
+                                    debugPrint("Previous URL: $gisHandasahUrl");
                                     gisHandasahUrl =
                                         snapshot.data![index]['gis_url'];
-                                    debugPrint(
-                                        "New URL: $gisHandasahUrl"); // Debugging
+                                    debugPrint("New URL: $gisHandasahUrl");
                                   });
                                 },
                                 child: Card(
@@ -212,13 +595,16 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                           textAlign: TextAlign.center,
                                           snapshot.data![index]['address'],
                                           style: const TextStyle(
-                                              color: Colors.indigo,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                            color: Colors.indigo,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                         subtitle: Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: 7.0, horizontal: 3.0),
+                                            vertical: 7.0,
+                                            horizontal: 3.0,
+                                          ),
                                           child: Column(
                                             children: [
                                               Row(
@@ -233,11 +619,13 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                               3.0),
                                                       padding: const EdgeInsets
                                                           .symmetric(
-                                                          horizontal: 1.0),
+                                                        horizontal: 1.0,
+                                                      ),
                                                       decoration: BoxDecoration(
                                                         border: Border.all(
-                                                            color: Colors.green,
-                                                            width: 1.0),
+                                                          color: Colors.green,
+                                                          width: 1.0,
+                                                        ),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(5.0),
@@ -266,14 +654,16 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                             padding:
                                                                 const EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                        3.0),
+                                                              horizontal: 3.0,
+                                                            ),
                                                             decoration:
                                                                 BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .orange,
-                                                                  width: 1.0),
+                                                              border:
+                                                                  Border.all(
+                                                                color: Colors
+                                                                    .orange,
+                                                                width: 1.0,
+                                                              ),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -304,14 +694,16 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                             padding:
                                                                 const EdgeInsets
                                                                     .symmetric(
-                                                                    horizontal:
-                                                                        3.0),
+                                                              horizontal: 3.0,
+                                                            ),
                                                             decoration:
                                                                 BoxDecoration(
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .green,
-                                                                  width: 1.0),
+                                                              border:
+                                                                  Border.all(
+                                                                color: Colors
+                                                                    .green,
+                                                                width: 1.0,
+                                                              ),
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
@@ -336,195 +728,201 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                         ),
                                                 ],
                                               ),
-                                              Row(children: [
-                                                Expanded(
-                                                  child: snapshot.data![index]
-                                                              ['is_approved'] ==
-                                                          1
-                                                      ? Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .all(3.0),
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      3.0),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: snapshot.data![index]
+                                                                [
+                                                                'is_approved'] ==
+                                                            1
+                                                        ? Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              horizontal: 3.0,
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border:
+                                                                  Border.all(
                                                                 color: Colors
                                                                     .green,
-                                                                width: 1.0),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5.0),
-                                                          ),
-                                                          child: Text(
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            'تم قبول الشكوى',
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  fontSize,
-                                                              color:
-                                                                  Colors.indigo,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                width: 1.0,
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
                                                             ),
-                                                          ),
-                                                        )
-                                                      : Container(
-                                                          margin:
-                                                              const EdgeInsets
-                                                                  .all(3.0),
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      3.0),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              'تم قبول الشكوى',
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Container(
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(3.0),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              horizontal: 3.0,
+                                                            ),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border:
+                                                                  Border.all(
                                                                 color: Colors
                                                                     .orange,
-                                                                width: 1.0),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5.0),
-                                                          ),
-                                                          child: Text(
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            'قيد قبول الشكوى',
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  fontSize,
-                                                              color:
-                                                                  Colors.indigo,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                                width: 1.0,
+                                                              ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5.0),
+                                                            ),
+                                                            child: Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              'قيد قبول الشكوى',
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                    fontSize,
+                                                                color: Colors
+                                                                    .indigo,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                ),
-                                              ])
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           ),
                                         ),
                                       ),
                                       Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            IconButton(
-                                              tooltip: 'إبلاغ كسورات معامل',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                Icons.report_gmailerrorred,
-                                                color: Colors.purple,
-                                              ),
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            tooltip: 'إبلاغ كسورات معامل',
+                                            hoverColor: Colors.yellow,
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                              Icons.report_gmailerrorred,
+                                              color: Colors.purple,
                                             ),
-                                            IconButton(
-                                              tooltip: 'مهمات مخازن مطلوبة',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                Icons.store_sharp,
-                                                color: Colors.cyan,
-                                              ),
+                                          ),
+                                          IconButton(
+                                            tooltip: 'مهمات مخازن مطلوبة',
+                                            hoverColor: Colors.yellow,
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                              Icons.store_sharp,
+                                              color: Colors.cyan,
                                             ),
-                                            IconButton(
-                                              tooltip: 'جرد مخزن',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () async {
-                                                //get store name by handasah
-                                                debugPrint(
-                                                    "Store Name before get: $storeName");
-                                                debugPrint(
-                                                    "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
-                                                await DioNetworkRepos()
-                                                    .getStoreNameByHandasahName(
-                                                        snapshot.data![index]
-                                                            ['handasah_name'])
-                                                    .then((value) {
-                                                  // setState(() {
-                                                  debugPrint(
-                                                      value['storeName']);
-                                                  storeName =
-                                                      value['storeName'];
-                                                  // });
-                                                });
-                                                debugPrint(
-                                                    "Store Name after get: $storeName");
-                                                //excute tempStoredProcedure
-                                                DioNetworkRepos()
-                                                    .excuteTempStoreQty(
-                                                        storeName);
+                                          ),
+                                          IconButton(
+                                            tooltip: 'جرد مخزن',
+                                            hoverColor: Colors.yellow,
+                                            onPressed: () async {
+                                              //get store name by handasah
+                                              debugPrint(
+                                                  "Store Name before get: $storeName");
+                                              debugPrint(
+                                                  "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
+                                              await DioNetworkRepos()
+                                                  .getStoreNameByHandasahName(
+                                                      snapshot.data![index]
+                                                          ['handasah_name'])
+                                                  .then((value) {
+                                                debugPrint(value['storeName']);
+                                                storeName = value['storeName'];
+                                              });
+                                              debugPrint(
+                                                  "Store Name after get: $storeName");
+                                              //excute tempStoredProcedure
+                                              DioNetworkRepos()
+                                                  .excuteTempStoreQty(
+                                                      storeName);
 
-                                                //     //navigate to IntegrationWithStoresGetAllQty
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        IntegrationWithStoresGetAllQty(
-                                                      storeName: storeName,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                Icons.store_outlined,
-                                                color: Colors.indigo,
-                                              ),
-                                            ),
-                                            IconButton(
-                                              tooltip: 'عرض بيانات الشكوى',
-                                              hoverColor: Colors.yellow,
-                                              onPressed: () {
-                                                showDialog(
-                                                  context: context,
+                                              //navigate to IntegrationWithStoresGetAllQty
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
                                                   builder: (context) =>
-                                                      CustomReusableTextAlertDialog(
-                                                    title: 'بيانات العطل',
-                                                    messages: [
-                                                      'العنوان :  ${snapshot.data[index]['address']}',
-                                                      'الاحداثئات :  ${snapshot.data[index]['latitude']} , ${snapshot.data[index]['longitude']}',
-                                                      'الهندسة :  ${snapshot.data[index]['handasah_name']}',
-                                                      'إسم فنى الهندسة :  ${snapshot.data[index]['technical_name']}',
-                                                      'رابط :  ${snapshot.data[index]['gis_url']}',
-                                                      'إسم المبلغ :  ${snapshot.data[index]['caller_name']}',
-                                                      ' رقم هاتف المبلغ:  ${snapshot.data[index]['caller_phone']}',
-                                                      'نوع الكسر :  ${snapshot.data[index]['broker_type']}',
-                                                    ],
-                                                    actions: [
-                                                      Align(
-                                                        alignment: Alignment
-                                                            .bottomLeft,
-                                                        child: TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(),
-                                                          child: const Text(
-                                                              'Close'),
-                                                        ),
-                                                      ),
-                                                    ],
+                                                      IntegrationWithStoresGetAllQty(
+                                                    storeName: storeName,
                                                   ),
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                Icons.info,
-                                                color: Colors.blueAccent,
-                                              ),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.store_outlined,
+                                              color: Colors.indigo,
                                             ),
-                                          ]),
+                                          ),
+                                          IconButton(
+                                            tooltip: 'عرض بيانات الشكوى',
+                                            hoverColor: Colors.yellow,
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    CustomReusableTextAlertDialog(
+                                                  title: 'بيانات العطل',
+                                                  messages: [
+                                                    'العنوان :  ${snapshot.data[index]['address']}',
+                                                    'الاحداثئات :  ${snapshot.data[index]['latitude']} , ${snapshot.data[index]['longitude']}',
+                                                    'الهندسة :  ${snapshot.data[index]['handasah_name']}',
+                                                    'إسم فنى الهندسة :  ${snapshot.data[index]['technical_name']}',
+                                                    'رابط :  ${snapshot.data[index]['gis_url']}',
+                                                    'إسم المبلغ :  ${snapshot.data[index]['caller_name']}',
+                                                    ' رقم هاتف المبلغ:  ${snapshot.data[index]['caller_phone']}',
+                                                    'نوع الكسر :  ${snapshot.data[index]['broker_type']}',
+                                                  ],
+                                                  actions: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.bottomLeft,
+                                                      child: TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(),
+                                                        child:
+                                                            const Text('Close'),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.info,
+                                              color: Colors.blueAccent,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -532,18 +930,25 @@ class _HandasahScreenState extends State<HandasahScreen> {
                             },
                             physics: const NeverScrollableScrollPhysics(),
                           );
+                        } else {
+                          return const Center(
+                            child: Text('لايوجد شكاوى مفتوحة'),
+                          );
                         }
+                      } else {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      }),
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
           ),
         ],
       ),
-      
+
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
       //     setState(() {

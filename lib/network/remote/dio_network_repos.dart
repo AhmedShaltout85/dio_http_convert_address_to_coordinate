@@ -347,6 +347,7 @@ class DioNetworkRepos {
             "caller_name":"لم يدرج",
             "caller_phone":"لم يدرج",
             "broker_type":"لم يدرج نوع الكسر",
+            "video_call":0
           });
       if (response.statusCode == 201) {
         return response.data;
@@ -711,6 +712,23 @@ class DioNetworkRepos {
             "caller_name": callerName,
             "caller_phone": callerPhone,
             "broker_type": brokenType
+          });
+      debugPrint(response.data.toString());
+      return response.data;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+//30-- update Location Broken By address(update Video Call)
+  // http://localhost:9999/pick-location/api/v1/get-loc/update-video-call/61 طريق الحرية الاسكندرية
+
+  Future updateLocationBrokenByAddressUpdateVideoCall(String address, int videoCall) async {
+    try {
+      final response = await dio.put(
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/update-video-call/$address",
+          data: {
+            "video_call": videoCall
           });
       debugPrint(response.data.toString());
       return response.data;

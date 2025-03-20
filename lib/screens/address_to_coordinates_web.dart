@@ -819,7 +819,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                            MainAxisAlignment.spaceAround,
                                         children: [
                                           Expanded(
                                             child: IconButton(
@@ -873,17 +873,33 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               onPressed: () {
                                                 debugPrint(
                                                     "Start Video Call ${snapshot.data![index]['id']}");
-                                                //open video call
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AgoraVideoCall(
-                                                      title:
-                                                          '${snapshot.data![index]['address']}',
+                                                if (snapshot.data![index]
+                                                        ['is_approved'] ==
+                                                    0) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text(
+                                                      'لايمكن إجراء مكالمة فيديو قبل قبول الفنى الشكوى',
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    )),
+                                                  );
+                                                } else {
+                                                  //open video call
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AgoraVideoCall(
+                                                        title:
+                                                            '${snapshot.data![index]['address']}',
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
+                                                  );
+                                                }
                                               },
                                               icon: const Icon(
                                                 Icons.video_call,
@@ -1003,8 +1019,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             ),
                                           ),
                                           Expanded(
-                                            child:   IconButton(
-                                              tooltip: 'إبلاغ كسورات معامل',
+                                            child: IconButton(
+                                              tooltip: 'الربط مع المعامل',
                                               hoverColor: Colors.yellow,
                                               onPressed: () {},
                                               icon: const Icon(
@@ -1014,13 +1030,47 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             ),
                                           ),
                                           Expanded(
-                                            child:   IconButton(
-                                              tooltip: 'تتبع سيارات الطوارئ',
+                                            child: IconButton(
+                                              tooltip: 'تتبع سيارة GPS',
                                               hoverColor: Colors.yellow,
                                               onPressed: () {},
                                               icon: const Icon(
                                                 Icons.car_rental,
+                                                color: Colors.indigo,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
+                                              tooltip: "غرفة الطوارئ المتحركة",
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.car_crash,
                                                 color: Colors.purple,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
+                                              tooltip: 'نظام الكاميرات',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons.video_camera_back,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: IconButton(
+                                              tooltip: 'الربط مع الاسكادا',
+                                              hoverColor: Colors.yellow,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                Icons
+                                                    .dashboard_customize_outlined,
+                                                color: Colors.orange,
                                               ),
                                             ),
                                           ),

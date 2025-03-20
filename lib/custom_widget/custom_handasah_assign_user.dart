@@ -55,7 +55,7 @@ class CustomHandasahAssignUser extends StatelessWidget {
               if (!snapshot.hasData ||
                   snapshot.data == null ||
                   snapshot.data!.isEmpty) {
-                return const Center(child: Text("No data available"));
+                return const Center(child: Text("لا يوجد شكاوى جديدة"));
               }
 
               return ListView.builder(

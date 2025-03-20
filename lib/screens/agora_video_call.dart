@@ -166,7 +166,7 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 25.0, right: 25),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
                     onPressed: () {
@@ -193,7 +193,6 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
                         color: Colors.white,
                       ),
                     ),
-                    // color: Colors.white,
                   ),
                 ],
               ),

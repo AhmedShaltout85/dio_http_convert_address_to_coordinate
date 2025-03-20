@@ -79,6 +79,8 @@ dependencies:
     # android: true
     # ios: flase
     # web: true
+  audioplayers: ^5.2.1
+
 
 
 
@@ -117,8 +119,11 @@ flutter:
     - assets/imgs/2.png
     - assets/imgs/3.png
     - assets/imgs/4.png
+    - assets/imgs/5.png
     - assets/logo.png
     - assets/aw_logo.png
+    - assets/sounds/ringtone.mp3
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+import '../screens/agora_video_call.dart';
+
 class CustomAlertDialogWithSound extends StatelessWidget {
   final String title;
   final String message;
   final IconData icon;
   final String soundPath;
+  final String address;
 
   const CustomAlertDialogWithSound({
     super.key,
@@ -13,6 +16,7 @@ class CustomAlertDialogWithSound extends StatelessWidget {
     required this.message,
     required this.icon,
     required this.soundPath,
+    required this.address,
   });
 
   void _playSound() async {
@@ -26,20 +30,58 @@ class CustomAlertDialogWithSound extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) => _playSound());
 
     return AlertDialog(
-      title: Row(
-        children: [
-          Icon(icon, color: Colors.blue),
-          const SizedBox(width: 10),
-          Text(title),
-        ],
+      title: Text(
+        textAlign: TextAlign.right,
+        textDirection: TextDirection.rtl,
+        title,
+        style: const TextStyle(
+          color: Colors.indigo,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      content: Text(message),
+
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(icon, color: Colors.green, size: 30),
+          const SizedBox(width: 10),
+          Text(
+            message,
+            textAlign: TextAlign.right,
+            textDirection: TextDirection.rtl,
+            style: const TextStyle(
+              color: Colors.indigo,
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ), // Add your custom sound asset path here (e.g., 'assets/sounds/alert_sound.mp3',),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('OK'),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AgoraVideoCall(
+                    title: address,
+                  ),
+                ),
+              );
+            },
+            icon: const CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.green,
+              child: Icon(
+                Icons.call,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
       ],
     );

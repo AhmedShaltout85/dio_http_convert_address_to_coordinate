@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
-import 'package:pick_location/screens/agora_video_call.dart';
+// import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
+import '../custom_widget/custom_alert_dialog_with_sound.dart';
 import '../custom_widget/custom_web_view.dart';
 import '../network/remote/dio_network_repos.dart';
 
@@ -26,6 +27,7 @@ class _UserScreenState extends State<UserScreen> {
   LocationData? currentLocation;
   late String address;
   String storeName = "";
+  int videoCall = 0;
 
   // StreamSubscription<LocationData>? locationSubscription;
 
@@ -119,8 +121,7 @@ class _UserScreenState extends State<UserScreen> {
 
   // Function to start periodic fetching
   void _startPeriodicFetch() {
-    const Duration fetchInterval =
-        Duration(minutes: 30); // Fetch every 10 seconds
+    const Duration fetchInterval = Duration(minutes: 1); // Fetch every 1 minute
     _timer = Timer.periodic(fetchInterval, (Timer timer) {
       getUsersBrokenPointsList.then((data) {
         if (data.isEmpty) {
@@ -129,6 +130,19 @@ class _UserScreenState extends State<UserScreen> {
         }
       });
     });
+  }
+
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => CustomAlertDialogWithSound(
+        title: 'مكالمة فيديو واردة من الطورائ',
+        message: 'فضلا قم بالرد ',
+        soundPath: 'sounds/ringtone.mp3',
+        icon: Icons.video_call,
+        address: address,
+      ),
+    );
   }
 
   @override
@@ -163,8 +177,9 @@ class _UserScreenState extends State<UserScreen> {
                   shrinkWrap: true,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    isApproved = snapshot.data![index]['is_approved'];
                     address = snapshot.data![index]['address'];
+                    isApproved = snapshot.data![index]['is_approved'];
+                    videoCall = snapshot.data![index]['video_call'];
                     return Card(
                       margin: const EdgeInsets.all(10),
                       child: Column(
@@ -292,8 +307,6 @@ class _UserScreenState extends State<UserScreen> {
                                                     // //updated Location
                                                     _startFetchingLocation();
                                                   }
-
-                                                  //refresh UI
                                                 },
                                                 child: const Text(
                                                   'قيد قبول الشكوى',
@@ -310,7 +323,6 @@ class _UserScreenState extends State<UserScreen> {
                                                 ),
                                                 onPressed: () {
                                                   //active live Location
-                                                  // _startFetchingLocation();
                                                 },
                                                 child: const Text(
                                                   'تم قبول الشكوى',
@@ -407,15 +419,30 @@ class _UserScreenState extends State<UserScreen> {
                                 onPressed: () {
                                   debugPrint(
                                       "Start Video Call ${snapshot.data![index]['id']}");
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AgoraVideoCall(
-                                        title:
-                                            '${snapshot.data![index]['address']}',
-                                      ),
-                                    ),
-                                  );
+                                  if (snapshot.data![index]['video_call'] ==
+                                      0) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                        'لايمكن إجراء مكالمة فيديو قبل قبول تفعيل الاتصال من الطوارئ',
+                                        textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                    );
+                                  } else if (snapshot.data![index]
+                                          ['video_call'] ==
+                                      1) {
+                                    _showDialog(context);
+                                  }
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => AgoraVideoCall(
+                                  //       title:
+                                  //           '${snapshot.data![index]['address']}',
+                                  //     ),
+                                  //   ),
+                                  // );
                                 },
                                 icon: const Icon(
                                   Icons.video_call,

@@ -11,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pick_location/screens/address_to_coordinates_web.dart';
 import 'package:pick_location/screens/user_screen.dart';
 
+import '../network/remote/dio_network_repos.dart';
 import '../utils/dio_http_constants.dart';
 
 class AgoraVideoCall extends StatefulWidget {
@@ -127,6 +128,9 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop(true); //back to previous screen
+              //update video call
+            DioNetworkRepos()
+                .updateLocationBrokenByAddressUpdateVideoCall(widget.title, 0);
 
             // _dispose();
           },
@@ -170,6 +174,11 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
                 children: [
                   IconButton(
                     onPressed: () {
+                      //update video call
+                      DioNetworkRepos()
+                          .updateLocationBrokenByAddressUpdateVideoCall(
+                              widget.title, 0);
+                              //
                       kIsWeb
                           ? Navigator.push(
                               context,

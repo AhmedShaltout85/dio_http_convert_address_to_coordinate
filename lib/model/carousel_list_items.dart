@@ -9,5 +9,7 @@ class CarouselListItems {
     CarouselListItems(img: 'assets/imgs/2.png'),
     CarouselListItems(img: 'assets/imgs/3.png'),
     CarouselListItems(img: 'assets/imgs/4.png'),
+    CarouselListItems(img: 'assets/imgs/4.png'),
+    CarouselListItems(img: 'assets/imgs/5.png'),
   ];
 }

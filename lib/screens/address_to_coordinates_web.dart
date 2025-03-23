@@ -15,6 +15,7 @@ import '../custom_widget/custom_alert_dailog.dart';
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_drawer.dart';
 import '../custom_widget/custom_end_drawer.dart';
+// import '../custom_widget/custom_ip_camera_viewer.dart';
 import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
 
@@ -888,6 +889,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     )),
                                                   );
                                                 } else {
+                                                  //update video call status(23-03-2025)
+                                                  DioNetworkRepos().updateLocationBrokenByAddressUpdateVideoCall(
+                                                          snapshot.data![index]
+                                                              ['address'], 1);
                                                   //open video call
                                                   Navigator.push(
                                                     context,
@@ -1055,7 +1060,27 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             child: IconButton(
                                               tooltip: 'نظام الكاميرات',
                                               hoverColor: Colors.yellow,
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                //
+                                                //navigate to IPCameraViewer
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //         const IPCameraViewer(
+                                                //       cameraUrl:
+                                                //           'http://196.219.231.5', // replace with your actual stream URL
+                                                //     ),
+                                                //   ),
+                                                // );
+
+                                                //navigate to Browser
+                                                const url =
+                                                    'http://196.219.231.5';
+                                                CustomBrowserRedirect
+                                                    .openInBrowser(
+                                                        url); // Open in browser
+                                              },
                                               icon: const Icon(
                                                 Icons.video_camera_back,
                                                 color: Colors.black,

@@ -202,6 +202,7 @@ import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
 import 'package:pick_location/screens/handasah_screen.dart';
+import 'package:pick_location/screens/system_admin_screen.dart';
 import 'package:pick_location/screens/user_screen.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 
@@ -221,7 +222,12 @@ class CustomizLoginScreenBody extends StatefulWidget {
 class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  List<String> roleList = ['غرفة العمليات', 'Gis', 'الهندسة', 'فنى هندسة'];
+  List<String> roleList = [
+    'مدير النظام',
+    'غرفة العمليات',
+    'مديرى ومشرفى الهندسة',
+    'فنى هندسة'
+  ];
   String? roleValue;
 
   void handleLogin(BuildContext context) async {
@@ -265,6 +271,11 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const HandasahScreen()),
+          );
+        } else if (DataStatic.userRole == 0) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const SystemAdminScreen()),
           );
         } else {
           Navigator.push(

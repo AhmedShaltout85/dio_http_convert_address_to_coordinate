@@ -3,7 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 import '../screens/agora_video_call.dart';
 
-class CustomAlertDialogWithSound extends StatelessWidget {
+class CustomAlertDialogWithSound extends StatefulWidget {
   final String title;
   final String message;
   final IconData icon;
@@ -19,9 +19,16 @@ class CustomAlertDialogWithSound extends StatelessWidget {
     required this.address,
   });
 
+  @override
+  State<CustomAlertDialogWithSound> createState() =>
+      _CustomAlertDialogWithSoundState();
+}
+
+class _CustomAlertDialogWithSoundState
+    extends State<CustomAlertDialogWithSound> {
+  AudioPlayer audioPlayer = AudioPlayer();
   void _playSound() async {
-    AudioPlayer audioPlayer = AudioPlayer();
-    await audioPlayer.play(AssetSource(soundPath));
+    await audioPlayer.play(AssetSource(widget.soundPath));
   }
 
   @override
@@ -33,10 +40,10 @@ class CustomAlertDialogWithSound extends StatelessWidget {
       title: Text(
         textAlign: TextAlign.right,
         textDirection: TextDirection.rtl,
-        title,
+        widget.title,
         style: const TextStyle(
           color: Colors.indigo,
-          fontSize: 15,
+          fontSize: 17,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -44,10 +51,14 @@ class CustomAlertDialogWithSound extends StatelessWidget {
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(icon, color: Colors.green, size: 30),
+          Icon(
+            widget.icon,
+            color: Colors.red,
+            size: 50,
+          ),
           const SizedBox(width: 10),
           Text(
-            message,
+            widget.message,
             textAlign: TextAlign.right,
             textDirection: TextDirection.rtl,
             style: const TextStyle(
@@ -63,18 +74,22 @@ class CustomAlertDialogWithSound extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: IconButton(
             onPressed: () {
+              //
               Navigator.of(context).pop();
+              //
+              audioPlayer.stop();
+              //
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => AgoraVideoCall(
-                    title: address,
+                    title: widget.address,
                   ),
                 ),
               );
             },
             icon: const CircleAvatar(
-              radius: 30,
+              radius: 25,
               backgroundColor: Colors.green,
               child: Icon(
                 Icons.call,

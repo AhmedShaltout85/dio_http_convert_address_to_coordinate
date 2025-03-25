@@ -26,10 +26,13 @@ class _CustomDropdownState extends State<CustomDropdown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      alignment: AlignmentDirectional.center,
       borderRadius: const BorderRadius.all(Radius.circular(7)),
       value: _selectedItem,
       hint: Text(
         widget.hintText,
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.rtl,
         style: const TextStyle(
           color: Colors.indigo,
         ),

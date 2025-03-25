@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
+import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
@@ -22,28 +23,30 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   late Future<List<Map<String, dynamic>>> getUsersBrokenPointsList;
-  Timer? _timer; // Timer for periodic fetching
+  Timer? _timer, _timer2; // Timer for periodic fetching
   int? isApproved;
   LocationData? currentLocation;
   late String address;
   String storeName = "";
   int videoCall = 0;
 
-  // StreamSubscription<LocationData>? locationSubscription;
+  StreamSubscription<LocationData>? locationSubscription;
 
   @override
   void initState() {
     super.initState();
+  
     _fetchData(); // Initial fetch
     _getCurrentLocation(); // Get current location
     _startPeriodicFetch(); // Start periodic fetching
     // _startFetchingLocation(); // Start fetching location every 1 minutes
+    // _updateUI(); // Update UI
   }
 
   @override
   void dispose() {
     _timer?.cancel(); // Cancel periodic fetch and location update timer
-    // locationSubscription?.cancel(); // Cancel location listener subscription
+    locationSubscription?.cancel(); // Cancel location listener subscription
     super.dispose();
   }
 
@@ -56,6 +59,12 @@ class _UserScreenState extends State<UserScreen> {
     });
     getUsersBrokenPointsList.then((value) {
       debugPrint("PRINTED DATA FROM UI: $value");
+      if (value[0]['video_call'] == 1) {
+        _showDialog(context, value[0]['address']);
+        _timer2?.cancel();
+      }else if(value[0]['video_call'] == 0){
+         _updateUI(); // Update UI
+      }
       if (value.isEmpty) {
         debugPrint("Data is empty, will retry...");
       }
@@ -94,8 +103,8 @@ class _UserScreenState extends State<UserScreen> {
       debugPrint("Error getting location: $e");
     }
 
-    // locationSubscription = //not tested
-    location.onLocationChanged.listen((LocationData newLocation) {
+    locationSubscription = //not tested
+        location.onLocationChanged.listen((LocationData newLocation) {
       setState(() {
         currentLocation = newLocation;
       });
@@ -105,12 +114,10 @@ class _UserScreenState extends State<UserScreen> {
   //Function to start fetching updated location
   void _startFetchingLocation() {
     const updateInterval = Duration(minutes: 1);
-    // if (currentLocation != null) {
     _timer = Timer.periodic(updateInterval, (Timer timer) {
       DioNetworkRepos().updateLocationToBackend(
           address, currentLocation!.latitude!, currentLocation!.longitude!);
     });
-    // }
   }
   // //Function to start fetching updated location
   // void _startFetchingLocation() {
@@ -132,14 +139,23 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 
-  void _showDialog(BuildContext context) {
+  //auto update ui
+  void _updateUI() {
+    const Duration fetchInterval =
+        Duration(seconds: 10); // Fetch every 10 seconds
+    _timer2 = Timer.periodic(fetchInterval, (Timer timer) {
+      _fetchData();
+    });
+  }
+
+  void _showDialog(BuildContext context, String address) {
     showDialog(
       context: context,
       builder: (context) => CustomAlertDialogWithSound(
         title: 'مكالمة فيديو واردة من الطورائ',
-        message: 'فضلا قم بالرد ',
+        message: address,
         soundPath: 'sounds/ringtone.mp3',
-        icon: Icons.video_call,
+        icon: Icons.videocam,
         address: address,
       ),
     );
@@ -429,20 +445,25 @@ class _UserScreenState extends State<UserScreen> {
                                         textAlign: TextAlign.center,
                                       )),
                                     );
-                                  } else if (snapshot.data![index]
-                                          ['video_call'] ==
-                                      1) {
-                                    _showDialog(context);
+                                  } else{
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AgoraVideoCall(
+                                        title:
+                                            '${snapshot.data![index]['address']}',
+                                      ),
+                                    ),
+                                  );
                                   }
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => AgoraVideoCall(
-                                  //       title:
-                                  //           '${snapshot.data![index]['address']}',
-                                  //     ),
-                                  //   ),
-                                  // );
+                                  // else if (snapshot.data![index]
+                                  //         ['video_call'] ==
+                                  //     1) {
+                                  //   _showDialog(context,
+                                  //       snapshot.data![index]['address']);
+                                  //   _timer2?.cancel();
+                                  // } 
                                 },
                                 icon: const Icon(
                                   Icons.video_call,
@@ -544,19 +565,19 @@ class _UserScreenState extends State<UserScreen> {
               child: CircularProgressIndicator(),
             );
           }),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.cyan,
-        onPressed: () {
-          _fetchData(); // Manually refresh data
-        },
-        mini: true,
-        tooltip: 'تحديث',
-        child: const Icon(
-          Icons.refresh,
-          color: Colors.white,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.cyan,
+      //   onPressed: () {
+      //     _fetchData(); // Manually refresh data
+      //   },
+      //   mini: true,
+      //   tooltip: 'تحديث',
+      //   child: const Icon(
+      //     Icons.refresh,
+      //     color: Colors.white,
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
     );
   }
 }

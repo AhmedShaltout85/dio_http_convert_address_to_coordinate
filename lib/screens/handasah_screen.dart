@@ -110,6 +110,32 @@ class _HandasahScreenState extends State<HandasahScreen> {
           DataStatic.handasahName,
           style: const TextStyle(color: Colors.indigo),
         ),
+        actions: [
+          IconButton(
+            tooltip: "إضافة مشرف, وفنى الهندسة",
+            hoverColor: Colors.yellow,
+            icon: const CircleAvatar(
+              backgroundColor: Colors.indigo,
+              child: Icon(
+                Icons.person_add_alt,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            tooltip: "إضافه المهمات الخاصة بالهندسة",
+            hoverColor: Colors.yellow,
+            icon: const CircleAvatar(
+              backgroundColor: Colors.indigo,
+              child: Icon(
+                Icons.note_add_outlined,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
       body:
           // length > 0
@@ -142,19 +168,19 @@ class _HandasahScreenState extends State<HandasahScreen> {
           Expanded(
             flex: 3,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: gisHandasahUrl == ""
-                  ? const Center(
-                      child: Text(
-                        'عرض رابط GIS',
-                        style: TextStyle(fontSize: 20, color: Colors.indigo),
-                      ),
-                    )
-                  : Container()
-                  // : IframeScreen(
-                  //     url: gisHandasahUrl,
-                  //   ), //
-            ),
+                padding: const EdgeInsets.all(8.0),
+                child: gisHandasahUrl == ""
+                    ? const Center(
+                        child: Text(
+                          'عرض رابط GIS',
+                          style: TextStyle(fontSize: 20, color: Colors.indigo),
+                        ),
+                      )
+                    : Container()
+                // : IframeScreen(
+                //     url: gisHandasahUrl,
+                //   ), //
+                ),
           ),
           Expanded(
             flex: 1,
@@ -622,23 +648,24 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                         horizontal: 1.0,
                                                       ),
                                                       decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                          color: Colors.green,
-                                                          width: 1.0,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5.0),
-                                                      ),
+                                                          border: Border.all(
+                                                            color: Colors.green,
+                                                            width: 1.0,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      5.0),
+                                                          color: Colors.green),
                                                       child: Text(
                                                         textAlign:
                                                             TextAlign.center,
                                                         "${snapshot.data![index]['handasah_name']}",
                                                         style: TextStyle(
                                                           fontSize: fontSize,
-                                                          color: Colors.indigo,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          color: Colors.white,
+                                                          // fontWeight:
+                                                          //     FontWeight.bold,
                                                         ),
                                                       ),
                                                     ),
@@ -668,6 +695,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           5.0),
+                                                              color:
+                                                                  Colors.orange,
                                                             ),
                                                             child: Text(
                                                               "قيد تخصيص فنى",
@@ -678,10 +707,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                 fontSize:
                                                                     fontSize,
                                                                 color: Colors
-                                                                    .indigo,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                    .white,
+                                                                // fontWeight:
+                                                                //     FontWeight
+                                                                //         .bold,
                                                               ),
                                                             ),
                                                           ),
@@ -708,6 +737,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           5.0),
+                                                              color:
+                                                                  Colors.green,
                                                             ),
                                                             child: Text(
                                                               textAlign:
@@ -718,10 +749,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                 fontSize:
                                                                     fontSize,
                                                                 color: Colors
-                                                                    .indigo,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                    .white,
+                                                                // fontWeight:
+                                                                //     FontWeight
+                                                                //         .bold,
                                                               ),
                                                             ),
                                                           ),
@@ -756,6 +787,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           5.0),
+                                                              color:
+                                                                  Colors.green,
                                                             ),
                                                             child: Text(
                                                               textAlign:
@@ -766,10 +799,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                 fontSize:
                                                                     fontSize,
                                                                 color: Colors
-                                                                    .indigo,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                    .white,
+                                                                // fontWeight:
+                                                                //     FontWeight
+                                                                //         .bold,
                                                               ),
                                                             ),
                                                           )
@@ -794,6 +827,8 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           5.0),
+                                                              color:
+                                                                  Colors.orange,
                                                             ),
                                                             child: Text(
                                                               textAlign:
@@ -804,10 +839,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                 fontSize:
                                                                     fontSize,
                                                                 color: Colors
-                                                                    .indigo,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                    .white,
+                                                                // fontWeight:
+                                                                //     FontWeight
+                                                                //         .bold,
                                                               ),
                                                             ),
                                                           ),

@@ -128,9 +128,11 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop(true); //back to previous screen
+            if (kIsWeb) {
               //update video call
-            DioNetworkRepos()
-                .updateLocationBrokenByAddressUpdateVideoCall(widget.title, 0);
+              DioNetworkRepos().updateLocationBrokenByAddressUpdateVideoCall(
+                  widget.title, 0);
+            }
 
             // _dispose();
           },
@@ -174,11 +176,13 @@ class _AgoraVideoCallState extends State<AgoraVideoCall> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      //update video call
-                      DioNetworkRepos()
-                          .updateLocationBrokenByAddressUpdateVideoCall(
-                              widget.title, 0);
-                              //
+                      setState(() {
+                        //update video call
+                        DioNetworkRepos()
+                            .updateLocationBrokenByAddressUpdateVideoCall(
+                                widget.title, 0);
+                      });
+                      //
                       kIsWeb
                           ? Navigator.push(
                               context,

@@ -224,7 +224,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final TextEditingController passwordController = TextEditingController();
   List<String> roleList = [
     'مدير النظام',
-    'غرفة العمليات',
+    'غرفة الطوارىء',
     'مديرى ومشرفى الهندسة',
     'فنى هندسة'
   ];

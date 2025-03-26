@@ -11,7 +11,7 @@ import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/tracking.dart';
 
-import '../custom_widget/custom_alert_dailog.dart';
+import '../custom_widget/custom_reusable_alert_dailog.dart';
 import '../custom_widget/custom_bottom_sheet.dart';
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_drawer.dart';
@@ -243,7 +243,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     }
   }
 
-  //show bottom sheet
+  //show bottom sheet Redirect to Handasat
   void showCustomBottomSheet(
       BuildContext context, String title, String message, String address) {
     showModalBottomSheet(
@@ -289,16 +289,33 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         ),
         actions: [
           IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             tooltip: "إضافة مستخدمين الطوارئ",
             hoverColor: Colors.yellow,
-            icon: const CircleAvatar(
-              backgroundColor: Colors.indigo,
-              child: Icon(
-                Icons.person_add_alt,
-                color: Colors.white,
-              ),
+            icon: const Icon(
+              Icons.person_add_alt,
+              color: Colors.indigo,
             ),
-            onPressed: () {},
+            onPressed: () {
+              //
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CustomReusableAlertDialog(
+                        title: 'اضافة مستخدمين الطوارئ',
+                        fieldLabels: const [
+                          'اسم المستخدم',
+                          'كلمة المرور',
+                          'مطابقة كلمة المرور',
+                        ],
+                        onSubmit: (values) {
+                          DioNetworkRepos().createNewUser(
+                              values[0], values[1], 1, 'غرفة الطوارئ');
+                        });
+                  });
+              debugPrint(
+                  "User Input: updated Caller Name, Phone, And Borken Number");
+            },
           ),
         ],
       ),

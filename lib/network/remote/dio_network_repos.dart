@@ -738,4 +738,31 @@ class DioNetworkRepos {
     }
   }
 
+   //32-- POST Create New User(CREATE NEW USER)
+  //  http://localhost:9999/pick-location/api/v1/users/create-user
+  Future createNewUser(
+      String username, String password, int role, String controlUnit) async {
+    try {
+      var response = await dio.post(
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/create-user",
+          data: {
+            "username": username,
+            "password": password,
+            "role": role,
+            "controlUnit": controlUnit,
+            "technicalId": 555551
+          });
+      if (response.statusCode == 201) {
+        return response.data;
+      } else {
+        throw Exception('Failed to post data');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
 }
+
+

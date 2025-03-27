@@ -72,7 +72,7 @@ class _CustomReusableAlertDialogState extends State<CustomReusableAlertDialog> {
           onPressed: () {
             Navigator.of(context).pop(); // Close dialog
           },
-          child: const Text("Cancel"),
+          child: const Text("إلغاء"),
         ),
         ElevatedButton(
           onPressed: () {

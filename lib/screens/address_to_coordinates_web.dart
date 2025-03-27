@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 // import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
@@ -317,6 +318,22 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                   "User Input: updated Caller Name, Phone, And Borken Number");
             },
           ),
+          IconButton(
+            tooltip: 'الربط مع الاسكادا',
+            hoverColor: Colors.yellow,
+            onPressed: () {
+              //
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const IframeScreen(
+                      url: 'http://41.33.226.211:8070/roundpoint'),
+                ),
+              );
+            },
+            icon: const Icon(Icons.dashboard_rounded),
+            color: Colors.indigo,
+          )
         ],
       ),
       body: Row(
@@ -1189,7 +1206,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               child: IconButton(
                                                 tooltip: 'الربط مع الاسكادا',
                                                 hoverColor: Colors.yellow,
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  //open in browser
+                                                  CustomBrowserRedirect
+                                                      .openInBrowser(
+                                                          'http://41.33.226.211:8070/roundpoint' // Open in browser
+                                                          );
+                                                },
                                                 icon: const Icon(
                                                   Icons
                                                       .dashboard_customize_outlined,

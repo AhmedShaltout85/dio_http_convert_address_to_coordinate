@@ -225,7 +225,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   List<String> roleList = [
     'مدير النظام',
     'غرفة الطوارىء',
-    'مديرى ومشرفى الهندسة',
+    'مديرى و مشرفى الهندسة',
     'فنى هندسة'
   ];
   String? roleValue;

@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pick_location/custom_widget/custom_alert_dialog_create_handasah_users.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
@@ -114,24 +115,27 @@ class _HandasahScreenState extends State<HandasahScreen> {
           IconButton(
             tooltip: "إضافة مشرف, وفنى الهندسة",
             hoverColor: Colors.yellow,
-            icon: const CircleAvatar(
-              backgroundColor: Colors.indigo,
-              child: Icon(
-                Icons.person_add_alt,
-                color: Colors.white,
-              ),
+            icon: const Icon(
+              Icons.person_add_alt,
+              color: Colors.indigo,
             ),
-            onPressed: () {},
+            onPressed: () {
+              //show add user dialog
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const CustomAlertDialogCreateHandasahUsers(
+                      title: 'إضافة مستخدمين لمديرى ومشرفى وفنين الهندسة',
+                    );
+                  });
+            },
           ),
           IconButton(
             tooltip: "إضافه المهمات الخاصة بالهندسة",
             hoverColor: Colors.yellow,
-            icon: const CircleAvatar(
-              backgroundColor: Colors.indigo,
-              child: Icon(
-                Icons.note_add_outlined,
-                color: Colors.white,
-              ),
+            icon: const Icon(
+              Icons.note_add_outlined,
+              color: Colors.indigo,
             ),
             onPressed: () {},
           ),

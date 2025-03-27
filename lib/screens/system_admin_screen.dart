@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
-
 import '../custom_widget/custom_dropdown_menu.dart';
 import '../custom_widget/custom_elevated_button.dart';
 import '../custom_widget/custom_radio_button.dart';
@@ -18,8 +17,10 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
-  //Radio Button
-  String? selectedOption;
+
+  // Default role selection
+  String selectedOption = '0'; // Default role: مدير النظام
+  String? roleValue = 'مدير النظام';
 
   final List<RadioOption<String>> options = [
     RadioOption(label: 'فنى هندسة', value: '3'),
@@ -28,22 +29,10 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
     RadioOption(label: 'مدير النظام', value: '0'),
   ];
 
-//get handsahat items dropdown menu
-  late Future getHandasatItemsDropdownMenu;
-
-  List<String> handasatItemsDropdownMenu = [
-    // 'مدير النظام',
-    // 'غرفة الطوارىء',
-    // 'مديرى ومشرفى الهندسة',
-    // 'فنى هندسة'
-  ];
-
-  String? roleValue;
-  var role = 3;
+  List<String> handasatItemsDropdownMenu = [];
 
   @override
   void dispose() {
-    // Dispose the controller when the widget is disposed
     usernameController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -53,24 +42,21 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      //get handasat items dropdown menu from db
-      getHandasatItemsDropdownMenu =
-          DioNetworkRepos().fetchHandasatItemsDropdownMenu();
+    fetchHandasatItems();
+  }
 
-      //load list
-      getHandasatItemsDropdownMenu.then((value) {
-        value.forEach((element) {
-          element = element.toString();
-          //add to list
-          handasatItemsDropdownMenu.add(element);
-        });
-        //debug print
-        debugPrint(
-            "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
-        debugPrint(value.toString());
+  void fetchHandasatItems() async {
+    try {
+      final List<dynamic> items =
+          await DioNetworkRepos().fetchHandasatItemsDropdownMenu();
+      setState(() {
+        handasatItemsDropdownMenu = items.map((e) => e.toString()).toList();
       });
-    });
+      debugPrint(
+          "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+    } catch (e) {
+      debugPrint("Error fetching dropdown items: $e");
+    }
   }
 
   @override
@@ -89,16 +75,12 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
       body: Row(
         children: [
           const Expanded(
-            flex: 1,
-            child: SizedBox(
-              width: 200,
-              height: double.infinity,
-            ),
-          ),
+              flex: 1, child: SizedBox(width: 200, height: double.infinity)),
           Expanded(
             flex: 2,
             child: Card(
-              child: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     const Text(
@@ -112,8 +94,8 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
                     CustomTextField(
                       controller: usernameController,
                       keyboardType: TextInputType.text,
-                      lableText: 'Username',
-                      hintText: 'Enter Username',
+                      lableText: 'إسم المستخدم',
+                      hintText: 'فضلا أدخل اسم المستخدم',
                       prefixIcon: const Icon(Icons.verified_user_outlined),
                       suffixIcon: const SizedBox(),
                       obscureText: false,
@@ -123,8 +105,8 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
                     CustomTextField(
                       controller: passwordController,
                       keyboardType: TextInputType.text,
-                      lableText: 'Password',
-                      hintText: 'Enter Password',
+                      lableText: 'كلمة المرور',
+                      hintText: 'فضلا أدخل كلمة المرور',
                       prefixIcon: const Icon(Icons.password_rounded),
                       suffixIcon: const SizedBox.shrink(),
                       obscureText: false,
@@ -134,105 +116,100 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
                     CustomTextField(
                       controller: confirmPasswordController,
                       keyboardType: TextInputType.text,
-                      lableText: 'Confirm Password',
-                      hintText: 'Please Confirm Password',
+                      lableText: 'تاكيد كلمة المرور',
+                      hintText: 'فضلا قم بالتاكيد',
                       prefixIcon: const Icon(Icons.password_rounded),
                       suffixIcon: const SizedBox.shrink(),
                       obscureText: false,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                     ),
                     const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: CustomRadioButton<String>(
-                        options: options,
-                        initialValue: '0',
-                        onChanged: (value) {
-                          setState(() {
-                            selectedOption = value;
-                          });
-
-                          debugPrint("Selected: $selectedOption");
-                        },
-                        direction: Axis
-                            .horizontal, // Change to Axis.horizontal for horizontal layout
-                        spacing: 16.0,
-                        activeColor: Colors.indigo,
-                        inactiveColor: Colors.grey[600],
-                        textStyle:
-                            const TextStyle(fontSize: 13, color: Colors.indigo),
-                        radioSize: 20.0,
+                    Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: CustomRadioButton<String>(
+                          options: options,
+                          initialValue: '0',
+                          onChanged: (value) {
+                            setState(() {
+                              selectedOption = value!;
+                              switch (selectedOption) {
+                                case '0':
+                                  roleValue = 'مدير النظام';
+                                  break;
+                                case '1':
+                                  roleValue = 'غرفة الطوارىء';
+                                  break;
+                                case '2':
+                                  roleValue = 'مديرى ومشرفى الهندسة';
+                                  break;
+                                case '3':
+                                  roleValue = 'فنى هندسة';
+                                  break;
+                              }
+                            });
+                            debugPrint("Selected: $selectedOption");
+                          },
+                          direction: Axis.horizontal,
+                          spacing: 16.0,
+                          activeColor: Colors.indigo,
+                          inactiveColor: Colors.grey[600],
+                          textStyle: const TextStyle(
+                              fontSize: 13, color: Colors.indigo),
+                          radioSize: 20.0,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    selectedOption == '3' || selectedOption == '2'
-                        ? Container(
-                            margin: const EdgeInsets.all(3.0),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 1.0),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.indigo, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: CustomDropdown(
-                              isExpanded: false,
-                              items: handasatItemsDropdownMenu,
-                              hintText: 'فضلا أختر الهندسة',
-                              onChanged: (value) {
-                                roleValue = value;
-                                debugPrint(
-                                    'Selected Handasat item: $roleValue');
-
-                                // if (value == 'مدير النظام') {
-                                //   role = 0;
-                                // } else if (value == 'غرفة الطوارىء') {
-                                //   role = 1;
-                                // } else if (value == 'مديرى ومشرفى الهندسة') {
-                                //   role = 2;
-                                // } else if (value == 'فنى هندسة') {
-                                //   role = 3;
-                                // }
-                              },
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                    if (selectedOption == '3' || selectedOption == '2')
+                      Container(
+                        margin: const EdgeInsets.all(3.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.indigo, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: CustomDropdown(
+                          isExpanded: false,
+                          items: handasatItemsDropdownMenu,
+                          hintText: 'فضلا أختر الهندسة',
+                          onChanged: (value) {
+                            setState(() {
+                              roleValue = value;
+                            });
+                            debugPrint('Selected Handasat item: $roleValue');
+                          },
+                        ),
+                      ),
                     const SizedBox(height: 20),
                     CustomElevatedButton(
                       textString: 'حفظ',
-                      onPressed: () {
-                        //
+                      onPressed: () async {
                         if (usernameController.text.isEmpty ||
                             passwordController.text.isEmpty ||
-                            confirmPasswordController.text.isEmpty && 
-                            passwordController.text == confirmPasswordController.text) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please Enter Username & Matched Password'),
-                            ),
-                          );
+                            confirmPasswordController.text.isEmpty) {
+                          _showSnackbar(context,
+                              'فضلا أدخل اسم المستخدم, وكلمة المرور بشكل صحيح');
+                        } else if (passwordController.text.trim() !=
+                            confirmPasswordController.text.trim()) {
+                          _showSnackbar(
+                              context, 'فضلا تاكد من تطابق كلمة المرور');
                         } else {
-                          // call create new user
-                          DioNetworkRepos().createNewUser(
-                            usernameController.text,
-                            passwordController.text,
-                            int.parse(selectedOption!),
-                            roleValue!,
-                          );
-                          //
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'تم انشاء المستخدم بنجاح',
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                          //
-                          usernameController.clear();
-                          passwordController.clear();
-                          confirmPasswordController.clear();
+                          try {
+                            await DioNetworkRepos().createNewUser(
+                              usernameController.text.trim(),
+                              passwordController.text.trim(),
+                              int.parse(selectedOption),
+                              roleValue!,
+                            );
+                            _showSnackbar(context, 'تم انشاء المستخدم بنجاح');
+                            usernameController.clear();
+                            passwordController.clear();
+                            confirmPasswordController.clear();
+                          } catch (e) {
+                            _showSnackbar(context, 'حدث خطأ: ${e.toString()}');
+                          }
                         }
                       },
                     ),
@@ -242,13 +219,17 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
             ),
           ),
           const Expanded(
-            flex: 1,
-            child: SizedBox(
-              width: 200,
-              height: double.infinity,
-            ),
-          ),
+              flex: 1, child: SizedBox(width: 200, height: double.infinity)),
         ],
+      ),
+    );
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message,
+            textAlign: TextAlign.center, textDirection: TextDirection.rtl),
       ),
     );
   }

@@ -6,8 +6,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
-// import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/report_screen.dart';
@@ -18,7 +16,7 @@ import '../custom_widget/custom_bottom_sheet.dart';
 import '../custom_widget/custom_browser_redirect.dart';
 import '../custom_widget/custom_drawer.dart';
 import '../custom_widget/custom_end_drawer.dart';
-// import '../custom_widget/custom_ip_camera_viewer.dart';
+import '../custom_widget/custom_text_button_drop_down_menu.dart';
 import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
 
@@ -272,7 +270,27 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     );
   }
 
-  //
+//handle dropdown click
+  void handleOptionClick(String value) {
+    // You can handle button actions here
+    debugPrint("Clicked: $value");
+    if (value == 'عرض التقارير') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ReportScreen(),
+        ),
+      );
+    } else if (value == 'الربط مع الاسكادا') {
+      CustomBrowserRedirect.openInBrowser(
+        'http://192.168.30.12:80/roundpoint',
+      );
+    } else if (value == 'عرض المناطق المزدحمة بالبلاغات') {
+      CustomBrowserRedirect.openInBrowser(
+        'http://196.219.231.3:8000/webmap/breaks-hot-spots',
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -319,36 +337,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                   "User Input: updated Caller Name, Phone, And Borken Number");
             },
           ),
-          IconButton(
-            tooltip: 'الربط مع الاسكادا',
-            hoverColor: Colors.yellow,
-            onPressed: () {
-              //
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const IframeScreen(
-                      url: 'http://41.33.226.211:8070/roundpoint'),
-                ),
-              );
-            },
-            icon: const Icon(Icons.dashboard_rounded),
-            color: Colors.indigo,
-          ),
-          IconButton(
-            tooltip: 'عرض التقارير',
-            hoverColor: Colors.yellow,
-            onPressed: () {
-              //
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ReportScreen(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.list),
-            color: Colors.indigo,
+          TextButtonDropdown(
+            label: 'التقارير',
+            options: const [
+              'عرض التقارير',
+              'الربط مع الاسكادا',
+              'عرض المناطق المزدحمة بالبلاغات'
+            ],
+            onSelected: handleOptionClick,
           ),
         ],
       ),

@@ -45,7 +45,8 @@ class _CustomDropdownState extends State<CustomDropdown> {
         widget.onChanged(value);
       },
       items: widget.items.map<DropdownMenuItem<String>>((String item) {
-        return DropdownMenuItem<String>(
+        return 
+        DropdownMenuItem<String>(
           alignment: Alignment.center,
           value: item,
           child: Center(

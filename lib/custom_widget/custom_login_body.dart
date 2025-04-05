@@ -223,12 +223,8 @@ class CustomizLoginScreenBody extends StatefulWidget {
 class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  // List<String> roleList = [
-  //   'مدير النظام',
-  //   'غرفة الطوارىء',
-  //   'مديرى و مشرفى الهندسة',
-  //   'فنى هندسة'
-  // ];
+  List<dynamic> userList = [];
+
   @override
   void dispose() {
     usernameController.dispose();
@@ -261,6 +257,10 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
     try {
       final List<dynamic> items =
           await DioNetworkRepos().fetchHandasatItemsDropdownMenu();
+      //
+      // userList = await DioNetworkRepos()
+      //     .fetchLoginUsersItemsDropdownMenu(0, 'مدير النظام');
+      //
       setState(() {
         handasatItemsDropdownMenu = items.map((e) => e.toString()).toList();
       });
@@ -367,7 +367,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                     child: CustomRadioButton<String>(
                       options: options,
                       initialValue: '0',
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         setState(() {
                           selectedOption = value!;
                           switch (selectedOption) {
@@ -410,10 +410,27 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                       isExpanded: false,
                       items: handasatItemsDropdownMenu,
                       hintText: 'فضلا أختر الهندسة',
-                      onChanged: (value) {
+                      onChanged: (value) async {
+                        switch (selectedOption) {
+                          case '2':
+                            userList = await DioNetworkRepos()
+                                .fetchLoginUsersItemsDropdownMenu(2, value!);
+                            //
+
+                            debugPrint(userList.toString());
+                            break;
+                          case '3':
+                            userList = await DioNetworkRepos()
+                                .fetchLoginUsersItemsDropdownMenu(3, value!);
+                            //
+
+                            debugPrint(userList.toString());
+                            break;
+                        }
                         setState(() {
                           roleValue = value;
                         });
+
                         debugPrint('Selected Handasah item: $roleValue');
                         //
                       },
@@ -447,16 +464,39 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        CustomTextField(
-                          controller: usernameController,
-                          keyboardType: TextInputType.text,
-                          lableText: 'Username',
-                          hintText: 'Enter Username',
-                          prefixIcon: const Icon(Icons.verified_user_outlined),
-                          suffixIcon: const SizedBox(),
-                          obscureText: false,
-                          textInputAction: TextInputAction.next,
-                        ),
+                        selectedOption == '0' || selectedOption == '1'
+                            ? CustomTextField(
+                                controller: usernameController,
+                                keyboardType: TextInputType.text,
+                                lableText: 'Username',
+                                hintText: 'Enter Username',
+                                prefixIcon:
+                                    const Icon(Icons.verified_user_outlined),
+                                suffixIcon: const SizedBox(),
+                                obscureText: false,
+                                textInputAction: TextInputAction.next,
+                              )
+                            : Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 30.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 30.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.indigo, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: CustomDropdown(
+                                  isExpanded: true,
+                                  items: userList
+                                      .map((e) => e.toString())
+                                      .toList(),
+                                  hintText: 'فضلا أختر إسم المستخدم',
+                                  onChanged: (value) {
+                                    roleValueOld = value;
+                                  },
+                                ),
+                              ),
                         const SizedBox(height: 16),
                         CustomTextField(
                           controller: passwordController,

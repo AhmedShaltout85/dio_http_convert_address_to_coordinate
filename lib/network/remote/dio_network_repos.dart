@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class DioNetworkRepos {
   final dio = Dio();
-//1-- GET locations(GET by flag 0 (address not set yet))
+//1-- GET locations(GET by flag 0 (address not set yet)--HOTLINE)
   Future getLoc() async {
     try {
       var response = await dio.get(urlGetHotlineAddress);
@@ -344,10 +344,10 @@ class DioNetworkRepos {
             "is_finished": 0,
             "handasah_name": "free",
             "technical_name": "free",
-            "caller_name":"لم يدرج",
-            "caller_phone":"لم يدرج",
-            "broker_type":"لم يدرج نوع الكسر",
-            "video_call":0
+            "caller_name": "لم يدرج",
+            "caller_phone": "لم يدرج",
+            "broker_type": "لم يدرج نوع الكسر",
+            "video_call": 0
           });
       if (response.statusCode == 201) {
         return response.data;
@@ -723,13 +723,12 @@ class DioNetworkRepos {
 //31-- update Location Broken By address(update Video Call)
   // http://localhost:9999/pick-location/api/v1/get-loc/update-video-call/61 طريق الحرية الاسكندرية
 
-  Future updateLocationBrokenByAddressUpdateVideoCall(String address, int videoCall) async {
+  Future updateLocationBrokenByAddressUpdateVideoCall(
+      String address, int videoCall) async {
     try {
       final response = await dio.put(
           "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/update-video-call/$address",
-          data: {
-            "video_call": videoCall
-          });
+          data: {"video_call": videoCall});
       debugPrint(response.data.toString());
       return response.data;
     } catch (e) {
@@ -738,7 +737,7 @@ class DioNetworkRepos {
     }
   }
 
-   //32-- POST Create New User(CREATE NEW USER)
+  //32-- POST Create New User(CREATE NEW USER)
   //  http://localhost:9999/pick-location/api/v1/users/create-user
   Future createNewUser(
       String username, String password, int role, String controlUnit) async {
@@ -763,6 +762,24 @@ class DioNetworkRepos {
     }
   }
 
+  //33-- FETCH LOGIN USERS DROPDWON ITEMS from the Database(GET dropdown users items for  login)
+  Future<List<dynamic>> fetchLoginUsersItemsDropdownMenu(int role, String controlUnit) async {
+    var getLoginUsersUrl =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/role/$role/control-unit/$controlUnit';
+    try {
+      var response = await dio.get(getLoginUsersUrl);
+      if (response.statusCode == 200) {
+        // debugPrint(dataList);
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
 }
-
-

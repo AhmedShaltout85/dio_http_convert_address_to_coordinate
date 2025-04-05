@@ -1,9 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-// import 'package:data_table_2/data_table_2.dart';
+import 'package:data_table_2/data_table_2.dart';
 
 import '../model/custom_data_table_source.dart';
+import '../network/remote/dio_network_repos.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -14,43 +15,140 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   late CustomDataTableSource<Map<String, dynamic>> _dataSource;
+  final List<Map<String, dynamic>> _sampleData = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    List<Map<String, dynamic>> sampleData = [
-      {"id": 1, "name": "John Doe", "age": 30},
-      {"id": 2, "name": "Jane Doe", "age": 25},
-    ];
+    fetchData();
+  }
 
-    _dataSource = CustomDataTableSource(
-      items: sampleData,
-      columns: [
-        const DataColumn(label: Text("ID")),
-        const DataColumn(label: Text("Name")),
-        const DataColumn(label: Text("Age")),
-      ],
-      buildRow: (item) => DataRow(cells: [
-        DataCell(Text(item["id"].toString())),
-        DataCell(Text(item["name"])),
-        DataCell(Text(item["age"].toString())),
-      ]),
-    );
+  void fetchData() async {
+    try {
+      final value = await DioNetworkRepos().getLoc();
+
+      setState(() {
+        _sampleData.clear();
+        _sampleData.addAll(value.cast<Map<String, dynamic>>());
+
+        _dataSource = CustomDataTableSource<Map<String, dynamic>>(
+          items: _sampleData,
+          buildRow: (item) => DataRow(
+            color: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.blue.withOpacity(0.2);
+                }
+                return item["id"] % 2 == 0 ? Colors.grey[100] : null;
+              },
+            ),
+            cells: [
+              DataCell(Text(item["id"].toString(),
+                  style: const TextStyle(
+                    color: Colors.indigo,
+                  ))),
+              DataCell(Text(
+                item["address"] ?? '',
+                style: const TextStyle(color: Colors.indigo),
+              )),
+              DataCell(Text(
+                item["handasah_name"] ?? '',
+                style: const TextStyle(color: Colors.indigo),
+              )),
+              DataCell(Text(
+                item['latitude'].toString(),
+                style: const TextStyle(color: Colors.indigo),
+              )),
+              DataCell(Text(
+                item['longitude'].toString(),
+                style: const TextStyle(color: Colors.indigo),
+              )),
+              DataCell(Text(
+                item['caller_name'] ?? '',
+                style: const TextStyle(color: Colors.indigo),
+              )),
+              DataCell(Text(
+                item['caller_phone'] ?? '',
+                style: const TextStyle(color: Colors.indigo),
+              )),
+            ],
+          ),
+        );
+
+        _isLoading = false;
+      });
+
+      debugPrint("GET ALL HOTLINE LOCATIONS: $value");
+    } catch (e) {
+      debugPrint("Error fetching data: $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
-    // PaginatedDataTable2(
-    //   columns: const [
-    //     DataColumn(label: Text("ID")),
-    //     DataColumn(label: Text("Name")),
-    //     DataColumn(label: Text("Age")),
-    //   ],
-    //   source: _dataSource,
-    //   rowsPerPage: 5,
-    //   // dataRowColor: WidgetStateProperty.all<Color?>(
-    //   //     Colors.white), // Explicitly define the type
-    // );
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: PaginatedDataTable2(
+              columns: const [
+                DataColumn(
+                    label: Text('ID',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.indigo,
+                        ))),
+                DataColumn(
+                    label: Text('العنوان',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.indigo,
+                        ))),
+                DataColumn(
+                    label: Text('إسم الهندسة',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.indigo))),
+                DataColumn(
+                    label: Text('خط العرض',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.indigo,
+                        ))),
+                DataColumn(
+                    label: Text('خط الطول',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.indigo,
+                        ))),
+                DataColumn(
+                    label: Text('إسم المبلغ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.indigo,
+                        ))),
+                DataColumn(
+                    label: Text('رقم موبيل المبلغ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.indigo,
+                        ))),
+              ],
+              source: _dataSource,
+              rowsPerPage: 10,
+              columnSpacing: 20,
+              horizontalMargin: 12,
+              showCheckboxColumn: false,
+              headingRowColor: WidgetStateProperty.all(Colors.blue.shade50),
+            ),
+          );
   }
 }

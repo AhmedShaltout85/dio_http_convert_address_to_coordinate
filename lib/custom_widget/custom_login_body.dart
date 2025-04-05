@@ -200,6 +200,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
 import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
+import 'package:pick_location/custom_widget/custom_radio_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
 import 'package:pick_location/screens/handasah_screen.dart';
 import 'package:pick_location/screens/system_admin_screen.dart';
@@ -222,13 +223,53 @@ class CustomizLoginScreenBody extends StatefulWidget {
 class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  List<String> roleList = [
-    'مدير النظام',
-    'غرفة الطوارىء',
-    'مديرى و مشرفى الهندسة',
-    'فنى هندسة'
+  // List<String> roleList = [
+  //   'مدير النظام',
+  //   'غرفة الطوارىء',
+  //   'مديرى و مشرفى الهندسة',
+  //   'فنى هندسة'
+  // ];
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  String? roleValueOld;
+  //
+  // Default role selection
+  String selectedOption = '0'; // Default role: مدير النظام
+  String? roleValue = 'مدير النظام';
+
+  final List<RadioOption<String>> options = [
+    RadioOption(label: 'فنى هندسة', value: '3'),
+    RadioOption(label: 'مديرى ومشرفى الهندسة', value: '2'),
+    RadioOption(label: 'غرفة الطوارىء', value: '1'),
+    RadioOption(label: 'مدير النظام', value: '0'),
   ];
-  String? roleValue;
+
+  List<String> handasatItemsDropdownMenu = [];
+  //
+  @override
+  void initState() {
+    super.initState();
+    fetchHandasatItems();
+  }
+
+  void fetchHandasatItems() async {
+    try {
+      final List<dynamic> items =
+          await DioNetworkRepos().fetchHandasatItemsDropdownMenu();
+      setState(() {
+        handasatItemsDropdownMenu = items.map((e) => e.toString()).toList();
+      });
+      debugPrint(
+          "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+    } catch (e) {
+      debugPrint("Error fetching dropdown items: $e");
+    }
+  }
 
   void handleLogin(BuildContext context) async {
     final username = usernameController.text;
@@ -319,30 +360,82 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                   radius: 100,
                 ),
                 const SizedBox(height: 20),
-                // const Text(
-                //   'Login User',
-                //   style: TextStyle(
-                //     color: Colors.indigo,
-                //     fontSize: 32, // Larger font for web
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                // ),
-                Container(
-                  margin: const EdgeInsets.all(3.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.indigo, width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: CustomDropdown(
-                    isExpanded: false,
-                    items: roleList,
-                    hintText: 'فضلا اختر نوع الحساب',
-                    onChanged: (value) {
-                      roleValue = value;
-                    },
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: CustomRadioButton<String>(
+                      options: options,
+                      initialValue: '0',
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOption = value!;
+                          switch (selectedOption) {
+                            case '0':
+                              roleValue = 'مدير النظام';
+                              break;
+                            case '1':
+                              roleValue = 'غرفة الطوارىء';
+                              break;
+                            case '2':
+                              roleValue = 'مديرى ومشرفى الهندسة';
+                              break;
+                            case '3':
+                              roleValue = 'فنى هندسة';
+                              break;
+                          }
+                        });
+                        debugPrint("Selected ROLE: $selectedOption");
+                      },
+                      direction: Axis.horizontal,
+                      spacing: 16.0,
+                      activeColor: Colors.indigo,
+                      inactiveColor: Colors.grey[600],
+                      textStyle:
+                          const TextStyle(fontSize: 13, color: Colors.indigo),
+                      radioSize: 20.0,
+                    ),
                   ),
                 ),
+                const SizedBox(height: 20),
+                if (selectedOption == '3' || selectedOption == '2')
+                  Container(
+                    margin: const EdgeInsets.all(3.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.indigo, width: 1.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: CustomDropdown(
+                      isExpanded: false,
+                      items: handasatItemsDropdownMenu,
+                      hintText: 'فضلا أختر الهندسة',
+                      onChanged: (value) {
+                        setState(() {
+                          roleValue = value;
+                        });
+                        debugPrint('Selected Handasah item: $roleValue');
+                        //
+                      },
+                    ),
+                  ),
+                // Container(
+                //   margin: const EdgeInsets.all(3.0),
+                //   padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                //   decoration: BoxDecoration(
+                //     border: Border.all(color: Colors.indigo, width: 1.0),
+                //     borderRadius: BorderRadius.circular(10.0),
+                //   ),
+                //   child: CustomDropdown(
+                //     isExpanded: false,
+                //     items: roleList,
+                //     hintText: 'فضلا اختر نوع الحساب',
+                //     onChanged: (value) {
+                //       roleValueOld = value;
+                //     },
+                //   ),
+                // ),
+
                 const SizedBox(height: 20),
                 Card(
                   color: Colors.blueGrey.shade200,

@@ -80,6 +80,7 @@ dependencies:
     # ios: flase
     # web: true
   audioplayers: ^5.2.1
+  # data_table_2: ^2.5.18
 
 
 

@@ -10,6 +10,7 @@ import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 // import 'package:pick_location/screens/address_details.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+import 'package:pick_location/screens/report_screen.dart';
 import 'package:pick_location/screens/tracking.dart';
 
 import '../custom_widget/custom_reusable_alert_dailog.dart';
@@ -333,7 +334,22 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             },
             icon: const Icon(Icons.dashboard_rounded),
             color: Colors.indigo,
-          )
+          ),
+          IconButton(
+            tooltip: 'عرض التقارير',
+            hoverColor: Colors.yellow,
+            onPressed: () {
+              //
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ReportScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.list),
+            color: Colors.indigo,
+          ),
         ],
       ),
       body: Row(

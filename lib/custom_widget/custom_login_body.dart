@@ -200,6 +200,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
 import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
+import 'package:pick_location/custom_widget/custom_login_drop_down_menu.dart';
 import 'package:pick_location/custom_widget/custom_radio_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
 import 'package:pick_location/screens/handasah_screen.dart';
@@ -246,6 +247,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   ];
 
   List<String> handasatItemsDropdownMenu = [];
+  List<String> userItemsDropdownMenu = [];
+  String? selectedUser;
   //
   @override
   void initState() {
@@ -257,10 +260,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
     try {
       final List<dynamic> items =
           await DioNetworkRepos().fetchHandasatItemsDropdownMenu();
-      //
-      // userList = await DioNetworkRepos()
-      //     .fetchLoginUsersItemsDropdownMenu(0, 'مدير النظام');
-      //
+
       setState(() {
         handasatItemsDropdownMenu = items.map((e) => e.toString()).toList();
       });
@@ -308,15 +308,71 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
             MaterialPageRoute(
                 builder: (context) => const AddressToCoordinates()),
           );
-        } else if (DataStatic.userRole == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const HandasahScreen()),
-          );
+          // } else if (DataStatic.userRole == 2) {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => const HandasahScreen()),
+          //   );
         } else if (DataStatic.userRole == 0) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const SystemAdminScreen()),
+          );
+        }
+        // } else {
+        //   Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => const UserScreen()),
+        //   );
+        // }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+            'Login failed: ${response['message']}',
+            textDirection: TextDirection.rtl,
+            textAlign: TextAlign.center,
+          )),
+        );
+      }
+    }
+  }
+
+  void handleLoginWithDropDown(BuildContext context) async {
+    // final username = usernameController.text;
+    final password = passwordController.text;
+
+    if (roleValueOld == null || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Please enter both username and password',
+            textDirection: TextDirection.ltr,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+      return;
+    }
+
+    final response = await DioNetworkRepos().login(roleValueOld!, password);
+
+    if (context.mounted) {
+      if (response['success']) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'تم تسجيل الدخول بنجاح',
+              textDirection: TextDirection.rtl,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+
+        if (DataStatic.userRole == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HandasahScreen()),
           );
         } else {
           Navigator.push(
@@ -427,8 +483,19 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                             debugPrint(userList.toString());
                             break;
                         }
+                         if (!mounted) return; 
                         setState(() {
                           roleValue = value;
+                          userItemsDropdownMenu =
+                              userList.map((e) => e.toString()).toList();
+
+                          // Reset selected value safely
+                          selectedUser =
+                              userItemsDropdownMenu.contains(selectedUser)
+                                  ? selectedUser
+                                  : (userItemsDropdownMenu.isNotEmpty
+                                      ? userItemsDropdownMenu.first
+                                      : null);
                         });
 
                         debugPrint('Selected Handasah item: $roleValue');
@@ -486,17 +553,25 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                                       color: Colors.indigo, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                child: CustomDropdown(
-                                  isExpanded: true,
-                                  items: userList
-                                      .map((e) => e.toString())
-                                      .toList(),
+                                child: CustomLoginDropdown(
+                                  items: userItemsDropdownMenu,
+                                  value: selectedUser,
                                   hintText: 'فضلا أختر إسم المستخدم',
                                   onChanged: (value) {
                                     roleValueOld = value;
                                   },
+                                )
+                                // CustomDropdown(
+                                //   isExpanded: true,
+                                //   items: userList
+                                //       .map((e) => e.toString())
+                                //       .toList(),
+                                //   hintText: 'فضلا أختر إسم المستخدم',
+                                //   onChanged: (value) {
+                                //     roleValueOld = value;
+                                //   },
+                                // ),
                                 ),
-                              ),
                         const SizedBox(height: 16),
                         CustomTextField(
                           controller: passwordController,
@@ -509,25 +584,44 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                           textInputAction: TextInputAction.done,
                         ),
                         const SizedBox(height: 24),
-                        CustomElevatedButton(
-                          textString: 'Login',
-                          onPressed: () async {
-                            if (usernameController.text.isEmpty ||
-                                passwordController.text.isEmpty ||
-                                roleValue == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      textDirection: TextDirection.rtl,
-                                      textAlign: TextAlign.center,
-                                      'فضلا أختر نوع الحساب, وبيانات المستخدم بشكل صحيح'),
-                                ),
-                              );
-                            } else {
-                              handleLogin(context);
-                            }
-                          },
-                        ),
+                        selectedOption == '0' || selectedOption == '1'
+                            ? CustomElevatedButton(
+                                textString: 'Login',
+                                onPressed: () async {
+                                  if (usernameController.text.isEmpty ||
+                                      passwordController.text.isEmpty ||
+                                      roleValue == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center,
+                                            'فضلا أختر نوع الحساب, وبيانات المستخدم بشكل صحيح'),
+                                      ),
+                                    );
+                                  } else {
+                                    handleLogin(context);
+                                  }
+                                },
+                              )
+                            : CustomElevatedButton(
+                                textString: 'Login',
+                                onPressed: () async {
+                                  if (passwordController.text.isEmpty ||
+                                      roleValueOld == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            textDirection: TextDirection.rtl,
+                                            textAlign: TextAlign.center,
+                                            'فضلا أختر نوع الحساب, وبيانات المستخدم بشكل صحيح'),
+                                      ),
+                                    );
+                                  } else {
+                                    handleLoginWithDropDown(context);
+                                  }
+                                },
+                              ),
                       ],
                     ),
                   ),

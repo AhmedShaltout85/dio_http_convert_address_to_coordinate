@@ -35,7 +35,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
-  
+
     _fetchData(); // Initial fetch
     _getCurrentLocation(); // Get current location
     _startPeriodicFetch(); // Start periodic fetching
@@ -52,6 +52,8 @@ class _UserScreenState extends State<UserScreen> {
 
   // Function to fetch data
   void _fetchData() {
+    if (!mounted) return;
+//
     setState(() {
       getUsersBrokenPointsList = DioNetworkRepos()
           .fetchHandasatUsersItemsBroken(
@@ -62,8 +64,8 @@ class _UserScreenState extends State<UserScreen> {
       if (value[0]['video_call'] == 1) {
         _showDialog(context, value[0]['address']);
         _timer2?.cancel();
-      }else if(value[0]['video_call'] == 0){
-         _updateUI(); // Update UI
+      } else if (value[0]['video_call'] == 0) {
+        _updateUI(); // Update UI
       }
       if (value.isEmpty) {
         debugPrint("Data is empty, will retry...");
@@ -445,17 +447,16 @@ class _UserScreenState extends State<UserScreen> {
                                         textAlign: TextAlign.center,
                                       )),
                                     );
-                                  } else{
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => AgoraVideoCall(
-                                        title:
-                                            '${snapshot.data![index]['address']}',
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AgoraVideoCall(
+                                          title:
+                                              '${snapshot.data![index]['address']}',
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
                                   }
                                   // else if (snapshot.data![index]
                                   //         ['video_call'] ==
@@ -463,7 +464,7 @@ class _UserScreenState extends State<UserScreen> {
                                   //   _showDialog(context,
                                   //       snapshot.data![index]['address']);
                                   //   _timer2?.cancel();
-                                  // } 
+                                  // }
                                 },
                                 icon: const Icon(
                                   Icons.video_call,

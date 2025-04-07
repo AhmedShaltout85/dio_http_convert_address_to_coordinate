@@ -65,7 +65,7 @@ class _CustomRadioButtonState<T> extends State<CustomRadioButton<T>> {
                 style:
                     widget.textStyle ?? Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 3),
               Container(
                 width: widget.radioSize,
                 height: widget.radioSize,

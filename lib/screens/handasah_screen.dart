@@ -9,6 +9,7 @@ import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 // import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
+import '../custom_widget/custom_reusable_alert_dailog.dart';
 import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
 
@@ -137,7 +138,26 @@ class _HandasahScreenState extends State<HandasahScreen> {
               Icons.note_add_outlined,
               color: Colors.indigo,
             ),
-            onPressed: () {},
+            onPressed: () {
+               showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CustomReusableAlertDialog(
+                        title: "إضافة مهمات الهندسة",
+                        fieldLabels: const [
+                          'المسمى',
+                          'العدد',
+                          
+                        ],
+                        onSubmit: (values) {
+                          // DioNetworkRepos().createNewUser(
+                          //     values[0], values[1], 1, 'غرفة الطوارئ');
+                        });
+                  });
+              debugPrint(
+                  "User Input: updated Caller Name, Phone, And Borken Number");
+            
+            },
           ),
         ],
       ),

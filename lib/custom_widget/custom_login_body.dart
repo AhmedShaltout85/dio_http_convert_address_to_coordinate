@@ -210,6 +210,7 @@ import 'package:pick_location/utils/dio_http_constants.dart';
 
 import '../network/remote/dio_network_repos.dart';
 import '../screens/address_to_coordinates_web.dart';
+import '../screens/address_to_coordinates_web_other.dart';
 
 class CustomizLoginScreenBody extends StatefulWidget {
   const CustomizLoginScreenBody({
@@ -242,6 +243,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final List<RadioOption<String>> options = [
     RadioOption(label: 'فنى هندسة', value: '3'),
     RadioOption(label: 'مديرى ومشرفى الهندسة', value: '2'),
+    RadioOption(label: 'شكاوى خارجية', value: '4'),
     RadioOption(label: 'غرفة الطوارىء', value: '1'),
     RadioOption(label: 'مدير النظام', value: '0'),
   ];
@@ -292,39 +294,62 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
 
     if (context.mounted) {
       if (response['success']) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'تم تسجيل الدخول بنجاح',
-              textDirection: TextDirection.rtl,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-        if (DataStatic.userRole == 1) {
+        if (roleValue == 'غرفة الطوارىء' && DataStatic.userRole == 1) {
           // Navigate to AddressToCoordinates screen
           Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => const AddressToCoordinates()),
           );
-          // } else if (DataStatic.userRole == 2) {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => const HandasahScreen()),
-          //   );
-        } else if (DataStatic.userRole == 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'تم تسجيل الدخول بنجاح',
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        } else if (roleValue == 'شكاوى خارجية' && DataStatic.userRole == 4) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AddressToCoordinatesOther()),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'تم تسجيل الدخول بنجاح',
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        } else if (roleValue == 'مدير النظام' && DataStatic.userRole == 0) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const SystemAdminScreen()),
           );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'تم تسجيل الدخول بنجاح',
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'فضلا, أدخل البيانات الصحيحة',
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
         }
-        // } else {
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => const UserScreen()),
-        //   );
-        // }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -383,11 +408,12 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-            'Login failed: ${response['message']}',
-            textDirection: TextDirection.rtl,
-            textAlign: TextAlign.center,
-          )),
+            content: Text(
+              'Login failed: ${response['message']}',
+              textDirection: TextDirection.rtl,
+              textAlign: TextAlign.center,
+            ),
+          ),
         );
       }
     }
@@ -444,12 +470,12 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                         debugPrint("Selected ROLE: $selectedOption");
                       },
                       direction: Axis.horizontal,
-                      spacing: 16.0,
+                      spacing: 13.0,
                       activeColor: Colors.indigo,
                       inactiveColor: Colors.grey[600],
                       textStyle:
-                          const TextStyle(fontSize: 13, color: Colors.indigo),
-                      radioSize: 20.0,
+                          const TextStyle(fontSize: 11, color: Colors.indigo),
+                      radioSize: 15.0,
                     ),
                   ),
                 ),
@@ -483,7 +509,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                             debugPrint(userList.toString());
                             break;
                         }
-                         if (!mounted) return; 
+                        if (!mounted) return;
                         setState(() {
                           roleValue = value;
                           userItemsDropdownMenu =
@@ -503,23 +529,6 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                       },
                     ),
                   ),
-                // Container(
-                //   margin: const EdgeInsets.all(3.0),
-                //   padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                //   decoration: BoxDecoration(
-                //     border: Border.all(color: Colors.indigo, width: 1.0),
-                //     borderRadius: BorderRadius.circular(10.0),
-                //   ),
-                //   child: CustomDropdown(
-                //     isExpanded: false,
-                //     items: roleList,
-                //     hintText: 'فضلا اختر نوع الحساب',
-                //     onChanged: (value) {
-                //       roleValueOld = value;
-                //     },
-                //   ),
-                // ),
-
                 const SizedBox(height: 20),
                 Card(
                   color: Colors.blueGrey.shade200,

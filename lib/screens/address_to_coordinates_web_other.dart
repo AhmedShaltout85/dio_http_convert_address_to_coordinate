@@ -437,7 +437,7 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
                               }
                               setState(() {
                                 pickMarkers.clear();
-                                address = "الاسكندرية ${addressController.text}";
+                                address = addressController.text;
                                 _getCoordinatesFromAddress(address);
                                 debugPrint(address);
                                 addressController.clear();

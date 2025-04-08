@@ -294,7 +294,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
 
     if (context.mounted) {
       if (response['success']) {
-        if (roleValue == 'غرفة الطوارىء' && DataStatic.userRole == 1) {
+        // if (roleValue == 'غرفة الطوارىء' && DataStatic.userRole == 1) {
+        if (DataStatic.userRole == 1) {
           // Navigate to AddressToCoordinates screen
           Navigator.push(
             context,
@@ -310,7 +311,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
               ),
             ),
           );
-        } else if (roleValue == 'شكاوى خارجية' && DataStatic.userRole == 4) {
+        // } else if (roleValue == 'شكاوى خارجية' && DataStatic.userRole == 4) {
+        } else if (DataStatic.userRole == 4) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -325,7 +327,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
               ),
             ),
           );
-        } else if (roleValue == 'مدير النظام' && DataStatic.userRole == 0) {
+        // } else if (roleValue == 'مدير النظام' && DataStatic.userRole == 0) {
+        } else if (DataStatic.userRole == 0) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const SystemAdminScreen()),
@@ -465,6 +468,9 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                             case '3':
                               roleValue = 'فنى هندسة';
                               break;
+                            case '5':
+                              roleValue = 'شكاوى خارجية';
+                              break;
                           }
                         });
                         debugPrint("Selected ROLE: $selectedOption");
@@ -540,7 +546,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        selectedOption == '0' || selectedOption == '1'
+                        selectedOption == '0' || selectedOption == '1' ||
+                                selectedOption == '4'
                             ? CustomTextField(
                                 controller: usernameController,
                                 keyboardType: TextInputType.text,
@@ -593,7 +600,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                           textInputAction: TextInputAction.done,
                         ),
                         const SizedBox(height: 24),
-                        selectedOption == '0' || selectedOption == '1'
+                        selectedOption == '0' || selectedOption == '1' || selectedOption == '4'
                             ? CustomElevatedButton(
                                 textString: 'Login',
                                 onPressed: () async {

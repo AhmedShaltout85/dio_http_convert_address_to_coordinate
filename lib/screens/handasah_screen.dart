@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_alert_dialog_create_handasah_users.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+import 'package:pick_location/screens/request_tool_for_address_screen.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
@@ -139,7 +140,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
               color: Colors.indigo,
             ),
             onPressed: () {
-               showDialog(
+              showDialog(
                   context: context,
                   builder: (context) {
                     return CustomReusableAlertDialog(
@@ -147,16 +148,17 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         fieldLabels: const [
                           'المسمى',
                           'العدد',
-                          
                         ],
                         onSubmit: (values) {
-                          // DioNetworkRepos().createNewUser(
-                          //     values[0], values[1], 1, 'غرفة الطوارئ');
+                          try {
+                            DioNetworkRepos().createNewHandasahTools(
+                                handasahName, values[0], int.parse(values[1]));
+                          } catch (e) {
+                            debugPrint(e.toString());
+                          }
                         });
                   });
-              debugPrint(
-                  "User Input: updated Caller Name, Phone, And Borken Number");
-            
+              debugPrint("$handasahName admin : Added new tool");
             },
           ),
         ],
@@ -192,19 +194,19 @@ class _HandasahScreenState extends State<HandasahScreen> {
           Expanded(
             flex: 3,
             child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: gisHandasahUrl == ""
-                    ? const Center(
-                        child: Text(
-                          'عرض رابط GIS',
-                          style: TextStyle(fontSize: 20, color: Colors.indigo),
-                        ),
-                      )
-                    // : Container()
-                : IframeScreen(
-                    url: gisHandasahUrl,
-                  ), //
-                ),
+              padding: const EdgeInsets.all(8.0),
+              child: gisHandasahUrl == ""
+                  ? const Center(
+                      child: Text(
+                        'عرض رابط GIS',
+                        style: TextStyle(fontSize: 20, color: Colors.indigo),
+                      ),
+                    )
+                  // : Container()
+                  : IframeScreen(
+                      url: gisHandasahUrl,
+                    ), //
+            ),
           ),
           Expanded(
             flex: 1,
@@ -893,7 +895,25 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                           IconButton(
                                             tooltip: 'مهمات مخازن مطلوبة',
                                             hoverColor: Colors.yellow,
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              //nav request for user request tools tasks
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RequestToolForAddressScreen(
+                                                    address:
+                                                        snapshot.data![index]
+                                                            ['address'],
+                                                    handasahName:
+                                                        snapshot.data![index]
+                                                            ['handasah_name'],
+                                                  ),
+                                                ),
+                                              );
+                                              //request for store tasks
+                                             
+                                            },
                                             icon: const Icon(
                                               Icons.store_sharp,
                                               color: Colors.cyan,

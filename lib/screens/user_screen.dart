@@ -9,6 +9,7 @@ import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
 import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+import 'package:pick_location/screens/user_request_tools.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import '../custom_widget/custom_alert_dialog_with_sound.dart';
 import '../custom_widget/custom_web_view.dart';
@@ -476,6 +477,21 @@ class _UserScreenState extends State<UserScreen> {
                                 hoverColor: Colors.yellow,
                                 onPressed: () {
                                   //
+                                   //navigate to requests tools screen
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                           UserRequestTools(
+                                            handasahName: snapshot.data![index]
+                                            ['handasah_name'],
+                                            address: snapshot.data![index]
+                                            ['address'],
+                                            technicianName: snapshot.data![index]
+                                            ['technician_name'],
+                                          ),
+                                    ),
+                                  );
                                 },
                                 icon: const Icon(
                                   Icons.local_convenience_store_outlined,

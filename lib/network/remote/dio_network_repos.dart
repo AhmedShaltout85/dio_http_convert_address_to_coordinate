@@ -763,7 +763,8 @@ class DioNetworkRepos {
   }
 
   //33-- FETCH LOGIN USERS DROPDWON ITEMS from the Database(GET dropdown users items for  login)
-  Future<List<dynamic>> fetchLoginUsersItemsDropdownMenu(int role, String controlUnit) async {
+  Future<List<dynamic>> fetchLoginUsersItemsDropdownMenu(
+      int role, String controlUnit) async {
     var getLoginUsersUrl =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/role/$role/control-unit/$controlUnit';
     try {
@@ -782,4 +783,100 @@ class DioNetworkRepos {
       throw Exception(e);
     }
   }
+
+  //34-- GET Reprots(GET by flag 1 and isFinished 1= CLOSED)
+  Future getLocByFlagAndIsFinishedForReports() async {
+    var urlGetAllEndedReportsByFlagAndIsFinished =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/flag/1/is-finished/1';
+    try {
+      var response = await dio.get(urlGetAllEndedReportsByFlagAndIsFinished);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      // throw Exception(e);
+    }
+  }
+
+  //35-- POST Create New TOOLS(CREATE NEW TOOLS)
+  Future createNewHandasahTools(
+      String handasahName, String toolName, int toolQty) async {
+    try {
+      var response = await dio.post(
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/handasat-tools/create-tool",
+          data: {
+            "handasahName": handasahName,
+            "toolName": toolName,
+            "toolQty": toolQty
+          });
+      if (response.statusCode == 201) {
+        return response.data;
+      } else {
+        throw Exception('Failed to post data');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  //36-- Get Tools request for user By address And Handasah Name and Request Status (FETCH- users-requests-tools)
+  Future<List<Map<String, dynamic>>>
+      getHandasahToolsByAddressAndHandasahAndRequestStatus(
+          String address, String handasahName, int requestStatus) async {
+    final url =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users-requests-tools/handasah/$handasahName/address/$address/requestStatus/$requestStatus';
+
+    try {
+      final response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+        debugPrint("API Response: ${response.data}");
+
+        // Handle different response formats
+        if (response.data is List) {
+          return List<Map<String, dynamic>>.from(response.data);
+        } else if (response.data is Map<String, dynamic>) {
+          return [response.data as Map<String, dynamic>];
+        } else {
+          debugPrint('Unexpected response format');
+          return [];
+        }
+      } else {
+        debugPrint('Request failed with status: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Error fetching tools: $e');
+      throw Exception('Failed to load tools: $e');
+    }
+  }
+
+  //37-- FETCH HANDASAT TOOLS DROPDWON ITEMS from the Database(GET dropdown HANDASAT TOOLS items FOR USER REQUESTS)
+  Future fetchHandasatToolsItemsDropdownMenu(String handasahName) async {
+    var getHandasatUrl =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/handasat-tools/all/$handasahName';
+    try {
+      var response = await dio.get(getHandasatUrl);
+      if (response.statusCode == 200) {
+        // debugPrint(dataList);
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+
 }

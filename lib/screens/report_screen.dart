@@ -26,7 +26,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
   void fetchData() async {
     try {
-      final value = await DioNetworkRepos().getLoc();
+      final value = await DioNetworkRepos().getLocByFlagAndIsFinishedForReports();
 
       setState(() {
         _sampleData.clear();

@@ -50,6 +50,9 @@ const channel = 'control_room_location';
 // Basic Authentication credentials
 const username = 'gis';
 const password = 'gislab1257910';
+// Basic Authentication credentials for hotline
+const hotLineUsername = "IT1234";
+const HotLinePassword = "it2020";
 
 class DataStatic {
 //Assign HandasahName
@@ -59,4 +62,5 @@ class DataStatic {
   static String username = '';
   static String password = '';
   static int userRole = 0;
+  static String token = '';
 }

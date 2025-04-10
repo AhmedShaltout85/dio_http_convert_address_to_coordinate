@@ -484,11 +484,11 @@ class _UserScreenState extends State<UserScreen> {
                                       builder: (context) =>
                                            UserRequestTools(
                                             handasahName: snapshot.data![index]
-                                            ['handasah_name'],
+                                            ['handasah_name'] ?? DataStatic.handasahName,
                                             address: snapshot.data![index]
                                             ['address'],
                                             technicianName: snapshot.data![index]
-                                            ['technician_name'],
+                                            ['technical_name'],
                                           ),
                                     ),
                                   );

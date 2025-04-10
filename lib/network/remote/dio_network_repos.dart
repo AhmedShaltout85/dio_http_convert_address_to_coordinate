@@ -858,19 +858,120 @@ class DioNetworkRepos {
   }
 
   //37-- FETCH HANDASAT TOOLS DROPDWON ITEMS from the Database(GET dropdown HANDASAT TOOLS items FOR USER REQUESTS)
-  Future fetchHandasatToolsItemsDropdownMenu(String handasahName) async {
-    var getHandasatUrl =
+  Future<List<String>> fetchHandasatToolsItemsDropdownMenu(
+      String handasahName) async {
+    final url =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/handasat-tools/all/$handasahName';
+
     try {
-      var response = await dio.get(getHandasatUrl);
+      final response = await dio.get(url);
+
       if (response.statusCode == 200) {
+        // Ensure we have a List and convert each item to String
+        final List<dynamic> data = response.data;
+        debugPrint("API Response: ${data.toString()}");
+
+        // Convert each item to String safely
+        return data.map((item) => item.toString()).toList();
+      } else {
+        debugPrint('Request failed with status: ${response.statusCode}');
+        return []; // Return empty list for non-200 status
+      }
+    } catch (e) {
+      debugPrint('Error fetching tools: $e');
+      throw Exception('Failed to load tools: $e'); // More descriptive error
+    }
+  }
+
+  //38-create new Request tools(CREATE NEW REQUEST TOOLS)
+  // Future createNewRequestTools(
+  //   String handasahName,
+  //   String toolName,
+  //   String address,
+  //   String technicianName,
+   
+  // ) async {
+  //   try {
+  //     var response = await dio.post(
+  //         "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users-requests-tools/create-new-request",
+  //         data: {
+  //           "handasahName": handasahName,
+  //           "toolName": toolName,
+  //           "address": address,
+  //           "techName": technicianName,
+            
+  //         });
+  //     if (response.statusCode == 201) {
+  //       return response.data;
+  //     } else {
+  //       debugPrint('List is empty');
+  //       throw Exception('Failed to post data');
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     throw Exception(e);
+  //   }
+  // }
+Future<Map<String, dynamic>> createNewRequestTools({
+    required String handasahName,
+    required String toolName,
+    required String address,
+    required String technicianName,
+  }) async {
+    try {
+      final response = await dio.post(
+        "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users-requests-tools/create-new-request",
+        data: {
+          "handasahName": handasahName,
+          "toolName": toolName,
+          "address": address,
+          "techName": technicianName,
+          // "requestStatus": 1,
+          // "date": DateTime.now().toString(),
+          // "toolQty":0,
+        },
+      );
+
+      if (response.statusCode == 201) {
+        return response.data as Map<String, dynamic>;
+      } else {
+        debugPrint('Failed with status code: ${response.statusCode}');
+        throw Exception(
+            'Failed to create new request: Status ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      debugPrint('Dio error: ${e.message}');
+      if (e.response != null) {
+        debugPrint('Response data: ${e.response?.data}');
+        debugPrint('Response status: ${e.response?.statusCode}');
+      }
+      throw Exception('Failed to create request: ${e.message}');
+    } catch (e) {
+      debugPrint('Unexpected error: $e');
+      throw Exception('An unexpected error occurred');
+    }
+  }
+  //39-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
+  Future getHotLineTokenByUserAndPassword() async {
+    var getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
+
+    try {
+      var response = await dio.post(
+        getHotLineTokenUrlWeb,
+        data: {
+          "userName": hotLineUsername,
+          "password": HotLinePassword,
+        },
+      );
+      if (response.statusCode == 201) {
         // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        debugPrint("PRINTED HOTLINE TOKEN FROM API:  ${response.data}");
 
         return response.data;
       } else {
         debugPrint('List is empty');
         return [];
+        // throw Exception('List is empty');
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -878,5 +979,32 @@ class DioNetworkRepos {
     }
   }
 
+//40-- GET HOT LINE DATA (GET HOT LINE DATA)
+  Future getHotLineData() async {
+    var getHotLineDataUrl = 'http://192.168.2.170:8081/api/GetOpendCases';
+    final token = DataStatic.token;
+    try {
+      var response = await dio.get(
+        getHotLineDataUrl,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 201) {
+        // debugPrint(dataList);
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
 
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
 }

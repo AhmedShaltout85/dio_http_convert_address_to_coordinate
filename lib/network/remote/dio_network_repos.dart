@@ -884,73 +884,41 @@ class DioNetworkRepos {
   }
 
   //38-create new Request tools(CREATE NEW REQUEST TOOLS)
-  // Future createNewRequestTools(
-  //   String handasahName,
-  //   String toolName,
-  //   String address,
-  //   String technicianName,
-   
-  // ) async {
-  //   try {
-  //     var response = await dio.post(
-  //         "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users-requests-tools/create-new-request",
-  //         data: {
-  //           "handasahName": handasahName,
-  //           "toolName": toolName,
-  //           "address": address,
-  //           "techName": technicianName,
-            
-  //         });
-  //     if (response.statusCode == 201) {
-  //       return response.data;
-  //     } else {
-  //       debugPrint('List is empty');
-  //       throw Exception('Failed to post data');
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     throw Exception(e);
-  //   }
-  // }
-Future<Map<String, dynamic>> createNewRequestTools({
+  Future createNewRequestTools({
     required String handasahName,
     required String toolName,
     required String address,
-    required String technicianName,
+    required String techName,
+    required int requestStatus,
+    required int toolQty,
+    required int isApproved,
+    required String date,
   }) async {
     try {
-      final response = await dio.post(
-        "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users-requests-tools/create-new-request",
-        data: {
-          "handasahName": handasahName,
-          "toolName": toolName,
-          "address": address,
-          "techName": technicianName,
-          // "requestStatus": 1,
-          // "date": DateTime.now().toString(),
-          // "toolQty":0,
-        },
-      );
-
+      var response = await dio.post(
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users-requests-tools/create-new-request",
+          data: {
+            "handasahName": handasahName,
+            "toolName": toolName,
+            "toolQty": toolQty,
+            "techName": techName,
+            "date": date,
+            "requestStatus": requestStatus,
+            "isApproved": isApproved,
+            "address": address
+          });
       if (response.statusCode == 201) {
-        return response.data as Map<String, dynamic>;
+        return response.data;
       } else {
-        debugPrint('Failed with status code: ${response.statusCode}');
-        throw Exception(
-            'Failed to create new request: Status ${response.statusCode}');
+        // debugPrint('List is empty');
+        throw Exception('Failed to post data');
       }
-    } on DioException catch (e) {
-      debugPrint('Dio error: ${e.message}');
-      if (e.response != null) {
-        debugPrint('Response data: ${e.response?.data}');
-        debugPrint('Response status: ${e.response?.statusCode}');
-      }
-      throw Exception('Failed to create request: ${e.message}');
     } catch (e) {
-      debugPrint('Unexpected error: $e');
-      throw Exception('An unexpected error occurred');
+      debugPrint(e.toString());
+      throw Exception(e);
     }
   }
+
   //39-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
   Future getHotLineTokenByUserAndPassword() async {
     var getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';

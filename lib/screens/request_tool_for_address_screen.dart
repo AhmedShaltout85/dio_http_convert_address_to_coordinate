@@ -1,6 +1,8 @@
+
 // ignore_for_file: unnecessary_type_check
 
 import 'package:flutter/material.dart';
+import '../custom_widget/custom_text_field.dart';
 import '../network/remote/dio_network_repos.dart';
 
 class RequestToolForAddressScreen extends StatefulWidget {
@@ -19,6 +21,8 @@ class RequestToolForAddressScreen extends StatefulWidget {
 }
 
 class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
+  final TextEditingController qtyController = TextEditingController();
+
   late Future<List<dynamic>> getToolsForAddressInHandasah;
   bool _isLoading = true;
   String? _errorMessage;
@@ -56,6 +60,34 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
         _isLoading = false;
       });
       debugPrint("Error fetching tools: $e");
+    }
+  }
+
+  Future<void> _updateToolQty(Map<String, dynamic> item) async {
+    try {
+      if (qtyController.text.isEmpty) {
+        setState(() {
+          qtyController.text = item['toolQty'].toString();
+        });
+        return;
+      }
+
+      // Update tool qty and approval status
+      await DioNetworkRepos().updateUserRequestToolsByAddress(
+        item['address'].toString(),
+        int.parse(qtyController.text),
+        item['isApproved'],
+      );
+
+      // Refresh the data after update
+      await _fetchUserRequestForAddress();
+
+      debugPrint('User request updated successfully');
+    } catch (e) {
+      debugPrint(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating quantity: ${e.toString()}')),
+      );
     }
   }
 
@@ -120,7 +152,6 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
-                        // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Row(
                             children: [
@@ -237,6 +268,47 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
                                   ),
                                 ),
                               )
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Expanded(
+                                child: SizedBox.shrink(),
+                              ),
+                              Expanded(
+                                child: TextButton(
+                                  style: const ButtonStyle(
+                                    shape: WidgetStatePropertyAll(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(3),
+                                        ),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        WidgetStatePropertyAll<Color>(
+                                            Colors.indigo),
+                                  ),
+                                  onPressed: () => _updateToolQty(item),
+                                  child: const Text(
+                                    'حفظ',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: CustomTextField(
+                                  controller: qtyController,
+                                  keyboardType: TextInputType.number,
+                                  lableText: 'العدد',
+                                  hintText: 'فضلا أدخل الكمية',
+                                  prefixIcon: const SizedBox.shrink(),
+                                  suffixIcon: const SizedBox.shrink(),
+                                  obscureText: false,
+                                  textInputAction: TextInputAction.done,
+                                ),
+                              ),
                             ],
                           ),
                         ],

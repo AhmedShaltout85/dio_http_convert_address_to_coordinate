@@ -919,7 +919,26 @@ class DioNetworkRepos {
     }
   }
 
-  //39-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
+  //39-- UPDATE USER REQUEST TOOLS BY ADDRESS(UPDATE USER QTYTOOL AND ISAPPROVED BY ADDRESS)
+
+  Future updateUserRequestToolsByAddress(
+      String address, int toolQty, int isApproved) async {
+    try {
+      final response = await dio.put(
+          "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users-requests-tools/address/$address",
+          data: {
+            "toolQty": toolQty,
+            "isApproved": isApproved,
+          });
+      debugPrint(response.data.toString());
+      return response.data;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  //40-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
   Future getHotLineTokenByUserAndPassword() async {
     var getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
 
@@ -947,7 +966,7 @@ class DioNetworkRepos {
     }
   }
 
-//40-- GET HOT LINE DATA (GET HOT LINE DATA)
+//41-- GET HOT LINE DATA (GET HOT LINE DATA)
   Future getHotLineData() async {
     var getHotLineDataUrl = 'http://192.168.2.170:8081/api/GetOpendCases';
     final token = DataStatic.token;
@@ -973,6 +992,33 @@ class DioNetworkRepos {
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
+    }
+  }
+
+  //42-- POST HOT LINE DATA (POST HOT LINE DATA)
+  Future<void> postHotLineDataList(List<Map<String, dynamic>> reports) async {
+    try {
+      final response = await dio.post(
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/create', // Update with your endpoint
+        data: reports,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            // Add any other headers like authorization if needed
+            // 'Authorization': 'Bearer your_token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint('Data posted successfully');
+      } else {
+        throw Exception('Failed to post data: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Dio error: ${e.message}');
+    } catch (e) {
+      throw Exception('Error: $e');
     }
   }
 }

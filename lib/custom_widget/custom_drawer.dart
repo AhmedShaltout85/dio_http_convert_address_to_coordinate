@@ -45,30 +45,42 @@ class CustomDrawer extends StatelessWidget {
                         return InkWell(
                           child: Card(
                             child: ListTile(
-                              title: Text(
-                                snapshot.data![index]['address'],
-                                style: const TextStyle(
-                                    color: Colors.indigo,
-                                    fontWeight: FontWeight.bold),
+                              title: snapshot.data![index]['mainStreet'] ==
+                                          null ||
+                                      snapshot.data![index]['mainStreet'] == ""
+                                  ? Text(
+                                      snapshot.data![index]['street'],
+                                      style: const TextStyle(
+                                          color: Colors.indigo,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  : Text(
+                                      '${snapshot.data![index]['street']} ${snapshot.data![index]['mainStreet']}',
+                                      style: const TextStyle(
+                                          color: Colors.indigo,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                              subtitle: Text(
+                                '${snapshot.data[index]['id']}',
+                                style: const TextStyle(color: Colors.indigo),
                               ),
-                              // subtitle: snapshot.data![index]
-                              //                 ['handasah_name'] ==
-                              //             "free" ||
-                              //         snapshot.data![index]['technical_name'] ==
-                              //             "free"
-                              //     ? const SizedBox.shrink()
-                              //     : Text(
-                              //         "(${snapshot.data![index]['handasah_name']},${snapshot.data![index]['technical_name']})"),
                             ),
                           ),
                           onTap: () {
                             debugPrint("${snapshot.data[index]['id']}");
                             //CALL API TO UPDATE LOCATION
-                            // id = widget.data[index]['id'];
                             //copy to clipboard
-                            Clipboard.setData(ClipboardData(
+                            Clipboard.setData(
+                              ClipboardData(
                                 // text: widget.data[index]['address']));
-                                text: snapshot.data[index]['address']));
+                                text: snapshot.data![index]['mainStreet'] ==
+                                            null ||
+                                        snapshot.data![index]['mainStreet'] ==
+                                            ""
+                                    ? '${snapshot.data![index]['street']} الاسكندرية'
+                                    : '${snapshot.data[index]['street']} ${snapshot.data[index]['mainStreet']} الاسكندرية',
+                              ),
+                            );
                             // Show a SnackBar to notify the user that the text is copied
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

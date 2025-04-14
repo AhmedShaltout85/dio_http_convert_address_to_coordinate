@@ -938,7 +938,56 @@ class DioNetworkRepos {
     }
   }
 
-  //40-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
+
+  //40-- GET Hotline Address Locally(GET Hotline Address Locally--HOTLINE)
+  // Future getHotlineAllAddress() async {
+  //   var urlGetHotlineAllAddress =
+  //       '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/all';
+  //   try {
+  //     var response = await dio.get(urlGetHotlineAllAddress);
+  //     if (response.statusCode == 200) {
+  //       return response.data;
+  //     } else {
+  //       debugPrint('List is empty');
+  //       return [];
+  //       // throw Exception('List is empty');
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     // throw Exception(e);
+  //   }
+  // }
+  Future<List<Map<String, dynamic>>>
+      getHotlineAllAddress() async {
+    var urlGetHotlineAllAddress =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/all';
+
+    try {
+      final response = await dio.get(urlGetHotlineAllAddress);
+
+      if (response.statusCode == 200) {
+        debugPrint("API Response: ${response.data}");
+
+        // Handle different response formats
+        if (response.data is List) {
+          return List<Map<String, dynamic>>.from(response.data);
+        } else if (response.data is Map<String, dynamic>) {
+          return [response.data as Map<String, dynamic>];
+        } else {
+          debugPrint('Unexpected response format');
+          return [];
+        }
+      } else {
+        debugPrint('Request failed with status: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Error fetching tools: $e');
+      throw Exception('Failed to load tools: $e');
+    }
+  }
+
+  //41-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
   Future getHotLineTokenByUserAndPassword() async {
     var getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
 
@@ -966,7 +1015,7 @@ class DioNetworkRepos {
     }
   }
 
-//41-- GET HOT LINE DATA (GET HOT LINE DATA)
+//42-- GET HOT LINE DATA (GET HOT LINE DATA)
   Future getHotLineData() async {
     var getHotLineDataUrl = 'http://192.168.2.170:8081/api/GetOpendCases';
     final token = DataStatic.token;
@@ -995,12 +1044,13 @@ class DioNetworkRepos {
     }
   }
 
-  //42-- POST HOT LINE DATA (POST HOT LINE DATA)
-  Future<void> postHotLineDataList(List<Map<String, dynamic>> reports) async {
+  //43-- POST HOT LINE DATA (POST HOT LINE DATA)
+  Future<void> postHotLineDataList(
+      List<Map<String, dynamic>> hotLineDataList) async {
     try {
       final response = await dio.post(
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/create', // Update with your endpoint
-        data: reports,
+        data: hotLineDataList,
         options: Options(
           headers: {
             'Content-Type': 'application/json',

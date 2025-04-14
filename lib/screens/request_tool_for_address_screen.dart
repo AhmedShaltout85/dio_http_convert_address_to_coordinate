@@ -32,6 +32,13 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
     super.initState();
     _fetchUserRequestForAddress();
   }
+  
+    @override
+  void dispose() {
+    qtyController.dispose();
+    super.dispose();
+  }
+
 
   Future<void> _fetchUserRequestForAddress() async {
     try {

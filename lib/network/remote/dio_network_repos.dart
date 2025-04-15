@@ -938,37 +938,48 @@ class DioNetworkRepos {
     }
   }
 
-
   //40-- GET Hotline Address Locally(GET Hotline Address Locally--HOTLINE)
-  // Future getHotlineAllAddress() async {
+
+  // Future<List<Map<String, dynamic>>> getHotlineAllAddress() async {
   //   var urlGetHotlineAllAddress =
   //       '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/all';
+
   //   try {
-  //     var response = await dio.get(urlGetHotlineAllAddress);
+  //     final response = await dio.get(urlGetHotlineAllAddress);
+
   //     if (response.statusCode == 200) {
-  //       return response.data;
+  //       debugPrint("API Response: ${response.data}");
+
+  //       // Handle different response formats
+  //       if (response.data is List) {
+  //         return List<Map<String, dynamic>>.from(response.data);
+  //       } else if (response.data is Map<String, dynamic>) {
+  //         return [response.data as Map<String, dynamic>];
+  //       } else {
+  //         debugPrint('Unexpected response format');
+  //         return [];
+  //       }
   //     } else {
-  //       debugPrint('List is empty');
+  //       debugPrint('Request failed with status: ${response.statusCode}');
   //       return [];
-  //       // throw Exception('List is empty');
   //     }
   //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     // throw Exception(e);
+  //     debugPrint('Error fetching tools: $e');
+  //     throw Exception('Failed to load tools: $e');
   //   }
   // }
-  Future<List<Map<String, dynamic>>>
-      getHotlineAllAddress() async {
-    var urlGetHotlineAllAddress =
+
+Future<List<Map<String, dynamic>>> getHotlineAllAddress() async {
+    var url =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/all';
+    debugPrint('Calling API: $url');
 
     try {
-      final response = await dio.get(urlGetHotlineAllAddress);
+      final response = await dio.get(url);
 
       if (response.statusCode == 200) {
         debugPrint("API Response: ${response.data}");
 
-        // Handle different response formats
         if (response.data is List) {
           return List<Map<String, dynamic>>.from(response.data);
         } else if (response.data is Map<String, dynamic>) {
@@ -982,45 +993,47 @@ class DioNetworkRepos {
         return [];
       }
     } catch (e) {
-      debugPrint('Error fetching tools: $e');
-      throw Exception('Failed to load tools: $e');
+      debugPrint('Error fetching hot addresses: $e');
+      return [];
     }
   }
 
   //41-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
-  Future getHotLineTokenByUserAndPassword() async {
-    var getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
+
+  Future<String> getHotLineTokenByUserAndPassword() async {
+    const getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
 
     try {
-      var response = await dio.post(
+      final response = await dio.post(
         getHotLineTokenUrlWeb,
         data: {
           "userName": hotLineUsername,
           "password": HotLinePassword,
         },
       );
-      if (response.statusCode == 201) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED HOTLINE TOKEN FROM API:  ${response.data}");
 
-        return response.data;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Extract token from response data
+        final token = response.data['token'] as String;
+        debugPrint("EXTRACTED HOTLINE TOKEN: $token");
+        return token;
       } else {
-        debugPrint('List is empty');
-        return [];
-        // throw Exception('List is empty');
+        debugPrint('Failed to get token. Status code: ${response.statusCode}');
+        throw Exception(
+            'Failed to get token. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint(e.toString());
-      throw Exception(e);
+      debugPrint('Error getting hotline token: $e');
+      throw Exception('Error getting hotline token: $e');
     }
   }
 
 //42-- GET HOT LINE DATA (GET HOT LINE DATA)
-  Future getHotLineData() async {
+
+  Future<List<Map<String, dynamic>>> getHotLineData(String token) async {
     var getHotLineDataUrl = 'http://192.168.2.170:8081/api/GetOpendCases';
-    final token = DataStatic.token;
     try {
-      var response = await dio.get(
+      final response = await dio.get(
         getHotLineDataUrl,
         options: Options(
           headers: {
@@ -1028,19 +1041,38 @@ class DioNetworkRepos {
           },
         ),
       );
-      if (response.statusCode == 201) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
 
-        return response.data;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint("API Response: ${response.data}");
+
+        // Check if the response data is a List
+        if (response.data is List) {
+          // Try to cast each item to Map<String, dynamic>
+          final List<dynamic> dataList = response.data as List;
+          return dataList.map<Map<String, dynamic>>((item) {
+            if (item is Map<String, dynamic>) {
+              return item;
+            } else {
+              // If items aren't Maps, convert them or handle accordingly
+              debugPrint('Item is not a Map: $item');
+              return {'data': item}; // Fallback conversion
+            }
+          }).toList();
+        } else if (response.data is Map<String, dynamic>) {
+          // If the API returns a single object instead of array, wrap it in a list
+          return [response.data as Map<String, dynamic>];
+        } else {
+          debugPrint(
+              'Unexpected response format: ${response.data.runtimeType}');
+          return [];
+        }
       } else {
-        debugPrint('List is empty');
+        debugPrint('Request failed with status: ${response.statusCode}');
         return [];
-        // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
-      throw Exception(e);
+      debugPrint('Error in getHotLineData: ${e.toString()}');
+      return [];
     }
   }
 

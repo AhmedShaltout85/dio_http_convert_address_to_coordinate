@@ -37,7 +37,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double latitude = 0.0, longitude = 0.0;
   var pickMarkers = HashSet<Marker>();
-  late Future getLocs; //get addresses from db(HotLine)
+  // late Future getLocs; //get addresses from db(HotLine)
   late Future
       getLocsAfterGetCoordinatesAndGis; //get addresses from db(after getting coordinates and gis link)
   late Future getLocsByHandasahNameAndTechinicianName;
@@ -45,6 +45,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   late Future getHandasatItemsDropdownMenu;
   List<String> handasatItemsDropdownMenu = [];
   List<String> addHandasahToAddressList = [];
+  late Future<List<Map<String, dynamic>>> getAllHotLineAddresses;
 
   // Replace with your actual Google Maps API key
   String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
@@ -58,14 +59,45 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     addressController.dispose();
     super.dispose();
   }
+  Future<void> _initializeApp() async {
+    try {
+      setState(() {
+        getAllHotLineAddresses = _loadHotlineData();
+      });
+    } catch (e) {
+      debugPrint("Error initializing app: $e");
+      _showErrorSnackbar("Failed to initialize application");
+    }
+  }
 
+  Future<List<Map<String, dynamic>>> _loadHotlineData() async {
+    try {
+      final token = await DioNetworkRepos().getHotLineTokenByUserAndPassword();
+      return DioNetworkRepos().getHotLineData(token);
+    } catch (e) {
+      debugPrint("Error loading hotline data: $e");
+      _showErrorSnackbar("Failed to load hotline data");
+      return [];
+    }
+  }
+   void _showErrorSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
   //update in periodic time
   void _startPeriodicFetch() {
     const Duration fetchInterval =
         Duration(seconds: 10); // Fetch every 10 seconds
     _timer = Timer.periodic(fetchInterval, (Timer timer) {
       setState(() {
-        getLocs = DioNetworkRepos().getLoc();
+        // getAllHotLineAddresses = DioNetworkRepos().getLoc();
         getLocsAfterGetCoordinatesAndGis =
             DioNetworkRepos().getLocByFlagAndIsFinished();
         getLocsByHandasahNameAndTechinicianName =
@@ -77,16 +109,17 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   @override
   void initState() {
     super.initState();
+    _initializeApp();
 
     setState(() {
-      getLocs = DioNetworkRepos().getLoc();
+      // getLocs = DioNetworkRepos().getLoc();
       getLocsAfterGetCoordinatesAndGis =
           DioNetworkRepos().getLocByFlagAndIsFinished();
       getLocsByHandasahNameAndTechinicianName =
           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
     });
 
-    getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
+    // getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
 
     getLocsByHandasahNameAndTechinicianName.then((value) =>
         debugPrint("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
@@ -150,7 +183,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             debugPrint(latitude.toString());
 
             //update locations after getting coordinates
-            getLocs = DioNetworkRepos().getLoc();
+            // getLocs = DioNetworkRepos().getLoc();
             //update locations after getting coordinates and gis link
             getLocsAfterGetCoordinatesAndGis =
                 DioNetworkRepos().getLocByFlagAndIsFinished();
@@ -219,7 +252,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           //update Locations list after getting coordinates
 
           setState(() {
-            getLocs = DioNetworkRepos().getLoc();
+            // getLocs = DioNetworkRepos().getLoc();
             //update locations after getting coordinates and gis link
             getLocsAfterGetCoordinatesAndGis =
                 DioNetworkRepos().getLocByFlagAndIsFinished();
@@ -450,7 +483,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                 _getCoordinatesFromAddress(address);
                                 addressController.clear();
                                 //update locations after getting coordinates
-                                getLocs = DioNetworkRepos().getLoc();
+                                // getLocs = DioNetworkRepos().getLoc();
                                 //update locations after getting coordinates and gis link
                                 getLocsAfterGetCoordinatesAndGis =
                                     DioNetworkRepos()
@@ -1298,29 +1331,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       ),
       drawer: CustomDrawer(
         title: 'الاعطال الواردة من الخط الساخن',
-        getLocs: getLocs,
+        getLocs: getAllHotLineAddresses,
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.cyan,
-      //   onPressed: () {
-      //     // pickMarkers.clear();
-      //     setState(() {
-      //       getLocs = DioNetworkRepos().getLoc();
-      //       //update locations after getting coordinates
-      //       getLocsAfterGetCoordinatesAndGis =
-      //           DioNetworkRepos().getLocByFlagAndIsFinished();
-      //       getLocsByHandasahNameAndTechinicianName =
-      //           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-      //     });
-      //   },
-      //   mini: true,
-      //   tooltip: 'تحديث',
-      //   child: const Icon(
-      //     Icons.refresh,
-      //     color: Colors.white,
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      
     );
   }
 }

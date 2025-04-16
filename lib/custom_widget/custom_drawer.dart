@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pick_location/network/remote/dio_network_repos.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Future getLocs;
@@ -67,7 +68,32 @@ class CustomDrawer extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
-                            debugPrint("${snapshot.data[index]['id']}");
+                            String address;
+                            snapshot.data![index]['mainStreet'] == null ||
+                                    snapshot.data![index]['mainStreet'] == ""
+                                ? address = '${snapshot.data![index]['street']} الاسكندرية'
+                                : address =
+                                    '${snapshot.data[index]['street']} ${snapshot.data[index]['mainStreet']} الاسكندرية';
+                            //post hotline data to local db
+                            try {
+                              DioNetworkRepos().postHotLineDataList(
+                                id: snapshot.data[index]['id'],
+                                caseReportDateTime: snapshot.data[index]
+                                    ['caseReportDateTime'],
+                                caseType: snapshot.data[index]['caseType'],
+                                finalClosed: snapshot.data![index]
+                                    ['finalClosed'],
+                                mainStreet: snapshot.data![index]['mainStreet'],
+                                reporterName: snapshot.data![index]
+                                    ['reporterName'],
+                                street: snapshot.data![index]['street'],
+                                x: snapshot.data![index]['x'],
+                                y: snapshot.data![index]['y'],
+                                address: address,
+                              );
+                            } catch (e) {
+                              debugPrint(e.toString());
+                            }
                             //CALL API TO UPDATE LOCATION
                             //copy to clipboard
                             Clipboard.setData(

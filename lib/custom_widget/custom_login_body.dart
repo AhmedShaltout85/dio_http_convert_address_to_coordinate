@@ -330,7 +330,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                           alignment: Alignment.centerRight,
                           child: CustomRadioButton<String>(
                             options: _fullOptions,
-                            initialValue: '0',
+                            initialValue: '3',
                             onChanged: (value) async {
                               setState(() {
                                 selectedOption = value!;

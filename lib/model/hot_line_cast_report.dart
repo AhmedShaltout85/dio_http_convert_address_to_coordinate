@@ -1,7 +1,5 @@
 
 
-import 'package:flutter/foundation.dart';
-import 'package:pick_location/network/remote/dio_network_repos.dart';
 
 class CaseReport {
   final int id;
@@ -42,58 +40,58 @@ class CaseReport {
 }
 
 
-void postData() async {
+// void postData() async {
  
 
-  final reports = [
-    {
-      "id": 395923,
-      "caseReportDateTime": "2025-04-08T14:03:02.76",
-      "waterStopingDateTime": "2025-04-08T13:59:29.317",
-      "caseRepairDateTime": null,
-      "waterOpeningDateTime": null,
-      "notes": "12 بوصة 2 بلف ا/ احمد عيسى",
-      "finalClosed": false,
-      "reporterName": "ا/ احمد عيسى",
-      "refNo": null,
-      "street": "طريق الكورنيش امام فندق ريجينسى - العصافرة بحرى",
-      "mainStreet": "",
-      "x": "",
-      "y": "",
-      "nearTo": "",
-      "userName": "احمد  خميس عثمان",
-      "area": "العصافرة بحرى",
-      "town": "حى المنتزة",
-      "sector": "قطاع شرق",
-      "locationName": "المندرة (حى المنتزة)",
-      "companyAcroName": " مياه الاسكندرية",
-      "caseType": "كسر ماسورة",
-      "activityName": "مياه",
-      "valvesCount": 2,
-      "network": "",
-      "pressure": 0.00,
-      "details": "",
-      "extraDataNotes": "",
-      "pipeDiameter": 300,
-      "pipeType": "",
-      "pipeStatus": "",
-      "pipeDepth": "",
-      "pipeAge": "",
-      "breakLength": 0.00,
-      "bearkWidth": 0.00,
-      "plantName": "",
-      "plantStatus": "",
-      "affectedAreas": "العصافرة بحرى",
-      "resons": "",
-      "repairType": "",
-      "delayResons": ""
-    }
-  ];
+//   final reports = [
+//     {
+//       "id": 395923,
+//       "caseReportDateTime": "2025-04-08T14:03:02.76",
+//       "waterStopingDateTime": "2025-04-08T13:59:29.317",
+//       "caseRepairDateTime": null,
+//       "waterOpeningDateTime": null,
+//       "notes": "12 بوصة 2 بلف ا/ احمد عيسى",
+//       "finalClosed": false,
+//       "reporterName": "ا/ احمد عيسى",
+//       "refNo": null,
+//       "street": "طريق الكورنيش امام فندق ريجينسى - العصافرة بحرى",
+//       "mainStreet": "",
+//       "x": "",
+//       "y": "",
+//       "nearTo": "",
+//       "userName": "احمد  خميس عثمان",
+//       "area": "العصافرة بحرى",
+//       "town": "حى المنتزة",
+//       "sector": "قطاع شرق",
+//       "locationName": "المندرة (حى المنتزة)",
+//       "companyAcroName": " مياه الاسكندرية",
+//       "caseType": "كسر ماسورة",
+//       "activityName": "مياه",
+//       "valvesCount": 2,
+//       "network": "",
+//       "pressure": 0.00,
+//       "details": "",
+//       "extraDataNotes": "",
+//       "pipeDiameter": 300,
+//       "pipeType": "",
+//       "pipeStatus": "",
+//       "pipeDepth": "",
+//       "pipeAge": "",
+//       "breakLength": 0.00,
+//       "bearkWidth": 0.00,
+//       "plantName": "",
+//       "plantStatus": "",
+//       "affectedAreas": "العصافرة بحرى",
+//       "resons": "",
+//       "repairType": "",
+//       "delayResons": ""
+//     }
+//   ];
 
-  try {
-    await DioNetworkRepos().postHotLineDataList(reports);
-    debugPrint('Data posted successfully');
-  } catch (e) {
-    debugPrint('Error posting data: $e');
-  }
-}
+//   try {
+//     // await DioNetworkRepos().postHotLineDataList(reports);
+//     debugPrint('Data posted successfully');
+//   } catch (e) {
+//     debugPrint('Error posting data: $e');
+//   }
+// }

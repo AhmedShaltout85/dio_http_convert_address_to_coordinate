@@ -969,7 +969,7 @@ class DioNetworkRepos {
   //   }
   // }
 
-Future<List<Map<String, dynamic>>> getHotlineAllAddress() async {
+  Future<List<Map<String, dynamic>>> getHotlineAllAddress() async {
     var url =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/all';
     debugPrint('Calling API: $url');
@@ -1077,19 +1077,40 @@ Future<List<Map<String, dynamic>>> getHotlineAllAddress() async {
   }
 
   //43-- POST HOT LINE DATA (POST HOT LINE DATA)
-  Future<void> postHotLineDataList(
-      List<Map<String, dynamic>> hotLineDataList) async {
+  Future<void> postHotLineDataList({
+    required int id,
+    required String caseReportDateTime,
+    required bool finalClosed,
+    required String reporterName,
+    required String street,
+    required String mainStreet,
+    required String caseType,
+    required String x,
+    required String y,
+    required String address,
+
+  }) async {
     try {
       final response = await dio.post(
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/create', // Update with your endpoint
-        data: hotLineDataList,
+
         options: Options(
           headers: {
             'Content-Type': 'application/json',
-            // Add any other headers like authorization if needed
-            // 'Authorization': 'Bearer your_token',
           },
         ),
+        data: {
+          "id": id,
+          "caseReportDateTime": caseReportDateTime,
+          "finalClosed": finalClosed,
+          "reporterName": reporterName,
+          "street": street,
+          "mainStreet": mainStreet,
+          "caseType": caseType,
+          "x": x,
+          "y": y,
+          "address": address,
+        },
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

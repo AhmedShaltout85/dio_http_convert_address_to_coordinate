@@ -200,6 +200,20 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
           color: Colors.indigo,
           size: 17,
         ),
+        actions: [
+           IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            tooltip: "تحديث شكاوى الخط الساخن",
+            hoverColor: Colors.yellow,
+            onPressed: () {
+              _initializeApp();
+            },
+            icon: const Icon(
+              Icons.refresh,
+              color: Colors.indigo,
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [

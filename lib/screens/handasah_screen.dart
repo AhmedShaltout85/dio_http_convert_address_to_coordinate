@@ -8,7 +8,7 @@ import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/request_tool_for_address_screen.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
-// import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
+import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 
 import '../custom_widget/custom_reusable_alert_dailog.dart';
 import '../custom_widget/cutom_texts_alert_dailog.dart';
@@ -202,10 +202,10 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         style: TextStyle(fontSize: 20, color: Colors.indigo),
                       ),
                     )
-                  : Container()
-                  // : IframeScreen(
-                  //     url: gisHandasahUrl,
-                  //   ), //
+                  // : Container()
+                  : IframeScreen(
+                      url: gisHandasahUrl,
+                    ), //
             ),
           ),
           Expanded(

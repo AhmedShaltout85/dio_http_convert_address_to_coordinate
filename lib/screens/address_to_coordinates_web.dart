@@ -59,6 +59,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     addressController.dispose();
     super.dispose();
   }
+
   Future<void> _initializeApp() async {
     try {
       setState(() {
@@ -80,7 +81,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       return [];
     }
   }
-   void _showErrorSnackbar(String message) {
+
+  void _showErrorSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -91,6 +93,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       ),
     );
   }
+
   //update in periodic time
   void _startPeriodicFetch() {
     const Duration fetchInterval =
@@ -341,6 +344,18 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           size: 17,
         ),
         actions: [
+          IconButton(
+             padding: const EdgeInsets.symmetric(horizontal: 5),
+            tooltip: "تحديث شكاوى الخط الساخن",
+            hoverColor: Colors.yellow,
+            onPressed: () {
+              _initializeApp();
+            },
+            icon: const Icon(
+              Icons.refresh,
+              color: Colors.indigo,
+            ),
+          ),
           IconButton(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             tooltip: "إضافة مستخدمين الطوارئ",
@@ -1333,7 +1348,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         title: 'الاعطال الواردة من الخط الساخن',
         getLocs: getAllHotLineAddresses,
       ),
-      
     );
   }
 }

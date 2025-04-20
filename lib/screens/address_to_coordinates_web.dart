@@ -671,6 +671,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                   color: Colors
                                                                       .orange),
                                                               child: Text(
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
                                                                 "قيد تخصيص هندسة",
                                                                 style:
                                                                     TextStyle(
@@ -754,6 +757,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                   color: Colors
                                                                       .orange),
                                                               child: Text(
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
                                                                 "قيد تخصيص فنى",
                                                                 style:
                                                                     TextStyle(
@@ -1224,7 +1230,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 tooltip:
                                                     "غرفة الطوارئ المتحركة",
                                                 hoverColor: Colors.yellow,
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  //
+                                                },
                                                 icon: const Icon(
                                                   Icons.car_crash,
                                                   color: Colors.purple,

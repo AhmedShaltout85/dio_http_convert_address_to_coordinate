@@ -729,7 +729,6 @@ class DioNetworkRepos {
   }
 
   //32-- POST Create New User(CREATE NEW USER)
-  //  http://localhost:9999/pick-location/api/v1/users/create-user
   Future createNewUser(
       String username, String password, int role, String controlUnit) async {
     try {
@@ -962,7 +961,8 @@ class DioNetworkRepos {
   //41-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
 
   Future<String> getHotLineTokenByUserAndPassword() async {
-    const getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
+    const getHotLineTokenUrlWeb = '$CMS_BASE_URI_IP_ADDRESS_RESOLVER:8081/api/Login';
+    // const getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
 
     try {
       final response = await dio.post(
@@ -992,7 +992,8 @@ class DioNetworkRepos {
 //42-- GET HOT LINE DATA (GET HOT LINE DATA)
 
   Future<List<Map<String, dynamic>>> getHotLineData(String token) async {
-    var getHotLineDataUrl = 'http://192.168.2.170:8081/api/GetOpendCases';
+    // var getHotLineDataUrl = 'http://192.168.2.170:8081/api/GetOpendCases';
+    var getHotLineDataUrl = '$CMS_BASE_URI_IP_ADDRESS_RESOLVER:8081/api/GetOpendCases';
     try {
       final response = await dio.get(
         getHotLineDataUrl,

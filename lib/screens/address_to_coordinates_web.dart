@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pick_location/screens/agora_video_call.dart';
+import 'package:pick_location/screens/dashboard_screen.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/report_screen.dart';
 import 'package:pick_location/screens/tracking.dart';
@@ -319,12 +320,21 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       );
     } else if (value == 'الربط مع الاسكادا') {
       CustomBrowserRedirect.openInBrowser(
-        'http://192.168.30.12:80/roundpoint',
+        'http://41.33.226.211:8070/roundpoint',
+        // 'http://192.168.30.12:80/roundpoint',
       );
     } else if (value == 'عرض المناطق المزدحمة بالبلاغات') {
       CustomBrowserRedirect.openInBrowser(
         'http://196.219.231.3:8000/webmap/breaks-hot-spots',
       );
+    }else if(value == 'عرض Skada Dashboard Reports'){
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const StationsDashboard(),
+        ),
+      );
+
     }
   }
 
@@ -390,7 +400,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             options: const [
               'عرض التقارير',
               'الربط مع الاسكادا',
-              'عرض المناطق المزدحمة بالبلاغات'
+              'عرض المناطق المزدحمة بالبلاغات',
+              'عرض Skada Dashboard Reports',
             ],
             onSelected: handleOptionClick,
           ),

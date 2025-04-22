@@ -64,6 +64,10 @@ const password = 'gislab1257910';
 const hotLineUsername = "IT1234";
 const HotLinePassword = "it2020";
 
+//skada constants
+const String skadaStationsReportbaseUrl =
+    'http://41.33.226.211:8070/api/data/stations-report';
+    
 class DataStatic {
 //Assign HandasahName
   static String handasahName = '';

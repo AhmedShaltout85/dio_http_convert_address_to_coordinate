@@ -26,7 +26,8 @@ class _ReportScreenState extends State<ReportScreen> {
 
   void fetchData() async {
     try {
-      final value = await DioNetworkRepos().getLocByFlagAndIsFinishedForReports();
+      final value =
+          await DioNetworkRepos().getLocByFlagAndIsFinishedForReports();
 
       setState(() {
         _sampleData.clear();
@@ -87,6 +88,93 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'التقارير',
+          style: TextStyle(
+            color: Colors.indigo,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(
+          color: Colors.indigo,
+        ),
+        elevation: 7,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.indigo),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: _buildBody(),
+    );
+    // _isLoading
+    //     ? const Center(child: CircularProgressIndicator())
+    //     : Padding(
+    //         padding: const EdgeInsets.all(16.0),
+    //         child: PaginatedDataTable2(
+    //           columns: const [
+    //             DataColumn(
+    //                 label: Text('ID',
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 16,
+    //                       color: Colors.indigo,
+    //                     ))),
+    //             DataColumn(
+    //                 label: Text('العنوان',
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 16,
+    //                       color: Colors.indigo,
+    //                     ))),
+    //             DataColumn(
+    //                 label: Text('إسم الهندسة',
+    //                     style: TextStyle(
+    //                         fontWeight: FontWeight.bold,
+    //                         fontSize: 16,
+    //                         color: Colors.indigo))),
+    //             DataColumn(
+    //                 label: Text('خط العرض',
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 16,
+    //                       color: Colors.indigo,
+    //                     ))),
+    //             DataColumn(
+    //                 label: Text('خط الطول',
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 16,
+    //                       color: Colors.indigo,
+    //                     ))),
+    //             DataColumn(
+    //                 label: Text('إسم المبلغ',
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 16,
+    //                       color: Colors.indigo,
+    //                     ))),
+    //             DataColumn(
+    //                 label: Text('رقم موبيل المبلغ',
+    //                     style: TextStyle(
+    //                       fontWeight: FontWeight.bold,
+    //                       fontSize: 16,
+    //                       color: Colors.indigo,
+    //                     ))),
+    //           ],
+    //           source: _dataSource,
+    //           rowsPerPage: 10,
+    //           columnSpacing: 20,
+    //           horizontalMargin: 12,
+    //           showCheckboxColumn: false,
+    //           headingRowColor: WidgetStateProperty.all(Colors.blue.shade50),
+    //         ),
+    //       );
+  }
+
+  _buildBody() {
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
         : Padding(

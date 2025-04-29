@@ -327,7 +327,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       CustomBrowserRedirect.openInBrowser(
         'http://196.219.231.3:8000/webmap/breaks-hot-spots',
       );
-    }else if(value == 'عرض Skada Dashboard Reports'){
+    }else if(value == 'عرض تقرير الاسكادا Dashboard'){
       Navigator.push(
         context,
         MaterialPageRoute(

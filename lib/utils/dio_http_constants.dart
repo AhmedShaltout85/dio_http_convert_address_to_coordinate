@@ -35,10 +35,14 @@ const String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
 // const String BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES = "http://41.33.226.211:8099"; //publish and handheld online server
 // const String BASE_URI_IP_ADDRESS_LOCAL_HOST = "http://41.33.226.211:9999"; //publish and handheld TEST server
 // const String BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES = "41.33.226.211:9999"; // publish and handheld TEST server
+// const String BASE_URI_IP_ADDRESS_LOCAL_HOST =
+//     "http://dr.awcoprod.com:9999"; //publish and handheld TEST server
+// const String BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES =
+//     "http://dr.awcoprod.com:9999"; // publish and handheld TEST server
 const String BASE_URI_IP_ADDRESS_LOCAL_HOST =
-    "http://dr.awcoprod.com:9999"; //publish and handheld TEST server
+    "http://dr.awcoprod.com:8099"; //publish and handheld online server
 const String BASE_URI_IP_ADDRESS_LOCAL_HOST_STORES =
-    "http://dr.awcoprod.com:9999"; // publish and handheld TEST server
+    "http://dr.awcoprod.com:8099"; // publish and handheld online server
 const String CMS_BASE_URI_IP_ADDRESS_RESOLVER =
     "http://apicms.awcoprod.com"; // publish CMS (hotline) RESOLVER
 

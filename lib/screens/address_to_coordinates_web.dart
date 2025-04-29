@@ -401,7 +401,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
               'عرض التقارير',
               'الربط مع الاسكادا',
               'عرض المناطق المزدحمة بالبلاغات',
-              'عرض Skada Dashboard Reports',
+              'عرض تقرير الاسكادا Dashboard',
             ],
             onSelected: handleOptionClick,
           ),

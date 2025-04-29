@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-import '../skada/models/station_data.dart';
-import '../skada/services/api_service.dart';
-import '../skada/widgets/charts/level_chart.dart';
-import '../skada/widgets/charts/pressure_chart.dart';
-import '../skada/widgets/charts/pumps_chart.dart';
+import '../scada/models/station_data.dart';
+import '../scada/services/api_service.dart';
+import '../scada/widgets/charts/level_chart.dart';
+import '../scada/widgets/charts/pressure_chart.dart';
+import '../scada/widgets/charts/pumps_chart.dart';
 
 class StationsDashboard extends StatefulWidget {
   const StationsDashboard({super.key});
@@ -35,7 +35,7 @@ class _StationsDashboardState extends State<StationsDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Skada Stations Dashboard',
+          'Scada Stations Dashboard',
           style: TextStyle(color: Colors.indigo),
         ),
         actions: [

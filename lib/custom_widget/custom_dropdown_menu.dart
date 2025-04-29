@@ -1,12 +1,14 @@
+
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatefulWidget {
-  final List<String> items; // Pass dropdown items here
+  final List<String> items;
   final String hintText;
   final ValueChanged<String?> onChanged;
   final bool isExpanded;
+  final String? value; // Add this to control the selected value from parent
 
   const CustomDropdown({
     super.key,
@@ -14,6 +16,7 @@ class CustomDropdown extends StatefulWidget {
     required this.hintText,
     required this.onChanged,
     required this.isExpanded,
+    this.value, // Add this parameter
   });
 
   @override
@@ -21,14 +24,12 @@ class CustomDropdown extends StatefulWidget {
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
-  String? _selectedItem;
-
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       alignment: AlignmentDirectional.center,
       borderRadius: const BorderRadius.all(Radius.circular(7)),
-      value: _selectedItem,
+      value: widget.value, // Use the value from parent instead of local state
       hint: Text(
         widget.hintText,
         textAlign: TextAlign.center,
@@ -39,20 +40,16 @@ class _CustomDropdownState extends State<CustomDropdown> {
       ),
       isExpanded: widget.isExpanded,
       onChanged: (value) {
-        setState(() {
-          _selectedItem = value;
-        });
+        // Remove local state management and just notify parent
         widget.onChanged(value);
       },
       items: widget.items.map<DropdownMenuItem<String>>((String item) {
-        return 
-        DropdownMenuItem<String>(
+        return DropdownMenuItem<String>(
           alignment: Alignment.center,
           value: item,
           child: Center(
             child: Text(
               textAlign: TextAlign.center,
-              // textDirection: TextDirection.rtl,
               item,
               style: const TextStyle(
                 color: Colors.indigo,

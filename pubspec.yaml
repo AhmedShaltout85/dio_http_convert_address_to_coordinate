@@ -126,6 +126,7 @@ flutter:
     - assets/logo.png
     - assets/aw_logo.png
     - assets/sounds/ringtone.mp3
+    - assets/sounds/alarm.mp3
     - assets/green_marker.png
 
 

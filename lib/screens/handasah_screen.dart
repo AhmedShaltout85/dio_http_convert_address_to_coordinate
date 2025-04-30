@@ -738,6 +738,9 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                                                 //     FontWeight
                                                                 //         .bold,
                                                               ),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
                                                             ),
                                                           ),
                                                         )

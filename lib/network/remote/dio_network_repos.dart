@@ -160,9 +160,9 @@ class DioNetworkRepos {
             "flag": 1,
             "gis_url": url,
             "is_finished": 0,
-            "handasah_name": "free",
-            "technical_name": "free",
             "is_approved":0,
+            "handasah_name": "free",
+            "technical_name": "free"
           });
       return response.data;
     } catch (e) {

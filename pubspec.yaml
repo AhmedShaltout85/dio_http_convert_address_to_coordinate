@@ -126,6 +126,7 @@ flutter:
     - assets/logo.png
     - assets/aw_logo.png
     - assets/sounds/ringtone.mp3
+    - assets/green_marker.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

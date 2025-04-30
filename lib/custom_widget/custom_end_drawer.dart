@@ -71,13 +71,30 @@ class CustomEndDrawer extends StatelessWidget {
                       child: Column(
                         children: [
                           ListTile(
-                            title: Text(
-                              data['address'] ?? 'Unknown Address',
-                              style: const TextStyle(
-                                color: Colors.indigo,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
+                            title: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    data['address'] ?? 'Unknown Address',
+                                    style: const TextStyle(
+                                      color: Colors.indigo,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  tooltip: 'حذف الشكوى',
+                                  hoverColor: Colors.yellow,
+                                  onPressed: () {
+                                    //TODO: Delete Location-30-04-2025
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
                             ),
                             // subtitle: Text(
                             //   "(${data['latitude'] ?? 'N/A'}, ${data['longitude'] ?? 'N/A'})",

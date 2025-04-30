@@ -96,7 +96,7 @@ class _UserRequestToolsState extends State<UserRequestTools> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        errorMessage = 'Failed to load requested tools. Please try again.';
+        errorMessage = '!لم يتم تخصيص مهمات لهذه الشكوى حتى الان';
       });
     } finally {
       if (!mounted) return;

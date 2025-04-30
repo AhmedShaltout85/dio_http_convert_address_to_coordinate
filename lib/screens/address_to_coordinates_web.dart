@@ -38,7 +38,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double latitude = 0.0, longitude = 0.0;
   var pickMarkers = HashSet<Marker>();
-  // late Future getLocs; //get addresses from db(HotLine)
   late Future
       getLocsAfterGetCoordinatesAndGis; //get addresses from db(after getting coordinates and gis link)
   late Future getLocsByHandasahNameAndTechinicianName;
@@ -52,6 +51,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   String googleMapsApiKey = "AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk";
   double fontSize = 12.0;
   Timer? _timer; // Timer for periodic fetching
+  // BitmapDescriptor? pinLocationIcon;
 
   @override
   void dispose() {
@@ -113,6 +113,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   @override
   void initState() {
     super.initState();
+    // BitmapDescriptor.asset(
+    //         const ImageConfiguration(
+    //           size: Size(40, 40),
+    //         ),
+    //         'assets/green_marker.png')
+    //     .then((onValue) {
+    //   pinLocationIcon = onValue;
+    // });
     _initializeApp();
 
     setState(() {
@@ -176,7 +184,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                   title: address,
                   snippet: coordinates,
                 ),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
+                icon: 
+                // pinLocationIcon!,
+                BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueGreen),
               ),
             );
@@ -327,14 +337,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       CustomBrowserRedirect.openInBrowser(
         'http://196.219.231.3:8000/webmap/breaks-hot-spots',
       );
-    }else if(value == 'عرض تقرير الاسكادا Dashboard'){
+    } else if (value == 'عرض تقرير الاسكادا Dashboard') {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const StationsDashboard(),
         ),
       );
-
     }
   }
 
@@ -355,7 +364,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         ),
         actions: [
           IconButton(
-             padding: const EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             tooltip: "تحديث شكاوى الخط الساخن",
             hoverColor: Colors.yellow,
             onPressed: () {
@@ -469,11 +478,12 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                   Radius.circular(10.0),
                                 ),
                               ),
-                              hintText: "فضلا أدخل العنوان",
+                              hintText: "61 طريق الحرية الاسكندرية",
                               hintStyle: TextStyle(
                                 color: Colors.indigo,
                                 fontSize: 11,
                               ),
+                              labelText: "فضلا أدخل العنوان",
                             ),
                             controller:
                                 addressController, // set the controller to get address input
@@ -481,7 +491,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                               fontSize: 13,
                               color: Colors.indigo,
                             ),
-                            cursorColor: Colors.amber,
+                            cursorColor: Colors.indigo,
                             keyboardType: TextInputType.text,
                             maxLength: 250, textAlign: TextAlign.right,
                             textDirection: TextDirection.rtl,
@@ -496,7 +506,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                      "فضلا أدخل العنوان",
+                                      " فضلا ادخل العنوان, ثم اضغط على البحث",
                                       textDirection: TextDirection.rtl,
                                       textAlign: TextAlign.center,
                                     ),
@@ -1312,8 +1322,16 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                       messages: [
                                                         'العنوان :  ${snapshot.data![index]['address']}',
                                                         'الاحداثئات :  ${snapshot.data![index]['latitude']} , ${snapshot.data[index]['longitude']}',
-                                                        'الهندسة :  ${snapshot.data![index]['handasah_name']}',
-                                                        'إسم فنى الهندسة :  ${snapshot.data![index]['technical_name']}',
+                                                        snapshot.data![index][
+                                                                    'handasah_name'] ==
+                                                                "free"
+                                                            ? 'الهندسة: لم يتم تعيين هندسة'
+                                                            : 'الهندسة :  ${snapshot.data![index]['handasah_name']}',
+                                                        snapshot.data![index][
+                                                                    'technical_name'] ==
+                                                                "free"
+                                                            ? 'اسم فنى الهندسة: لم يتم تعيين فنى الهندسة'
+                                                            : 'إسم فنى الهندسة :  ${snapshot.data![index]['technical_name']}',
                                                         'Gis-Link :  ${snapshot.data![index]['gis_url']}',
                                                         'إسم المبلغ :  ${snapshot.data![index]['caller_name']}',
                                                         ' رقم هاتف المبلغ:  ${snapshot.data![index]['caller_phone']}',
@@ -1329,7 +1347,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                         context)
                                                                     .pop(),
                                                             child: const Text(
-                                                                'Close'),
+                                                                'إغلاق'),
                                                           ),
                                                         ),
                                                       ],
@@ -1353,7 +1371,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                             );
                           }
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: Text('لا يوجد شكاوى مفتوحة'),
                           );
                         }),
                   ],

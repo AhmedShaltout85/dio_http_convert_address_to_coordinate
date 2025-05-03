@@ -1056,3 +1056,207 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //     );
 //   }
 // }
+
+
+//4-- GET locations(GET by Handasah free and Technician free)
+  // Future<List<dynamic>> getLocByHandasahAndTechnician(
+  //     String handasah, String technician) async {
+  //   var urlGetAllByHandasahAndTechnician =
+  //       '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician'; //GET by Handasah free and Technician free
+  //   try {
+  //     var response = await dio.get(urlGetAllByHandasahAndTechnician);
+  //     if (response.statusCode == 200) {
+  //       return response.data;
+  //     } else {
+  //       debugPrint('List is empty');
+  //       return [];
+  //       // throw Exception('List is empty');
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //     throw Exception(e);
+  //   }
+  // }
+
+
+  //3-- GET locationsBy handasah(GET by handasah (handasah) and  isFinished 0)
+  Future getLocByHandasahAndIsFinished(
+      String handasah, int isFinished) async {
+    var urlGetAllByHandasahAndIsFinished =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/is-finished/$isFinished';
+    try {
+      var response = await dio.get(urlGetAllByHandasahAndIsFinished);
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+        // throw Exception('List is empty');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+ //17-- FETCH Data from the Database(GET dropdown items for handasat users)
+  Future fetchHandasatUsersItemsDropdownMenu(
+      String handasahName) async {
+    var getHnadasatUsersUrl =
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/role/3/control-unit/$handasahName';
+    try {
+      var response = await dio.get(getHnadasatUsersUrl);
+      if (response.statusCode == 200) {
+        // debugPrint(dataList);
+        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+
+        return response.data;
+      } else {
+        debugPrint('List is empty');
+        return [];
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  // import 'package:flutter/material.dart';
+// import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
+// import '../network/remote/dio_network_repos.dart';
+
+// class CustomHandasahAssignUser extends StatelessWidget {
+//   // Properties
+//   final String title;
+//   final Future getLocs; // Added generic type
+//   final List<String> stringListItems;
+//   final VoidCallback onPressed;
+//   final String hintText;
+//   // final void Function(String?) onChanged; //(08-02-2025-not-working as expected)
+
+//   // Constructor
+//   const CustomHandasahAssignUser({
+//     super.key,
+//     required this.getLocs,
+//     required this.stringListItems,
+//     required this.onPressed,
+//     required this.hintText,
+//     required this.title,
+//     //  required this.onChanged, //(08-02-2025-not-working as expected)
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: ListView(
+//         shrinkWrap: true,
+//         children: [
+//           SizedBox(
+//             height: 50,
+//             child: DrawerHeader(
+//               decoration: const BoxDecoration(
+//                 color: Colors.indigo,
+//               ),
+//               child: Text(
+//                 textDirection: TextDirection.rtl,
+//                 textAlign: TextAlign.center,
+//                 title,
+//                 style: const TextStyle(
+//                   color: Colors.white,
+//                   fontSize: 13,
+//                 ),
+//               ),
+//             ),
+//           ),
+//           FutureBuilder(
+//             future: getLocs,
+//             builder: (context, snapshot) {
+//               if (snapshot.connectionState == ConnectionState.waiting) {
+//                 return const Center(child: CircularProgressIndicator());
+//               }
+
+//               if (!snapshot.hasData ||
+//                   snapshot.data == null ||
+//                   snapshot.data!.isEmpty) {
+//                 return const Center(child: Text("لا يوجد شكاوى جديدة"));
+//               }
+
+//               return ListView.builder(
+//                 shrinkWrap: true,
+//                 physics: const NeverScrollableScrollPhysics(),
+//                 itemCount: snapshot.data!.length,
+//                 itemBuilder: (context, index) {
+//                   final data = snapshot.data![index]; // Store in a variable
+//                   return Card(
+//                     child: Column(
+//                       children: [
+//                         ListTile(
+//                           title: Text(
+//                             data['address'] ?? 'Unknown Address',
+//                             style: const TextStyle(
+//                               color: Colors.indigo,
+//                               fontWeight: FontWeight.bold,
+//                             ),
+//                           ),
+//                           // subtitle: Text(
+//                           //   "(${data['latitude'] ?? 'N/A'}, ${data['longitude'] ?? 'N/A'})",
+//                           // ),
+//                         ),
+//                         Row(
+//                           mainAxisAlignment: MainAxisAlignment.center,
+//                           children: [
+//                             IconButton(
+//                               onPressed: onPressed,
+//                               icon: const Icon(
+//                                 Icons.call_missed_rounded,
+//                                 color: Colors.indigo,
+//                               ),
+//                             ),
+//                             Expanded(
+//                               child: Container(
+//                                 margin: const EdgeInsets.all(10.0),
+//                                 padding:
+//                                     const EdgeInsets.symmetric(horizontal: 7.0),
+//                                 decoration: BoxDecoration(
+//                                   border: Border.all(
+//                                       color: Colors.indigo, width: 1.0),
+//                                   borderRadius: BorderRadius.circular(10.0),
+//                                 ),
+//                                 child: CustomDropdown(
+//                                   isExpanded: true,
+//                                   hintText: hintText,
+//                                   items: stringListItems,
+//                                   onChanged: (value) {
+//                                     if (value != null) {
+//                                       debugPrint('Selected item: $value');
+//                                       //updateLocAddHandasah
+//                                       DioNetworkRepos().updateLocAddTechnician(
+//                                         data['address'] ?? '',
+//                                         value,
+//                                       );
+//                                       debugPrint('updated item: $value');
+//                                       //
+//                                     }
+//                                     // else if (data['handasah_name'] == value) {
+
+//                                     //   snapshot.data.remove(data['address']);
+//                                     //   debugPrint('removed item: $value');
+//                                     // }
+//                                   },
+//                                   // onChanged: onChanged,
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                   );
+//                 },
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

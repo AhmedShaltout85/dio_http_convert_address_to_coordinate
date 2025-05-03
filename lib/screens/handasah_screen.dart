@@ -10,6 +10,7 @@ import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 import 'package:audioplayers/audioplayers.dart'; // Add this import
 
+import '../custom_widget/custom_bottom_sheet.dart';
 import '../custom_widget/custom_reusable_alert_dailog.dart';
 import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -105,6 +106,33 @@ class _HandasahScreenState extends State<HandasahScreen> {
     _timer?.cancel();
     _audioPlayer.dispose(); // Dispose the audio player
     super.dispose();
+  }
+
+  //show bottom sheet Redirect to Handasat
+  void showCustomBottomSheet(
+      BuildContext context, String title, String message, String address) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false, // Ensures it takes full width
+      builder: (context) {
+        return CustomBottomSheet(
+          title: title,
+          message: message,
+          hintText: "أختر فنى",
+          dropdownItems: handasatUsersItemsDropdownMenu,
+          onItemSelected: (value) {
+            debugPrint("Selected: $value");
+            setState(() {
+              DioNetworkRepos().updateLocAddTechnician(address, value);
+            });
+          },
+          onPressed: () async {
+            Navigator.of(context).pop();
+            // await DioNetworkRepos().updateLocAddTechnician(address, "free");
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -225,7 +253,9 @@ class _HandasahScreenState extends State<HandasahScreen> {
                     future: getLocsByHandasahNameAndIsFinished,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
+                        return const Center(
+                          child: Text('لايوجد شكاوى'),
+                        );
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
                         if (snapshot.hasError) {
@@ -248,14 +278,41 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                   child: Column(
                                     children: [
                                       ListTile(
-                                        title: Text(
-                                          textAlign: TextAlign.center,
-                                          snapshot.data![index]['address'],
-                                          style: const TextStyle(
-                                            color: Colors.indigo,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        title: Row(
+                                          children: [
+                                            IconButton(
+                                              tooltip: 'إعادة تخصيص فنى',
+                                              hoverColor: Colors.yellow,
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: Colors.indigo,
+                                              ),
+                                              onPressed: () {
+                                                //
+                                                //display bottom sheet
+                                                showCustomBottomSheet(
+                                                  context,
+                                                  "إعادة تخصيص فنى",
+                                                  snapshot.data![index]
+                                                      ['handasah_name'],
+                                                  snapshot.data![index]
+                                                      ['address'],
+                                                );
+                                              },
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                snapshot.data![index]
+                                                    ['address'],
+                                                style: const TextStyle(
+                                                  color: Colors.indigo,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         subtitle: Padding(
                                           padding: const EdgeInsets.symmetric(
@@ -595,3 +652,646 @@ class _HandasahScreenState extends State<HandasahScreen> {
     );
   }
 }
+// // ignore_for_file: use_build_context_synchronously
+
+// import 'dart:async';
+// import 'package:flutter/material.dart';
+// import 'package:pick_location/custom_widget/custom_alert_dialog_create_handasah_users.dart';
+// import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
+// import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+// import 'package:pick_location/screens/request_tool_for_address_screen.dart';
+// import 'package:pick_location/utils/dio_http_constants.dart';
+// import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
+// import 'package:audioplayers/audioplayers.dart';
+
+// import '../custom_widget/custom_reusable_alert_dailog.dart';
+// import '../custom_widget/cutom_texts_alert_dailog.dart';
+// import '../network/remote/dio_network_repos.dart';
+
+// class HandasahScreen extends StatefulWidget {
+//   const HandasahScreen({super.key});
+
+//   @override
+//   State<HandasahScreen> createState() => _HandasahScreenState();
+// }
+
+// class _HandasahScreenState extends State<HandasahScreen> {
+//   late Future<List<dynamic>> getLocsByHandasahNameAndIsFinished;
+//   late Future<List<dynamic>> getLocByHandasahAndTechnician;
+//   String handasahName = DataStatic.handasahName;
+//   String gisHandasahUrl = "";
+//   late Future<List<dynamic>> getHandasatUsersItemsDropdownMenu;
+//   List<String> handasatUsersItemsDropdownMenu = [];
+//   List<String> assignedTechnicians = [];
+//   double fontSize = 12.0;
+//   String storeName = "";
+//   Timer? _timer;
+//   int length = 0;
+//   int previousLength = 0;
+//   final AudioPlayer _audioPlayer = AudioPlayer();
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _initializeData();
+//     _startPeriodicFetch();
+//     _loadSound();
+//   }
+
+//   Future<void> _loadSound() async {
+//     await _audioPlayer.setSource(AssetSource('sounds/alarm.mp3'));
+//   }
+
+//   void _initializeData() {
+//     setState(() {
+//       getLocsByHandasahNameAndIsFinished =
+//           DioNetworkRepos().getLocByHandasahAndIsFinished(handasahName, 0);
+//       getLocByHandasahAndTechnician =
+//           DioNetworkRepos().getLocByHandasahAndTechnician(handasahName, 'free');
+//     });
+
+//     getLocByHandasahAndTechnician.then((value) {
+//       previousLength = value.length;
+//       // Safely convert dynamic list to List<String>
+//       assignedTechnicians = value
+//           .where((item) => item['technical_name'] != 'free')
+//           .map<String>((item) => item['technical_name'].toString())
+//           .toList();
+//     });
+
+//     getHandasatUsersItemsDropdownMenu =
+//         DioNetworkRepos().fetchHandasatUsersItemsDropdownMenu(handasahName);
+//     getHandasatUsersItemsDropdownMenu.then((value) {
+//       // Safely convert dynamic list to List<String>
+//       handasatUsersItemsDropdownMenu =
+//           value.map<String>((e) => e.toString()).toList();
+//     });
+//   }
+
+//   void _startPeriodicFetch() {
+//     const Duration fetchInterval = Duration(seconds: 10);
+//     _timer = Timer.periodic(fetchInterval, (Timer timer) async {
+//       final newData = await DioNetworkRepos()
+//           .getLocByHandasahAndTechnician(handasahName, 'free');
+
+//       if (newData.length > previousLength) {
+//         _playAlertSound();
+//       }
+
+//       setState(() {
+//         previousLength = newData.length;
+//         getLocsByHandasahNameAndIsFinished =
+//             DioNetworkRepos().getLocByHandasahAndIsFinished(handasahName, 0);
+//         getLocByHandasahAndTechnician = Future.value(newData);
+//         // Safely convert dynamic list to List<String>
+//         assignedTechnicians = newData
+//             .where((item) => item['technical_name'] != 'free')
+//             .map<String>((item) => item['technical_name'].toString())
+//             .toList();
+//       });
+//     });
+//   }
+
+//   Future<void> _playAlertSound() async {
+//     try {
+//       await _audioPlayer.stop();
+//       await _audioPlayer.resume();
+//     } catch (e) {
+//       debugPrint('Error playing sound: $e');
+//     }
+//   }
+
+//   void _showAlreadyAssignedDialog(String technicianName) {
+//     showDialog(
+//       context: context,
+//       builder: (context) => AlertDialog(
+//         title: const Text(
+//           'تحذير',
+//           style: TextStyle(
+//             color: Colors.red,
+//             fontWeight: FontWeight.bold,
+//           ),
+//           textAlign: TextAlign.right,
+//           textDirection: TextDirection.rtl,
+//         ),
+//         content: Text(
+//           'الفني $technicianName تم تعيينه بالفعل لشكوى أخرى',
+//           textAlign: TextAlign.right,
+//           textDirection: TextDirection.rtl,
+//           style: const TextStyle(color: Colors.red),
+//         ),
+//         actions: [
+//           TextButton(
+//             onPressed: () => Navigator.of(context).pop(),
+//             child: const Text('إغلاق'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   @override
+//   void dispose() {
+//     _timer?.cancel();
+//     _audioPlayer.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         centerTitle: true,
+//         elevation: 7,
+//         foregroundColor: Colors.white,
+//         iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
+//         title: Text(
+//           DataStatic.handasahName,
+//           style: const TextStyle(color: Colors.indigo),
+//         ),
+//         actions: [
+//           IconButton(
+//             tooltip: "إضافة مشرف, وفنى الهندسة",
+//             hoverColor: Colors.yellow,
+//             icon: const Icon(Icons.person_add_alt, color: Colors.indigo),
+//             onPressed: () {
+//               showDialog(
+//                 context: context,
+//                 builder: (context) =>
+//                     const CustomAlertDialogCreateHandasahUsers(
+//                   title: 'إضافة مستخدمين لمديرى ومشرفى وفنين الهندسة',
+//                 ),
+//               );
+//             },
+//           ),
+//           IconButton(
+//             tooltip: "إضافه المهمات الخاصة بالهندسة",
+//             hoverColor: Colors.yellow,
+//             icon: const Icon(Icons.note_add_outlined, color: Colors.indigo),
+//             onPressed: () {
+//               showDialog(
+//                 context: context,
+//                 builder: (context) {
+//                   return CustomReusableAlertDialog(
+//                     title: "إضافة مهمات الهندسة",
+//                     fieldLabels: const ['المسمى', 'العدد'],
+//                     onSubmit: (values) {
+//                       try {
+//                         DioNetworkRepos().createNewHandasahTools(
+//                             handasahName, values[0], int.parse(values[1]));
+//                       } catch (e) {
+//                         debugPrint(e.toString());
+//                       }
+//                     },
+//                   );
+//                 },
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//       body: Row(
+//         children: [
+//           Expanded(
+//             flex: 1,
+//             child: Container(
+//               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+//               width: 220,
+//               height: MediaQuery.of(context).size.height,
+//               color: Colors.black38,
+//               child: CustomHandasahAssignUser(
+//                 getLocs: getLocByHandasahAndTechnician,
+//                 stringListItems: handasatUsersItemsDropdownMenu,
+//                 onTechnicianSelected: (selectedTechnician) {
+//                   if (assignedTechnicians.contains(selectedTechnician)) {
+//                     _showAlreadyAssignedDialog(selectedTechnician);
+//                   } else {
+//                     setState(() {
+//                       assignedTechnicians.add(selectedTechnician);
+//                       getLocsByHandasahNameAndIsFinished = DioNetworkRepos()
+//                           .getLocByHandasahAndIsFinished(handasahName, 0);
+//                       getLocByHandasahAndTechnician = DioNetworkRepos()
+//                           .getLocByHandasahAndTechnician(handasahName, 'free');
+//                     });
+//                   }
+//                 },
+//                 onAssignPressed: () {
+//                   // Optional: Handle the assign button press if needed
+//                 },
+//                 hintText: 'فضلا أختار الفنى',
+//                 title: 'تخصيص شكوى لفنى',
+//               ),
+//             ),
+//           ),
+//           Expanded(
+//             flex: 3,
+//             child: Padding(
+//               padding: const EdgeInsets.all(8.0),
+//               child: gisHandasahUrl == ""
+//                   ? const Center(
+//                       child: Text(
+//                         'عرض رابط GIS',
+//                         style: TextStyle(fontSize: 20, color: Colors.indigo),
+//                       ),
+//                     )
+//                   : IframeScreen(url: gisHandasahUrl),
+//             ),
+//           ),
+//           Expanded(
+//             flex: 1,
+//             child: Container(
+//               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+//               width: 220,
+//               height: MediaQuery.of(context).size.height,
+//               color: Colors.black38,
+//               child: ListView(
+//                 shrinkWrap: true,
+//                 children: [
+//                   const SizedBox(
+//                     height: 50,
+//                     child: DrawerHeader(
+//                       decoration: BoxDecoration(color: Colors.indigo),
+//                       child: Text(
+//                         textDirection: TextDirection.rtl,
+//                         textAlign: TextAlign.center,
+//                         "الشكاوى غير مغلقة الخاصة بالهندسة",
+//                         style: TextStyle(color: Colors.white, fontSize: 12),
+//                       ),
+//                     ),
+//                   ),
+//                   FutureBuilder<List<dynamic>>(
+//                     future: getLocsByHandasahNameAndIsFinished,
+//                     builder: (context, snapshot) {
+//                       if (snapshot.connectionState == ConnectionState.waiting) {
+//                         return const Center(child: CircularProgressIndicator());
+//                       } else if (snapshot.connectionState ==
+//                           ConnectionState.done) {
+//                         if (snapshot.hasError) {
+//                           return Text('Error: ${snapshot.error}');
+//                         } else if (snapshot.hasData) {
+//                           length = snapshot.data!.length;
+//                           return ListView.builder(
+//                             reverse: true,
+//                             shrinkWrap: true,
+//                             itemCount: snapshot.data!.length,
+//                             itemBuilder: (context, index) {
+//                               final item = snapshot.data![index];
+//                               return InkWell(
+//                                 onTap: () {
+//                                   setState(() {
+//                                     gisHandasahUrl = item['gis_url'] ?? '';
+//                                   });
+//                                 },
+//                                 child: Card(
+//                                   child: Column(
+//                                     children: [
+//                                       ListTile(
+//                                         title: Text(
+//                                           textAlign: TextAlign.center,
+//                                           item['address'] ?? '',
+//                                           style: const TextStyle(
+//                                             color: Colors.indigo,
+//                                             fontSize: 12,
+//                                             fontWeight: FontWeight.bold,
+//                                           ),
+//                                         ),
+//                                         subtitle: Padding(
+//                                           padding: const EdgeInsets.symmetric(
+//                                             vertical: 7.0,
+//                                             horizontal: 3.0,
+//                                           ),
+//                                           child: Column(
+//                                             children: [
+//                                               Row(
+//                                                 mainAxisAlignment:
+//                                                     MainAxisAlignment
+//                                                         .spaceBetween,
+//                                                 children: [
+//                                                   Expanded(
+//                                                     child: Container(
+//                                                       margin:
+//                                                           const EdgeInsets.all(
+//                                                               3.0),
+//                                                       padding: const EdgeInsets
+//                                                           .symmetric(
+//                                                           horizontal: 1.0),
+//                                                       decoration: BoxDecoration(
+//                                                         border: Border.all(
+//                                                             color: Colors.green,
+//                                                             width: 1.0),
+//                                                         borderRadius:
+//                                                             BorderRadius
+//                                                                 .circular(5.0),
+//                                                         color: Colors.green,
+//                                                       ),
+//                                                       child: Text(
+//                                                         textAlign:
+//                                                             TextAlign.center,
+//                                                         item['handasah_name'] ??
+//                                                             '',
+//                                                         style: TextStyle(
+//                                                           fontSize: fontSize,
+//                                                           color: Colors.white,
+//                                                         ),
+//                                                       ),
+//                                                     ),
+//                                                   ),
+//                                                   item['technical_name'] ==
+//                                                           "free"
+//                                                       ? Expanded(
+//                                                           child: Container(
+//                                                             margin:
+//                                                                 const EdgeInsets
+//                                                                     .all(3.0),
+//                                                             padding:
+//                                                                 const EdgeInsets
+//                                                                     .symmetric(
+//                                                                     horizontal:
+//                                                                         3.0),
+//                                                             decoration:
+//                                                                 BoxDecoration(
+//                                                               border: Border.all(
+//                                                                   color: Colors
+//                                                                       .orange,
+//                                                                   width: 1.0),
+//                                                               borderRadius:
+//                                                                   BorderRadius
+//                                                                       .circular(
+//                                                                           5.0),
+//                                                               color:
+//                                                                   Colors.orange,
+//                                                             ),
+//                                                             child: Text(
+//                                                               "قيد تخصيص فنى",
+//                                                               style: TextStyle(
+//                                                                 overflow:
+//                                                                     TextOverflow
+//                                                                         .visible,
+//                                                                 fontSize:
+//                                                                     fontSize,
+//                                                                 color: Colors
+//                                                                     .white,
+//                                                               ),
+//                                                               textAlign:
+//                                                                   TextAlign
+//                                                                       .center,
+//                                                             ),
+//                                                           ),
+//                                                         )
+//                                                       : Expanded(
+//                                                           child: Container(
+//                                                             margin:
+//                                                                 const EdgeInsets
+//                                                                     .all(3.0),
+//                                                             padding:
+//                                                                 const EdgeInsets
+//                                                                     .symmetric(
+//                                                                     horizontal:
+//                                                                         3.0),
+//                                                             decoration:
+//                                                                 BoxDecoration(
+//                                                               border: Border.all(
+//                                                                   color: Colors
+//                                                                       .green,
+//                                                                   width: 1.0),
+//                                                               borderRadius:
+//                                                                   BorderRadius
+//                                                                       .circular(
+//                                                                           5.0),
+//                                                               color:
+//                                                                   Colors.green,
+//                                                             ),
+//                                                             child: Text(
+//                                                               textAlign:
+//                                                                   TextAlign
+//                                                                       .center,
+//                                                               item['technical_name'] ??
+//                                                                   '',
+//                                                               style: TextStyle(
+//                                                                 fontSize:
+//                                                                     fontSize,
+//                                                                 color: Colors
+//                                                                     .white,
+//                                                               ),
+//                                                             ),
+//                                                           ),
+//                                                         ),
+//                                                 ],
+//                                               ),
+//                                               Row(
+//                                                 children: [
+//                                                   Expanded(
+//                                                     child:
+//                                                         item['is_approved'] == 1
+//                                                             ? Container(
+//                                                                 margin:
+//                                                                     const EdgeInsets
+//                                                                         .all(
+//                                                                         3.0),
+//                                                                 padding: const EdgeInsets
+//                                                                     .symmetric(
+//                                                                     horizontal:
+//                                                                         3.0),
+//                                                                 decoration:
+//                                                                     BoxDecoration(
+//                                                                   border: Border.all(
+//                                                                       color: Colors
+//                                                                           .green,
+//                                                                       width:
+//                                                                           1.0),
+//                                                                   borderRadius:
+//                                                                       BorderRadius
+//                                                                           .circular(
+//                                                                               5.0),
+//                                                                   color: Colors
+//                                                                       .green,
+//                                                                 ),
+//                                                                 child: Text(
+//                                                                   textAlign:
+//                                                                       TextAlign
+//                                                                           .center,
+//                                                                   'تم قبول الشكوى',
+//                                                                   style:
+//                                                                       TextStyle(
+//                                                                     fontSize:
+//                                                                         fontSize,
+//                                                                     color: Colors
+//                                                                         .white,
+//                                                                   ),
+//                                                                 ),
+//                                                               )
+//                                                             : Container(
+//                                                                 margin:
+//                                                                     const EdgeInsets
+//                                                                         .all(
+//                                                                         3.0),
+//                                                                 padding: const EdgeInsets
+//                                                                     .symmetric(
+//                                                                     horizontal:
+//                                                                         3.0),
+//                                                                 decoration:
+//                                                                     BoxDecoration(
+//                                                                   border: Border.all(
+//                                                                       color: Colors
+//                                                                           .orange,
+//                                                                       width:
+//                                                                           1.0),
+//                                                                   borderRadius:
+//                                                                       BorderRadius
+//                                                                           .circular(
+//                                                                               5.0),
+//                                                                   color: Colors
+//                                                                       .orange,
+//                                                                 ),
+//                                                                 child: Text(
+//                                                                   textAlign:
+//                                                                       TextAlign
+//                                                                           .center,
+//                                                                   'قيد قبول الشكوى',
+//                                                                   style:
+//                                                                       TextStyle(
+//                                                                     fontSize:
+//                                                                         fontSize,
+//                                                                     color: Colors
+//                                                                         .white,
+//                                                                   ),
+//                                                                 ),
+//                                                               ),
+//                                                   ),
+//                                                 ],
+//                                               ),
+//                                             ],
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       Row(
+//                                         mainAxisAlignment:
+//                                             MainAxisAlignment.center,
+//                                         children: [
+//                                           IconButton(
+//                                             tooltip: 'إبلاغ كسورات معامل',
+//                                             hoverColor: Colors.yellow,
+//                                             onPressed: () {},
+//                                             icon: const Icon(
+//                                                 Icons.report_gmailerrorred,
+//                                                 color: Colors.purple),
+//                                           ),
+//                                           IconButton(
+//                                             tooltip: 'مهمات مخازن مطلوبة',
+//                                             hoverColor: Colors.yellow,
+//                                             onPressed: () {
+//                                               Navigator.push(
+//                                                 context,
+//                                                 MaterialPageRoute(
+//                                                   builder: (context) =>
+//                                                       RequestToolForAddressScreen(
+//                                                     address:
+//                                                         item['address'] ?? '',
+//                                                     handasahName:
+//                                                         item['handasah_name'] ??
+//                                                             '',
+//                                                   ),
+//                                                 ),
+//                                               );
+//                                             },
+//                                             icon: const Icon(Icons.store_sharp,
+//                                                 color: Colors.cyan),
+//                                           ),
+//                                           IconButton(
+//                                             tooltip: 'جرد مخزن',
+//                                             hoverColor: Colors.yellow,
+//                                             onPressed: () async {
+//                                               await DioNetworkRepos()
+//                                                   .getStoreNameByHandasahName(
+//                                                       item['handasah_name'] ??
+//                                                           '')
+//                                                   .then((value) {
+//                                                 storeName =
+//                                                     value['storeName'] ?? '';
+//                                               });
+//                                               DioNetworkRepos()
+//                                                   .excuteTempStoreQty(
+//                                                       storeName);
+//                                               Navigator.push(
+//                                                 context,
+//                                                 MaterialPageRoute(
+//                                                   builder: (context) =>
+//                                                       IntegrationWithStoresGetAllQty(
+//                                                     storeName: storeName,
+//                                                   ),
+//                                                 ),
+//                                               );
+//                                             },
+//                                             icon: const Icon(
+//                                                 Icons.store_outlined,
+//                                                 color: Colors.indigo),
+//                                           ),
+//                                           IconButton(
+//                                             tooltip: 'عرض بيانات الشكوى',
+//                                             hoverColor: Colors.yellow,
+//                                             onPressed: () {
+//                                               showDialog(
+//                                                 context: context,
+//                                                 builder: (context) =>
+//                                                     CustomReusableTextAlertDialog(
+//                                                   title: 'بيانات العطل',
+//                                                   messages: [
+//                                                     'العنوان :  ${item['address']}',
+//                                                     'الاحداثئات :  ${item['latitude']} , ${item['longitude']}',
+//                                                     'الهندسة :  ${item['handasah_name']}',
+//                                                     item['technical_name'] ==
+//                                                             "free"
+//                                                         ? 'اسم فنى الهندسة: لم يتم تعيين فنى الهندسة'
+//                                                         : 'إسم فنى الهندسة :  ${item['technical_name']}',
+//                                                     'رابط :  ${item['gis_url']}',
+//                                                     'إسم المبلغ :  ${item['caller_name']}',
+//                                                     ' رقم هاتف المبلغ:  ${item['caller_phone']}',
+//                                                     'نوع الكسر :  ${item['broker_type']}',
+//                                                   ],
+//                                                   actions: [
+//                                                     Align(
+//                                                       alignment:
+//                                                           Alignment.bottomLeft,
+//                                                       child: TextButton(
+//                                                         onPressed: () =>
+//                                                             Navigator.of(
+//                                                                     context)
+//                                                                 .pop(),
+//                                                         child:
+//                                                             const Text('إغلاق'),
+//                                                       ),
+//                                                     ),
+//                                                   ],
+//                                                 ),
+//                                               );
+//                                             },
+//                                             icon: const Icon(Icons.info,
+//                                                 color: Colors.blueAccent),
+//                                           ),
+//                                         ],
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 ),
+//                               );
+//                             },
+//                             physics: const NeverScrollableScrollPhysics(),
+//                           );
+//                         } else {
+//                           return const Center(
+//                               child: Text('لايوجد شكاوى مفتوحة'));
+//                         }
+//                       } else {
+//                         return const Center(child: CircularProgressIndicator());
+//                       }
+//                     },
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

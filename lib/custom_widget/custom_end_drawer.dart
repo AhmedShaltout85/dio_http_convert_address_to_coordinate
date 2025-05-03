@@ -87,7 +87,14 @@ class CustomEndDrawer extends StatelessWidget {
                                   tooltip: 'حذف الشكوى',
                                   hoverColor: Colors.yellow,
                                   onPressed: () {
-                                    //TODO: Delete Location-30-04-2025
+                                    
+                                    try {
+                                      
+                                    DioNetworkRepos()
+                                        .deleteAddressFromLocations(data['id']);
+                                    }catch(e){
+                                      debugPrint(e.toString());
+                                    }
                                   },
                                   icon: const Icon(
                                     Icons.delete,

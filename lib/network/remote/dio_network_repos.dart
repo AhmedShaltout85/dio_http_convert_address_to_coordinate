@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/material.dart';
 
-
 class DioNetworkRepos {
   final dio = Dio();
 //1-- GET locations(GET by flag 0 (address not set yet)--HOTLINE)
@@ -42,7 +41,8 @@ class DioNetworkRepos {
   }
 
 //3-- GET locationsBy handasah(GET by handasah (handasah) and  isFinished 0)
-  Future getLocByHandasahAndIsFinished(String handasah, int isFinished) async {
+  Future getLocByHandasahAndIsFinished(
+      String handasah, int isFinished) async {
     var urlGetAllByHandasahAndIsFinished =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/is-finished/$isFinished';
     try {
@@ -56,27 +56,40 @@ class DioNetworkRepos {
       }
     } catch (e) {
       debugPrint(e.toString());
-      // throw Exception(e);
+      throw Exception(e);
     }
   }
 
 //4-- GET locations(GET by Handasah free and Technician free)
+
   Future getLocByHandasahAndTechnician(
       String handasah, String technician) async {
     var urlGetAllByHandasahAndTechnician =
-        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician'; //GET by Handasah free and Technician free
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/technical/$technician';
+
     try {
-      var response = await dio.get(urlGetAllByHandasahAndTechnician);
+      var response = await dio.get(
+        urlGetAllByHandasahAndTechnician,
+        options: Options(
+          validateStatus: (status) {
+            return status! < 500; // Accept all status codes below 500
+          },
+        ),
+      );
+
       if (response.statusCode == 200) {
         return response.data;
+      } else if (response.statusCode == 404) {
+        debugPrint(
+            'No locations found for handasah: $handasah and technician: $technician');
+        return []; // Return empty list for 404
       } else {
-        debugPrint('List is empty');
-        return [];
-        // throw Exception('List is empty');
+        debugPrint('Unexpected status code: ${response.statusCode}');
+        return []; // Return empty list for other non-200 status codes
       }
     } catch (e) {
-      debugPrint(e.toString());
-      // throw Exception(e);
+      debugPrint('Error fetching locations: $e');
+      return []; // Return empty list on any other error
     }
   }
 
@@ -160,7 +173,7 @@ class DioNetworkRepos {
             "flag": 1,
             "gis_url": url,
             "is_finished": 0,
-            "is_approved":0,
+            "is_approved": 0,
             "handasah_name": "free",
             "technical_name": "free"
           });
@@ -211,9 +224,8 @@ class DioNetworkRepos {
         debugPrint("${response.data} from loginByUsernameAndPassword");
         final usernameResponse = response.data['username'];
         final passwordResponse = response.data['password'];
-        DataStatic.userRole = response.data['role']; 
-        DataStatic.handasahName =
-            response.data['handasah_name']; 
+        DataStatic.userRole = response.data['role'];
+        DataStatic.handasahName = response.data['handasah_name'];
         debugPrint(
             'Login successful! Username: $usernameResponse, Password: $passwordResponse , ID: $DataStatic.userRole');
         return true;
@@ -379,7 +391,8 @@ class DioNetworkRepos {
   }
 
   //17-- FETCH Data from the Database(GET dropdown items for handasat users)
-  Future fetchHandasatUsersItemsDropdownMenu(String handasahName) async {
+  Future fetchHandasatUsersItemsDropdownMenu(
+      String handasahName) async {
     var getHnadasatUsersUrl =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/role/3/control-unit/$handasahName';
     try {
@@ -962,7 +975,8 @@ class DioNetworkRepos {
   //41-- GET HOTLINE TOKEN (GET HOTLINE TOKEN BY USER AND PASSWORD)
 
   Future<String> getHotLineTokenByUserAndPassword() async {
-    const getHotLineTokenUrlWeb = '$CMS_BASE_URI_IP_ADDRESS_RESOLVER:8081/api/Login';
+    const getHotLineTokenUrlWeb =
+        '$CMS_BASE_URI_IP_ADDRESS_RESOLVER:8081/api/Login';
     // const getHotLineTokenUrlWeb = 'http://192.168.2.170:8081/api/Login';
 
     try {
@@ -994,7 +1008,8 @@ class DioNetworkRepos {
 
   Future<List<Map<String, dynamic>>> getHotLineData(String token) async {
     // var getHotLineDataUrl = 'http://192.168.2.170:8081/api/GetOpendCases';
-    var getHotLineDataUrl = '$CMS_BASE_URI_IP_ADDRESS_RESOLVER:8081/api/GetOpendCases';
+    var getHotLineDataUrl =
+        '$CMS_BASE_URI_IP_ADDRESS_RESOLVER:8081/api/GetOpendCases';
     try {
       final response = await dio.get(
         getHotLineDataUrl,
@@ -1051,7 +1066,6 @@ class DioNetworkRepos {
     required String x,
     required String y,
     required String address,
-
   }) async {
     try {
       final response = await dio.post(
@@ -1087,6 +1101,23 @@ class DioNetworkRepos {
       throw Exception('Error: $e');
     }
   }
+//44-- remove address from Locations
+  // http: //localhost:9999/pick-location/api/v1/get-loc/remove-address/{id}
+  Future<void> deleteAddressFromLocations(int id) async {
+    try {
+      await dio.delete(
+        '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/remove-address/$id',
+      );
+    
+      debugPrint('Address deleted successfully');
+    } on DioException catch (e) {
+      throw Exception('Dio error: ${e.message}');
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
+
+
 }
 
 // import 'dart:convert';

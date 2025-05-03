@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class CustomBottomSheet extends StatefulWidget {
   final String title;
   final String message;
+  final String hintText;
   final List<String> dropdownItems;
   final Function(String?)? onItemSelected;
   final VoidCallback onPressed;
@@ -16,6 +17,7 @@ class CustomBottomSheet extends StatefulWidget {
     required this.dropdownItems,
     this.onItemSelected,
     required this.onPressed,
+    required this.hintText,
   });
 
   @override
@@ -56,10 +58,10 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
-                    hint: const Text("فضلا أختار الهندسة",
+                    hint: Text(widget.hintText,
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.indigo,
                         )),
                     items: widget.dropdownItems.map((item) {

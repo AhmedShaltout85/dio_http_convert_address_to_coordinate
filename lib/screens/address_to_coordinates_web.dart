@@ -300,6 +300,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         return CustomBottomSheet(
           title: title,
           message: message,
+          hintText: "اختر الهندسة",
           dropdownItems: handasatItemsDropdownMenu,
           onItemSelected: (value) {
             debugPrint("Selected: $value");

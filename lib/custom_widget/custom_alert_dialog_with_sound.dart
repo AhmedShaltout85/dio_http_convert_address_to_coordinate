@@ -9,6 +9,7 @@ class CustomAlertDialogWithSound extends StatefulWidget {
   final IconData icon;
   final String soundPath;
   final String address;
+  final VoidCallback onDismiss;
 
   const CustomAlertDialogWithSound({
     super.key,
@@ -16,7 +17,7 @@ class CustomAlertDialogWithSound extends StatefulWidget {
     required this.message,
     required this.icon,
     required this.soundPath,
-    required this.address,
+    required this.address, required this.onDismiss,
   });
 
   @override

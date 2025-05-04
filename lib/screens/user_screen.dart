@@ -519,6 +519,8 @@
 //     });
 //   }
 // }
+
+
 //TODO:update code 4-5-2025
 
 
@@ -718,7 +720,7 @@ class _UserScreenState extends State<UserScreen> {
 
   void _startUIUpdateTimer() {
     _timer2?.cancel();
-    _timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
+    _timer2 = Timer.periodic(const Duration(minutes: 1), (timer) {
       if (_isDisposed) {
         timer.cancel();
         return;

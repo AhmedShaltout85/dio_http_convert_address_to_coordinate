@@ -761,6 +761,10 @@ class _UserScreenState extends State<UserScreen> {
 
       final addressInList =
           await DioNetworkRepos().checkAddressExistsInTracking(item['address']);
+          //check if address exists in hotline table or not to update start time
+          // TODO: add check if address exists in hotline table or not to update start time
+      // final addressInList =
+      //     await DioNetworkRepos().checkAddressExistsInTracking(item['address']);
 
       debugPrint("Address exists in tracking: $addressInList");
 
@@ -811,7 +815,7 @@ class _UserScreenState extends State<UserScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '${DataStatic.username} : الاعطال المخصصة للمستخدم',
+          ' :الاعطال المخصصة للمستخدم${DataStatic.username}',
           style: const TextStyle(color: Colors.white, fontSize: 15),
         ),
         centerTitle: true,
@@ -1083,6 +1087,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   void _closeComplaint(String address, int index) {
+    // TODO: set actual locations x and y and final close 
     setState(() {
       DioNetworkRepos().updateLocAddIsFinished(address, 1);
       getUsersBrokenPointsList = getUsersBrokenPointsList.then((list) {

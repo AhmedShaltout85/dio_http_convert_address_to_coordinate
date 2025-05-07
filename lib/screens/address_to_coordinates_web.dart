@@ -161,6 +161,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?address=${Uri.encodeComponent(address)}&key=$googleMapsApiKey');
 
+    final GoogleMapController controller = await _controller.future;
+
     try {
       final response = await http.get(url);
 
@@ -184,10 +186,19 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                   title: address,
                   snippet: coordinates,
                 ),
-                icon: 
-                // pinLocationIcon!,
-                BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen),
+                icon:
+                    // pinLocationIcon!,
+                    BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueGreen),
+              ),
+            );
+            // Move camera to the new location
+            controller.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: LatLng(latitude, longitude),
+                  zoom: 15.0, // You can adjust the zoom level as needed
+                ),
               ),
             );
             //
@@ -460,6 +471,17 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                     },
                     markers: pickMarkers,
                     zoomControlsEnabled: true,
+                    onCameraMoveStarted: () async {
+                      //
+                      final GoogleMapController controller =
+                          await _controller.future;
+                      CameraPosition cameraPosition = CameraPosition(
+                        target: LatLng(latitude, longitude),
+                        zoom: 14,
+                      );
+                      controller.animateCamera(
+                          CameraUpdate.newCameraPosition(cameraPosition));
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

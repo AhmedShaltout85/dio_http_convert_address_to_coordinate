@@ -29,8 +29,7 @@ class _TrackingState extends State<Tracking> {
   LatLng alexandriaCoordinates = const LatLng(31.205753, 29.924526);
   double currentLatitude = 0.0;
   double currentLongitude = 0.0;
-    BitmapDescriptor? pinLocationIcon;
-
+  BitmapDescriptor? pinLocationIcon;
 
   final Set<Marker> markers = {};
   final String googleMapsApiKey =
@@ -52,7 +51,7 @@ class _TrackingState extends State<Tracking> {
   @override
   void initState() {
     super.initState();
-     BitmapDescriptor.asset(
+    BitmapDescriptor.asset(
             const ImageConfiguration(
               size: Size(40, 40),
             ),
@@ -148,16 +147,16 @@ class _TrackingState extends State<Tracking> {
               ),
               markers: {
                 Marker(
-                  markerId: MarkerId(widget.address),
-                  position: LatLng(double.parse(widget.latitude),
-                      double.parse(widget.longitude)),
-                  infoWindow: InfoWindow(
-                      title: widget.address,
-                      snippet: "${widget.latitude}, ${widget.longitude}"),
-                  icon: pinLocationIcon!
-                  // BitmapDescriptor.defaultMarkerWithHue(
-                  //     BitmapDescriptor.hueGreen),
-                ),
+                    markerId: MarkerId(widget.address),
+                    position: LatLng(double.parse(widget.latitude),
+                        double.parse(widget.longitude)),
+                    infoWindow: InfoWindow(
+                        title: widget.address,
+                        snippet: "${widget.latitude}, ${widget.longitude}"),
+                    icon: pinLocationIcon!
+                    // BitmapDescriptor.defaultMarkerWithHue(
+                    //     BitmapDescriptor.hueGreen),
+                    ),
                 Marker(
                   markerId: const MarkerId("موقع الفنى الحالى"),
                   position: LatLng(currentLatitude, currentLongitude),

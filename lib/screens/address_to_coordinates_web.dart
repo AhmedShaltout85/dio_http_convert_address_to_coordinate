@@ -1275,7 +1275,17 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     "غرفة الطوارئ المتحركة",
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
-                                                  //
+//TODO: navigate to AgoraVideoCall screen for emergencies(NOT TESTED OR USED YET -13-05-2025)
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AgoraVideoCall(
+                                                        title:
+                                                            '${snapshot.data![index]['address']}',
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
                                                 icon: const Icon(
                                                   Icons.car_crash,

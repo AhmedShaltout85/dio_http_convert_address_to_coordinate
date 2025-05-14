@@ -67,6 +67,8 @@ dependencies:
   permission_handler: 
   # agroa_for_web
   flutter_webrtc: ^0.9.10  # Required for rendering on web
+  # flutter_webrtc: ^0.14.0  # This version is known to work with web
+  # # flutter_webrtc: ^0.9.29  # This version is known to work with android
 
 
   # # curved_navigation_bar
@@ -84,6 +86,9 @@ dependencies:
     # web: true
   audioplayers: ^5.2.1
   data_table_2: 2.5.10
+  intl: ^0.18.1
+  uuid: ^3.0.7
+ 
 
 
 
@@ -128,6 +133,7 @@ flutter:
     - assets/sounds/ringtone.mp3
     - assets/sounds/alarm.mp3
     - assets/green_marker.png
+    - assets/sounds/incoming_call.mp3
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

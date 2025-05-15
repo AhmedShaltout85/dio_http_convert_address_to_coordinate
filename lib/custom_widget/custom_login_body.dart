@@ -49,7 +49,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
   final List<RadioOption<String>> _fullOptions = [
     RadioOption(label: 'فنى هندسة', value: '3'),
     RadioOption(label: 'مديرى ومشرفى الهندسة', value: '2'),
-    RadioOption(label: 'شكاوى خارجية', value: '4'),
+    RadioOption(label: 'الطوارئ المتحركة', value: '4'),
     RadioOption(label: 'غرفة الطوارىء', value: '1'),
     RadioOption(label: 'مدير النظام', value: '0'),
   ];
@@ -364,7 +364,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
                       roleLabel = 'فنى هندسة';
                       break;
                     case '4':
-                      roleLabel = 'شكاوى خارجية';
+                      roleLabel = 'الطوارئ المتحركة';
                       break;
                   }
                   // Reset selections when role changes

@@ -25,24 +25,22 @@ class _MobileEmergencyRoomScreenState extends State<MobileEmergencyRoomScreen> {
       ),
       body: Center(
         child: IconButton(
-          tooltip: "غرفة الطوارئ المتحركة",
+          tooltip: "فضلا, قم بالضغط على الايقون للتمكن من بث الفيديو",
           hoverColor: Colors.yellow,
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const ReceiverScreen(),
-                
               ),
             );
           },
           icon: const Icon(
             Icons.videocam_outlined,
             color: Colors.indigo,
-            size: 50,
+            size: 70,
           ),
         ),
-     
       ),
     );
   }

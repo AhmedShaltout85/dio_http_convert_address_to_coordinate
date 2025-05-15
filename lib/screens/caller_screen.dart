@@ -17,7 +17,8 @@ class _CallerScreenState extends State<CallerScreen> {
   late RTCPeerConnection _peerConnection;
   MediaStream? _localStream;
   MediaStream? _remoteStream;
-  final _signalingServer = 'http://localhost:3000/api';
+  final String _signalingServer =
+      'http://192.168.17.250:9999/webrtc-signaling-server/api/v1/web';
   String? _roomId;
   bool _isCalling = false;
   bool _isMuted = false;
@@ -104,7 +105,6 @@ class _CallerScreenState extends State<CallerScreen> {
     _processPendingCandidates();
   }
 
-  
   Future<void> _notifyReceiver() async {
     try {
       final response = await http.post(
@@ -397,7 +397,14 @@ class _CallerScreenState extends State<CallerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Caller'),
+        title: const Text(
+          'غرفة الطوارئ',
+          style: TextStyle(color: Colors.indigo),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.indigo),
         actions: [
           if (_roomId != null)
             Padding(
@@ -503,23 +510,3 @@ class _CallerScreenState extends State<CallerScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

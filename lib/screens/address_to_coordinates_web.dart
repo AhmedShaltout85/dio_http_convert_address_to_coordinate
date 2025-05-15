@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pick_location/screens/agora_video_call.dart';
+import 'package:pick_location/screens/caller_screen.dart';
 import 'package:pick_location/screens/dashboard_screen.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 import 'package:pick_location/screens/report_screen.dart';
@@ -1275,15 +1276,11 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     "غرفة الطوارئ المتحركة",
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
-//TODO: navigate to AgoraVideoCall screen for emergencies(NOT TESTED OR USED YET -13-05-2025)
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          AgoraVideoCall(
-                                                        title:
-                                                            '${snapshot.data![index]['address']}',
-                                                      ),
+                                                          const CallerScreen(),
                                                     ),
                                                   );
                                                 },

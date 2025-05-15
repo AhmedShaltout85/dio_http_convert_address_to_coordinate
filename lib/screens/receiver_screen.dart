@@ -26,7 +26,8 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
   Timer? _notificationTimer;
   List<RTCIceCandidate> _pendingRemoteCandidates = [];
 
-  String _signalingServer = 'http://localhost:3000/api';
+  final String _signalingServer =
+      'http://192.168.17.250:9999/webrtc-signaling-server/api/v1/web';
   String _roomId = '';
   String? _incomingRoomId;
   DateTime? _lastNotificationTime;
@@ -79,7 +80,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
 
       _peerConnection?.onIceCandidate = (candidate) async {
         if (_isDisposed || _peerConnection == null) return;
-        if (candidate.candidate?.isNotEmpty ?? false ) {
+        if (candidate.candidate?.isNotEmpty ?? false) {
           try {
             await http.post(
               Uri.parse('$_signalingServer/candidate'),
@@ -526,7 +527,14 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Receiver'),
+        title: const Text(
+          'غرفة الطوارئ المتحركة',
+          style: TextStyle(color: Colors.indigo),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.indigo),
         actions: [
           if (_isRinging)
             const Padding(

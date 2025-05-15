@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pick_location/screens/receiver_screen.dart';
 
 class MobileEmergencyRoomScreen extends StatefulWidget {
   const MobileEmergencyRoomScreen({super.key});
@@ -14,16 +15,34 @@ class _MobileEmergencyRoomScreenState extends State<MobileEmergencyRoomScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "غرفة الطوارئ المتحركة", 
-          style: TextStyle(color: Colors.white),
+          "غرفة الطوارئ المتحركة",
+          style: TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
-        elevation: 7,
+        elevation: 0,
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
       ),
-      body: const Center(
-        child: Text('Mobile Emergency Room'),
+      body: Center(
+        child: IconButton(
+          tooltip: "غرفة الطوارئ المتحركة",
+          hoverColor: Colors.yellow,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ReceiverScreen(),
+                
+              ),
+            );
+          },
+          icon: const Icon(
+            Icons.videocam_outlined,
+            color: Colors.indigo,
+            size: 50,
+          ),
+        ),
+     
       ),
     );
   }

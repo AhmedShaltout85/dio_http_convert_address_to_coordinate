@@ -9,6 +9,7 @@ import 'package:pick_location/custom_widget/custom_login_drop_down_menu.dart';
 import 'package:pick_location/custom_widget/custom_radio_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
 import 'package:pick_location/screens/handasah_screen.dart';
+import 'package:pick_location/screens/mobile_emergency_room_screen.dart';
 import 'package:pick_location/screens/system_admin_screen.dart';
 import 'package:pick_location/screens/user_screen.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
@@ -16,7 +17,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../network/remote/dio_network_repos.dart';
 import '../screens/address_to_coordinates_web.dart';
-import '../screens/address_to_coordinates_web_other.dart';
+// import '../screens/address_to_coordinates_web_other.dart';
 
 class CustomizLoginScreenBody extends StatefulWidget {
   const CustomizLoginScreenBody({
@@ -194,7 +195,8 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const AddressToCoordinatesOther()));
+                builder: (context) => const MobileEmergencyRoomScreen()));
+                // builder: (context) => const AddressToCoordinatesOther()));
         break;
       default:
         showSnackBar('فضلا, أدخل البيانات الصحيحة');

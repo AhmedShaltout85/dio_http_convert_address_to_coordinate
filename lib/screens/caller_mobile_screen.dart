@@ -404,7 +404,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '$widget.addressTitle',
+          widget.addressTitle,
           style: const TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,

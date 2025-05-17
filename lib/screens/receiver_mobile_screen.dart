@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+
+import '../utils/dio_http_constants.dart';
 
 class ReceiverMobileScreen extends StatefulWidget {
-  const ReceiverMobileScreen({super.key});
+  final String addressTitle;
+  const ReceiverMobileScreen({
+    super.key,
+    required this.addressTitle,
+  });
 
   @override
   State<ReceiverMobileScreen> createState() => _ReceiverScreenState();
@@ -17,7 +21,6 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
   final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   final TextEditingController _roomIdController = TextEditingController();
-  final AudioPlayer _audioPlayer = AudioPlayer();
 
   RTCPeerConnection? _peerConnection;
   MediaStream? _localStream;
@@ -27,7 +30,8 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
   List<RTCIceCandidate> _pendingRemoteCandidates = [];
 
   final String _signalingServer =
-      'http://192.168.17.250:9999/webrtc-signaling-server/api/v1/mobile';
+      '$BASE_URI_IP_ADDRESS_LOCAL_HOST/webrtc-signaling-server/api/v1/mobile';
+  // '$BASE_URI_IP_ADDRESS_LOCAL_HOST/webrtc-signaling-server/api/v1/mobile';
   String _roomId = '';
   String? _incomingRoomId;
   DateTime? _lastNotificationTime;
@@ -164,8 +168,7 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
                 setState(() {
                   _isRinging = true;
                 });
-                // await _playRingtone();
-                _showIncomingCallDialog();
+                _handleIncomingCall();
               }
             }
           }
@@ -176,88 +179,14 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
     });
   }
 
-  // Future<void> _playRingtone() async {
-  //   try {
-  //     await _audioPlayer.stop();
-  //     await _audioPlayer.setSource(AssetSource('sounds/incoming_call.mp3'));
-  //     await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-  //     await _audioPlayer.resume();
-  //   } catch (e) {
-  //     debugPrint('Ringtone error: $e');
-  //   }
-  // }
-
-  // Future<void> _stopRingtone() async {
-  //   try {
-  //     await _audioPlayer.stop();
-  //     if (mounted && !_isDisposed) {
-  //       setState(() {
-  //         _isRinging = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     debugPrint('Stop ringtone error: $e');
-  //   }
-  // }
-
-  void _showIncomingCallDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text('Incoming Call'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Room ID: $_incomingRoomId'),
-            const SizedBox(height: 10),
-            Text(
-              'Received: ${DateFormat('HH:mm:ss').format(DateTime.now())}',
-              style: const TextStyle(fontSize: 12),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => _handleCallResponse(false),
-            child: const Text('Decline', style: TextStyle(color: Colors.red)),
-          ),
-          TextButton(
-            onPressed: () => _handleCallResponse(true),
-            child: const Text('Accept', style: TextStyle(color: Colors.green)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _handleCallResponse(bool accept) async {
-    try {
-      // await _stopRingtone();
-
-      if (_incomingRoomId != null) {
-        await http.delete(
-          Uri.parse('$_signalingServer/notification/$_incomingRoomId'),
-          headers: {'Content-Type': 'application/json'},
-        );
-      }
-
-      if (!mounted || _isDisposed) return;
-
-      if (accept && _incomingRoomId != null) {
-        setState(() {
-          _roomIdController.text = _incomingRoomId!;
-          _roomId = _incomingRoomId!;
-        });
-        _joinRoom();
-      }
-
-      Navigator.of(context).pop();
-    } catch (e) {
-      debugPrint('Call response error: $e');
-      if (mounted) {
-        _showError('Failed to handle call response');
-      }
+  void _handleIncomingCall() {
+    if (_incomingRoomId != null) {
+      setState(() {
+        _roomIdController.text = _incomingRoomId!;
+        _roomId = _incomingRoomId!;
+        _isLoading = true;
+      });
+      _joinRoom();
     }
   }
 
@@ -513,7 +442,6 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
     _isDisposed = true;
     _candidateTimer?.cancel();
     _notificationTimer?.cancel();
-    _audioPlayer.dispose();
     _roomIdController.dispose();
     _remoteRenderer.dispose();
     _localRenderer.dispose();
@@ -527,7 +455,14 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Receiver'),
+        title: Text(
+          '$widget.addressTitle',
+          style: const TextStyle(color: Colors.indigo),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0.0,
+        iconTheme: const IconThemeData(color: Colors.indigo),
         actions: [
           if (_isRinging)
             const Padding(
@@ -566,7 +501,7 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
-                                'Enter Room ID to join call',
+                                'فضلا, إنتظر جارى الربط مع المتصل',
                                 style: TextStyle(fontSize: 18),
                               ),
                               const SizedBox(height: 20),
@@ -601,7 +536,7 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
                   if (_isConnected || _isLoading)
                     Positioned(
                       right: 20,
-                      bottom: 20,
+                      top: 20,
                       width: 120,
                       height: 180,
                       child: ClipRRect(
@@ -627,6 +562,7 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
+                      tooltip: 'End call',
                       icon: const Icon(Icons.call_end),
                       onPressed: _disconnect,
                       color: Colors.white,
@@ -636,6 +572,7 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
                       ),
                     ),
                     IconButton(
+                      tooltip: _isMuted ? 'Unmute' : 'Mute',
                       icon: Icon(_isMuted ? Icons.mic_off : Icons.mic),
                       onPressed: _toggleMute,
                       color: _isMuted ? Colors.red : Colors.white,
@@ -645,6 +582,7 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
                       ),
                     ),
                     IconButton(
+                      tooltip: _isVideoOff ? 'Turn on video' : 'Turn off video',
                       icon: Icon(
                           _isVideoOff ? Icons.videocam_off : Icons.videocam),
                       onPressed: _toggleVideo,
@@ -655,6 +593,7 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
                       ),
                     ),
                     IconButton(
+                      tooltip: 'Switch camera',
                       icon: const Icon(Icons.switch_video),
                       onPressed: _switchCamera,
                       color: Colors.white,

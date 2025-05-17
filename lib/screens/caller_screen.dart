@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/dio_http_constants.dart';
+
 class CallerScreen extends StatefulWidget {
   const CallerScreen({super.key});
 
@@ -18,7 +20,7 @@ class _CallerScreenState extends State<CallerScreen> {
   MediaStream? _localStream;
   MediaStream? _remoteStream;
   final String _signalingServer =
-      'http://192.168.17.250:9999/webrtc-signaling-server/api/v1/web';
+      '$BASE_URI_IP_ADDRESS_LOCAL_HOST/webrtc-signaling-server/api/v1/web';
   String? _roomId;
   bool _isCalling = false;
   bool _isMuted = false;
@@ -440,7 +442,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   Positioned(
                     right: 20,
-                    bottom: 20,
+                    top: 20,
                     width: 120,
                     height: 180,
                     child: ClipRRect(
@@ -465,6 +467,7 @@ class _CallerScreenState extends State<CallerScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
+                    tooltip: _isCalling ? 'End call' : 'Start call',
                     icon: Icon(_isCalling ? Icons.call_end : Icons.call),
                     onPressed: _isCalling ? _endCall : _startCall,
                     color: Colors.white,
@@ -474,6 +477,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   ),
                   IconButton(
+                    tooltip: _isMuted?'Mute':'Unmute',
                     icon: Icon(_isMuted ? Icons.mic_off : Icons.mic),
                     onPressed: _toggleMute,
                     color: _isMuted ? Colors.red : Colors.white,
@@ -483,6 +487,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   ),
                   IconButton(
+                    tooltip: _isVideoOff?'Video off':'Video on',
                     icon:
                         Icon(_isVideoOff ? Icons.videocam_off : Icons.videocam),
                     onPressed: _toggleVideo,
@@ -493,6 +498,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   ),
                   IconButton(
+                    tooltip: 'Switch camera',
                     icon: const Icon(Icons.switch_video),
                     onPressed: _switchCamera,
                     color: Colors.white,

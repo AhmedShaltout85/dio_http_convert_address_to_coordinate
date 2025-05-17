@@ -6,7 +6,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:pick_location/screens/agora_video_call.dart';
+// import 'package:pick_location/screens/agora_video_call.dart';
+import 'package:pick_location/screens/caller_mobile_screen.dart';
 import 'package:pick_location/screens/caller_screen.dart';
 import 'package:pick_location/screens/dashboard_screen.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
@@ -105,8 +106,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         // getAllHotLineAddresses = DioNetworkRepos().getLoc();
         getLocsAfterGetCoordinatesAndGis =
             DioNetworkRepos().getLocByFlagAndIsFinished();
-        getLocsByHandasahNameAndTechinicianName =
-            DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+        //TODO:updated NOT TESTED 17-05-2025
+        // getLocsByHandasahNameAndTechinicianName =
+        //     DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
       });
     });
   }
@@ -365,7 +367,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "تحديد موقع عنوان على الخريطة (غرفة الطوارئ)",
+          " غرفة الطوارئ",
           style: TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
@@ -490,21 +492,21 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                       children: [
                         Expanded(
                           child: TextField(
-                            decoration: const InputDecoration(
-                              constraints: BoxConstraints(
+                            decoration: InputDecoration(
+                              constraints: const BoxConstraints(
                                 maxHeight: 70,
                                 minWidth: 200,
                               ),
                               filled: true,
                               fillColor: Colors.white,
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(10.0),
                                 ),
                               ),
                               hintText: "61 طريق الحرية الاسكندرية",
                               hintStyle: TextStyle(
-                                color: Colors.indigo,
+                                color: Colors.indigo[200],
                                 fontSize: 11,
                               ),
                               labelText: "فضلا أدخل العنوان",
@@ -1116,14 +1118,25 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                 ['address'],
                                                             1);
                                                     //open video call
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         AgoraVideoCall(
+                                                    //       title:
+                                                    //           '${snapshot.data![index]['address']}',
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+
+                                                    //open Video Call from online server
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AgoraVideoCall(
-                                                          title:
-                                                              '${snapshot.data![index]['address']}',
-                                                        ),
+                                                            CallerMobileScreen(
+                                                                addressTitle:
+                                                                    '${snapshot.data![index]['address']}'),
                                                       ),
                                                     );
                                                   }

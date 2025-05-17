@@ -533,8 +533,9 @@ import 'package:location/location.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
-import 'package:pick_location/screens/agora_video_call.dart';
+// import 'package:pick_location/screens/agora_video_call.dart';
 import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+import 'package:pick_location/screens/receiver_mobile_screen.dart';
 import 'package:pick_location/screens/user_request_tools.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import '../custom_widget/custom_alert_dialog_with_sound.dart';
@@ -1037,11 +1038,18 @@ class _UserScreenState extends State<UserScreen> {
       );
     } else {
       _stopAllSounds();
+      //Video call using online server
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => AgoraVideoCall(title: address),
+          builder: (context) => ReceiverMobileScreen(addressTitle: address),
         ),
+        //Agora video call
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => AgoraVideoCall(title: address),
+      //   ),
       );
     }
   }

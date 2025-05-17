@@ -4,21 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:http/http.dart' as http;
 
-class CallerScreen extends StatefulWidget {
-  const CallerScreen({super.key});
+import '../utils/dio_http_constants.dart';
+
+class CallerMobileScreen extends StatefulWidget {
+  final String addressTitle;
+  const CallerMobileScreen({
+    super.key,
+    required this.addressTitle,
+  });
 
   @override
-  State<CallerScreen> createState() => _CallerScreenState();
+  State<CallerMobileScreen> createState() => _CallerScreenState();
 }
 
-class _CallerScreenState extends State<CallerScreen> {
+class _CallerScreenState extends State<CallerMobileScreen> {
   final _localRenderer = RTCVideoRenderer();
   final _remoteRenderer = RTCVideoRenderer();
   late RTCPeerConnection _peerConnection;
   MediaStream? _localStream;
   MediaStream? _remoteStream;
   final String _signalingServer =
-      'http://192.168.17.250:9999/webrtc-signaling-server/api/v1/mobile';
+      '$BASE_URI_IP_ADDRESS_LOCAL_HOST/webrtc-signaling-server/api/v1/mobile';
   String? _roomId;
   bool _isCalling = false;
   bool _isMuted = false;
@@ -397,9 +403,9 @@ class _CallerScreenState extends State<CallerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'غرفة الطوارئ',
-          style: TextStyle(color: Colors.indigo),
+        title: Text(
+          '$widget.addressTitle',
+          style: const TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
@@ -440,7 +446,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   Positioned(
                     right: 20,
-                    bottom: 20,
+                    top: 20,
                     width: 120,
                     height: 180,
                     child: ClipRRect(
@@ -465,6 +471,7 @@ class _CallerScreenState extends State<CallerScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconButton(
+                    tooltip: _isCalling ? 'End call' : 'Start call',
                     icon: Icon(_isCalling ? Icons.call_end : Icons.call),
                     onPressed: _isCalling ? _endCall : _startCall,
                     color: Colors.white,
@@ -474,6 +481,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   ),
                   IconButton(
+                    tooltip: _isMuted ? 'Turn on mic' : 'Turn off mic',
                     icon: Icon(_isMuted ? Icons.mic_off : Icons.mic),
                     onPressed: _toggleMute,
                     color: _isMuted ? Colors.red : Colors.white,
@@ -483,6 +491,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   ),
                   IconButton(
+                    tooltip: _isVideoOff ? 'Turn on video' : 'Turn off video',
                     icon:
                         Icon(_isVideoOff ? Icons.videocam_off : Icons.videocam),
                     onPressed: _toggleVideo,
@@ -493,6 +502,7 @@ class _CallerScreenState extends State<CallerScreen> {
                     ),
                   ),
                   IconButton(
+                    tooltip: 'Switch Camera',
                     icon: const Icon(Icons.switch_video),
                     onPressed: _switchCamera,
                     color: Colors.white,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:http/http.dart' as http;
 
+import '../network/remote/dio_network_repos.dart';
 import '../utils/dio_http_constants.dart';
 
 class ReceiverMobileScreen extends StatefulWidget {
@@ -380,6 +381,10 @@ class _ReceiverScreenState extends State<ReceiverMobileScreen> {
       }
 
       await _createPeerConnection();
+            //update video call
+      //TODO: update video call NOT TESTED
+      DioNetworkRepos()
+          .updateLocationBrokenByAddressUpdateVideoCall(widget.addressTitle, 0);
     } catch (e) {
       debugPrint('Disconnect error: $e');
     }

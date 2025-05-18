@@ -1,15 +1,14 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import '../network/remote/dio_network_repos.dart';
 
-class CustomHandasahAssignUser extends StatelessWidget {
+class CustomHandasahAssignUser extends StatefulWidget {
   // Properties
   final String title;
   final Future getLocs; // Added generic type
   final List<String> stringListItems;
   final VoidCallback onPressed;
   final String hintText;
-  // final void Function(String?) onChanged; //(08-02-2025-not-working as expected)
 
   // Constructor
   const CustomHandasahAssignUser({
@@ -19,11 +18,18 @@ class CustomHandasahAssignUser extends StatelessWidget {
     required this.onPressed,
     required this.hintText,
     required this.title,
-    //  required this.onChanged, //(08-02-2025-not-working as expected)
   });
 
   @override
+  State<CustomHandasahAssignUser> createState() =>
+      _CustomHandasahAssignUserState();
+}
+
+class _CustomHandasahAssignUserState extends State<CustomHandasahAssignUser> {
+  @override
   Widget build(BuildContext context) {
+    String? selectedValue;
+
     return SafeArea(
       child: ListView(
         shrinkWrap: true,
@@ -37,7 +43,7 @@ class CustomHandasahAssignUser extends StatelessWidget {
               child: Text(
                 textDirection: TextDirection.rtl,
                 textAlign: TextAlign.center,
-                title,
+                widget.title,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 13,
@@ -46,7 +52,7 @@ class CustomHandasahAssignUser extends StatelessWidget {
             ),
           ),
           FutureBuilder(
-            future: getLocs,
+            future: widget.getLocs,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -82,46 +88,45 @@ class CustomHandasahAssignUser extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(
-                              onPressed: onPressed,
-                              icon: const Icon(
-                                Icons.call_missed_rounded,
-                                color: Colors.indigo,
-                              ),
-                            ),
                             Expanded(
                               child: Container(
                                 margin: const EdgeInsets.all(10.0),
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 7.0),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.indigo, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
+                                // decoration: BoxDecoration(
+                                //   border: Border.all(
+                                //       color: Colors.indigo, width: 1.0),
+                                //   borderRadius: BorderRadius.circular(10.0),
+                                // ),
                                 child: CustomDropdown(
                                   isExpanded: true,
-                                  hintText: hintText,
-                                  items: stringListItems,
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      debugPrint('Selected item: $value');
+                                  hintText: widget.hintText,
+                                  items: widget.stringListItems,
+                                  value: selectedValue,
+                                  onChanged: (newValue) {
+                                    if (newValue != null) {
+                                      debugPrint('Selected item: $newValue');
+                                      setState(() {
+                                        selectedValue = newValue;
+                                      });
                                       //updateLocAddHandasah
                                       DioNetworkRepos().updateLocAddTechnician(
                                         data['address'] ?? '',
-                                        value,
+                                        newValue,
                                       );
-                                      debugPrint('updated item: $value');
+                                      debugPrint('updated item: $newValue');
                                       //
                                     }
-                                    // else if (data['handasah_name'] == value) {
-
-                                    //   snapshot.data.remove(data['address']);
-                                    //   debugPrint('removed item: $value');
-                                    // }
                                   },
-                                  // onChanged: onChanged,
                                 ),
+                              ),
+                            ),
+                            IconButton(
+                              tooltip: 'توجيهه',
+                              onPressed: widget.onPressed,
+                              icon: const Icon(
+                                Icons.navigate_next_outlined,
+                                color: Colors.indigo,
                               ),
                             ),
                           ],

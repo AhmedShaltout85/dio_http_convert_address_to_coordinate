@@ -1,4 +1,3 @@
-
 // // ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, unused_field
 
 // import 'dart:async';
@@ -520,9 +519,7 @@
 //   }
 // }
 
-
 //TODO:update code 4-5-2025
-
 
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, unused_field
 
@@ -762,8 +759,8 @@ class _UserScreenState extends State<UserScreen> {
 
       final addressInList =
           await DioNetworkRepos().checkAddressExistsInTracking(item['address']);
-          //check if address exists in hotline table or not to update start time
-          // TODO: add check if address exists in hotline table or not to update start time
+      //check if address exists in hotline table or not to update start time
+      // TODO: add check if address exists in hotline table or not to update start time
       // final addressInList =
       //     await DioNetworkRepos().checkAddressExistsInTracking(item['address']);
 
@@ -816,8 +813,8 @@ class _UserScreenState extends State<UserScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          ' :الاعطال المخصصة للمستخدم${DataStatic.username}',
-          style: const TextStyle(color: Colors.white, fontSize: 15),
+          'الاعطال المخصصة للمستخدم : ${DataStatic.username}',
+          style: const TextStyle(color: Colors.white, fontSize: 15)
         ),
         centerTitle: true,
         backgroundColor: Colors.indigo,
@@ -1038,18 +1035,19 @@ class _UserScreenState extends State<UserScreen> {
       );
     } else {
       _stopAllSounds();
+      //Agora video call
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => AgoraVideoCall(title: address),
+      //   ),
+      // );
       //Video call using online server
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ReceiverMobileScreen(addressTitle: address),
         ),
-        //Agora video call
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => AgoraVideoCall(title: address),
-      //   ),
       );
     }
   }
@@ -1095,7 +1093,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   void _closeComplaint(String address, int index) {
-    // TODO: set actual locations x and y and final close 
+    // TODO: set actual locations x and y and final close
     setState(() {
       DioNetworkRepos().updateLocAddIsFinished(address, 1);
       getUsersBrokenPointsList = getUsersBrokenPointsList.then((list) {

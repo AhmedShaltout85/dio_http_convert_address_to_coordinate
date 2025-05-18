@@ -106,9 +106,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         // getAllHotLineAddresses = DioNetworkRepos().getLoc();
         getLocsAfterGetCoordinatesAndGis =
             DioNetworkRepos().getLocByFlagAndIsFinished();
-        //TODO:updated NOT TESTED 17-05-2025
-        // getLocsByHandasahNameAndTechinicianName =
-        //     DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+        getLocsByHandasahNameAndTechinicianName =
+            DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
       });
     });
   }
@@ -504,12 +503,12 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                   Radius.circular(10.0),
                                 ),
                               ),
-                              hintText: "61 طريق الحرية الاسكندرية",
+                              hintText: "فضلا أدخل العنوان",
                               hintStyle: TextStyle(
                                 color: Colors.indigo[200],
                                 fontSize: 11,
                               ),
-                              labelText: "فضلا أدخل العنوان",
+                              labelText: "61 طريق الحرية الاسكندرية",
                             ),
                             controller:
                                 addressController, // set the controller to get address input

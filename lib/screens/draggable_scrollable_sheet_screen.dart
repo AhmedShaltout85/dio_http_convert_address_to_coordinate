@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:pick_location/screens/address_details.dart';
-import 'package:pick_location/screens/agora_video_call.dart';
+// import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/tracking.dart';
 
 import '../custom_widget/custom_browser_redirect.dart';
@@ -108,16 +108,16 @@ class _DraggableScrollableSheetScreenState
                                           debugPrint(
                                               "Start Video Call ${snapshot.data![index]['id']}");
                                           //open video call
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AgoraVideoCall(
-                                                title:
-                                                    '${snapshot.data![index]['address']}',
-                                              ),
-                                            ),
-                                          );
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         AgoraVideoCall(
+                                          //       title:
+                                          //           '${snapshot.data![index]['address']}',
+                                          //     ),
+                                          //   ),
+                                          // );
                                         },
                                         icon: const Icon(
                                           Icons.video_call,

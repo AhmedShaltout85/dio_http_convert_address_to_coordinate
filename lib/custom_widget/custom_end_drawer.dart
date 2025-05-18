@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import '../network/remote/dio_network_repos.dart';
 
-class CustomEndDrawer extends StatelessWidget {
+class CustomEndDrawer extends StatefulWidget {
   // Properties
   final String title;
   final Future getLocs; // Added generic type
@@ -23,7 +23,14 @@ class CustomEndDrawer extends StatelessWidget {
   });
 
   @override
+  State<CustomEndDrawer> createState() => _CustomEndDrawerState();
+}
+
+class _CustomEndDrawerState extends State<CustomEndDrawer> {
+  @override
   Widget build(BuildContext context) {
+      String? selectedValue;
+
     return SafeArea(
       child: Drawer(
         backgroundColor: Colors.black45,
@@ -39,7 +46,7 @@ class CustomEndDrawer extends StatelessWidget {
                 child: Text(
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.center,
-                  title,
+                  widget.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 13,
@@ -48,7 +55,7 @@ class CustomEndDrawer extends StatelessWidget {
               ),
             ),
             FutureBuilder(
-              future: getLocs,
+              future: widget.getLocs,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -72,6 +79,7 @@ class CustomEndDrawer extends StatelessWidget {
                         children: [
                           ListTile(
                             title: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
                                   child: Text(
@@ -110,44 +118,47 @@ class CustomEndDrawer extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              
                               Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  onPressed: onPressed,
-                                  icon: const Icon(
-                                    Icons.call_missed_rounded,
-                                    color: Colors.indigo,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 3,
                                 child: Container(
                                   margin: const EdgeInsets.all(3.0),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 1.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.indigo, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
+                                  // decoration: BoxDecoration(
+                                  //   border: Border.all(
+                                  //       color: Colors.indigo, width: 1.0),
+                                  //   borderRadius: BorderRadius.circular(10.0),
+                                  // ),
                                   child: CustomDropdown(
                                     isExpanded: true,
-                                    hintText: hintText,
-                                    items: stringListItems,
-                                    onChanged: (value) {
-                                      if (value != null) {
-                                        debugPrint('Selected item: $value');
+                                    hintText: widget.hintText,
+                                    items: widget.stringListItems,
+                                     value: selectedValue,
+                                    onChanged: (newValue) {
+                                      if (newValue != null) {
+                                        // debugPrint('Selected item: $newValue');
+                                          setState(() {
+                                          selectedValue = newValue;
+                                        });
                                         //updateLocAddHandasah
                                         DioNetworkRepos().updateLocAddHandasah(
                                           data['address'] ?? '',
-                                          value,
+                                          newValue,
                                         );
-                                        debugPrint('updated item: $value');
+                                        // debugPrint('updated item: $newValue');
                                         //
                                       }
                                     },
+                                   
                                   ),
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: 'توجيهة',
+                                onPressed: widget.onPressed,
+                                icon: const Icon(
+                                  Icons.navigate_next_rounded,
+                                  color: Colors.indigo,
                                 ),
                               ),
                             ],

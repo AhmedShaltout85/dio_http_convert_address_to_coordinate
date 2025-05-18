@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:pick_location/screens/receiver_mobile_screen.dart';
 
-import '../screens/agora_video_call.dart';
+// import '../screens/agora_video_call.dart';
 
 class CustomAlertDialogWithSound extends StatefulWidget {
   final String title;
@@ -83,9 +84,10 @@ class _CustomAlertDialogWithSoundState
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AgoraVideoCall(
-                    title: widget.address,
-                  ),
+                  builder: (context) => ReceiverMobileScreen(addressTitle: widget.address,),
+                  // AgoraVideoCall(
+                  //   title: widget.address,
+                  // ),
                 ),
               );
             },

@@ -1,4 +1,3 @@
-
 // ignore_for_file: must_be_immutable, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
@@ -196,7 +195,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
             context,
             MaterialPageRoute(
                 builder: (context) => const MobileEmergencyRoomScreen()));
-                // builder: (context) => const AddressToCoordinatesOther()));
+        // builder: (context) => const AddressToCoordinatesOther()));
         break;
       default:
         showSnackBar('فضلا, أدخل البيانات الصحيحة');
@@ -387,22 +386,25 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
         ),
         // Engineering dropdown for web
         if (selectedOption == '3' || selectedOption == '2')
-          Container(
-            margin: const EdgeInsets.all(3.0),
-            padding: const EdgeInsets.symmetric(horizontal: 1.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.indigo, width: 1.0),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: CustomDropdown(
-              isExpanded: false,
-              items: handasatItemsDropdownMenu,
-              hintText: 'فضلا أختر الهندسة',
-              value: selectedHandasah,
-              onChanged: (value) async {
-                setState(() => selectedHandasah = value);
-                await fetchUsersForSelectedHandasah();
-              },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 150.0),
+            child: Container(
+              margin: const EdgeInsets.all(3.0),
+              padding: const EdgeInsets.symmetric(horizontal: 1.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.indigo, width: 1.0),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: CustomDropdown(
+                isExpanded: true,
+                items: handasatItemsDropdownMenu,
+                hintText: 'فضلا أختر الهندسة',
+                value: selectedHandasah,
+                onChanged: (value) async {
+                  setState(() => selectedHandasah = value);
+                  await fetchUsersForSelectedHandasah();
+                },
+              ),
             ),
           ),
       ],

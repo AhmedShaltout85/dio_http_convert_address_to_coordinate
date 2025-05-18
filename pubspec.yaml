@@ -62,7 +62,7 @@ dependencies:
   url_launcher: ^6.2.5
 
   # video_call package
-  agora_rtc_engine: ^6.0.0
+  # agora_rtc_engine: ^6.0.0
   # Permissions handler 
   permission_handler: 
   # agroa_for_web

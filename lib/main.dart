@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 // import 'package:pick_location/screens/landing_screen.dart';
+import 'package:url_strategy/url_strategy.dart';
+
 
 import 'utils/go_router.dart';
 
 void main() {
+    setPathUrlStrategy(); // Removes the # from URLs
+
   runApp(
     const MyApp(),
   );

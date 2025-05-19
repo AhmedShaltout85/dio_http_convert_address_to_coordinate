@@ -2,10 +2,12 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pick_location/custom_widget/custom_alert_dialog_create_handasah_users.dart';
 import 'package:pick_location/custom_widget/custom_handasah_assign_user.dart';
-import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
-import 'package:pick_location/screens/request_tool_for_address_screen.dart';
+// import 'package:pick_location/custom_widget/custom_landing_body.dart';
+// import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+// import 'package:pick_location/screens/request_tool_for_address_screen.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 import 'package:audioplayers/audioplayers.dart'; // Add this import
@@ -536,20 +538,22 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                             tooltip: 'مهمات مخازن مطلوبة',
                                             hoverColor: Colors.yellow,
                                             onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RequestToolForAddressScreen(
-                                                    address:
-                                                        snapshot.data![index]
-                                                            ['address'],
-                                                    handasahName:
-                                                        snapshot.data![index]
-                                                            ['handasah_name'],
-                                                  ),
-                                                ),
-                                              );
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         RequestToolForAddressScreen(
+                                              //       address:
+                                              //           snapshot.data![index]
+                                              //               ['address'],
+                                              //       handasahName:
+                                              //           snapshot.data![index]
+                                              //               ['handasah_name'],
+                                              //     ),
+                                              //   ),
+                                              // );
+                                              context.go(
+                                                  '/request-tool-address/${snapshot.data![index]['address']}/${snapshot.data![index]['handasah_name']}');
                                             },
                                             icon: const Icon(Icons.store_sharp,
                                                 color: Colors.cyan),
@@ -568,15 +572,17 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                               DioNetworkRepos()
                                                   .excuteTempStoreQty(
                                                       storeName);
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      IntegrationWithStoresGetAllQty(
-                                                    storeName: storeName,
-                                                  ),
-                                                ),
-                                              );
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         IntegrationWithStoresGetAllQty(
+                                              //       storeName: storeName,
+                                              //     ),
+                                              //   ),
+                                              // );
+                                              context.go(
+                                                  '/integrate-with-stores/$storeName');
                                             },
                                             icon: const Icon(
                                                 Icons.store_outlined,

@@ -4,15 +4,16 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 // import 'package:pick_location/screens/agora_video_call.dart';
-import 'package:pick_location/screens/caller_mobile_screen.dart';
-import 'package:pick_location/screens/caller_screen.dart';
-import 'package:pick_location/screens/dashboard_screen.dart';
-import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
-import 'package:pick_location/screens/report_screen.dart';
-import 'package:pick_location/screens/tracking.dart';
+// import 'package:pick_location/screens/caller_mobile_screen.dart';
+// import 'package:pick_location/screens/caller_screen.dart';
+// import 'package:pick_location/screens/dashboard_screen.dart';
+// import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+// import 'package:pick_location/screens/report_screen.dart';
+// import 'package:pick_location/screens/tracking.dart';
 
 import '../custom_widget/custom_reusable_alert_dailog.dart';
 import '../custom_widget/custom_bottom_sheet.dart';
@@ -336,12 +337,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
     // You can handle button actions here
     debugPrint("Clicked: $value");
     if (value == 'عرض التقارير') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ReportScreen(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const ReportScreen(),
+      // ),
+      // );
+      context.go('/report');
     } else if (value == 'الربط مع الاسكادا') {
       CustomBrowserRedirect.openInBrowser(
         'http://41.33.226.211:8070/roundpoint',
@@ -352,12 +354,13 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         'http://196.219.231.3:8000/webmap/breaks-hot-spots',
       );
     } else if (value == 'عرض تقرير الاسكادا Dashboard') {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const StationsDashboard(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const StationsDashboard(),
+      //   ),
+      // );
+      context.go('/dashboard');
     }
   }
 
@@ -1129,15 +1132,18 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     // );
 
                                                     //open Video Call from online server
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CallerMobileScreen(
-                                                                addressTitle:
-                                                                    '${snapshot.data![index]['address']}'),
-                                                      ),
-                                                    );
+                                                    context.go(
+                                                        '/mobile-caller/${snapshot.data![index]['address']}');
+
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         CallerMobileScreen(
+                                                    //             addressTitle:
+                                                    //                 '${snapshot.data![index]['address']}'),
+                                                    //   ),
+                                                    // );
                                                   }
                                                 },
                                                 icon: const Icon(
@@ -1169,22 +1175,24 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                       )),
                                                     );
                                                   } else {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            Tracking(
-                                                          address:
-                                                              '${snapshot.data![index]['address']}',
-                                                          latitude:
-                                                              "${snapshot.data![index]['latitude']}",
-                                                          longitude:
-                                                              '${snapshot.data![index]['longitude']}',
-                                                          technicianName:
-                                                              '${snapshot.data![index]['technical_name']}',
-                                                        ),
-                                                      ),
-                                                    );
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         Tracking(
+                                                    //       address:
+                                                    //           '${snapshot.data![index]['address']}',
+                                                    //       latitude:
+                                                    //           "${snapshot.data![index]['latitude']}",
+                                                    //       longitude:
+                                                    //           '${snapshot.data![index]['longitude']}',
+                                                    //       technicianName:
+                                                    //           '${snapshot.data![index]['technical_name']}',
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+                                                    context.go(
+                                                        '/tracking/${snapshot.data![index]['address']}/${snapshot.data![index]['latitude']}/${snapshot.data![index]['longitude']}/${snapshot.data![index]['technical_name']}');
                                                   }
                                                 },
                                                 icon: const Icon(
@@ -1243,15 +1251,17 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                         .excuteTempStoreQty(
                                                             storeName);
                                                     //navigate to IntegrationWithStoresGetAllQty
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            IntegrationWithStoresGetAllQty(
-                                                          storeName: storeName,
-                                                        ),
-                                                      ),
-                                                    );
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         IntegrationWithStoresGetAllQty(
+                                                    //       storeName: storeName,
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+                                                    context.go(
+                                                        '/integrate-with-stores/$storeName');
                                                   }
                                                 },
                                                 icon: const Icon(
@@ -1288,13 +1298,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     "غرفة الطوارئ المتحركة",
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const CallerScreen(),
-                                                    ),
-                                                  );
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //     builder: (context) =>
+                                                  //         const CallerScreen(),
+                                                  //   ),
+                                                  // );
+                                                  context.go('/caller');
                                                 },
                                                 icon: const Icon(
                                                   Icons.car_crash,

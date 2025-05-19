@@ -101,11 +101,11 @@ class _ReportScreenState extends State<ReportScreen> {
         iconTheme: const IconThemeData(
           color: Colors.indigo,
         ),
-        elevation: 7,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.indigo),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        elevation: 0,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.indigo),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
       ),
       body: _buildBody(),
     );

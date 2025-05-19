@@ -55,10 +55,10 @@ class _StationsDashboardState extends State<StationsDashboard> {
           color: Colors.indigo,
           size: 17,
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.indigo),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.indigo),
+        //   onPressed: () => Navigator.of(context).pop(),
+        // ),
       ),
       body: FutureBuilder<List<StationData>>(
         future: _stationsFuture,

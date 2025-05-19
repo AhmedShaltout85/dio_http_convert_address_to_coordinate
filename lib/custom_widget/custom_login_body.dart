@@ -1,21 +1,23 @@
 // ignore_for_file: must_be_immutable, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
 import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import 'package:pick_location/custom_widget/custom_elevated_button.dart';
+// import 'package:pick_location/custom_widget/custom_landing_body.dart';
 import 'package:pick_location/custom_widget/custom_login_drop_down_menu.dart';
 import 'package:pick_location/custom_widget/custom_radio_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
-import 'package:pick_location/screens/handasah_screen.dart';
-import 'package:pick_location/screens/mobile_emergency_room_screen.dart';
-import 'package:pick_location/screens/system_admin_screen.dart';
-import 'package:pick_location/screens/user_screen.dart';
+// import 'package:pick_location/screens/handasah_screen.dart';
+// import 'package:pick_location/screens/mobile_emergency_room_screen.dart';
+// import 'package:pick_location/screens/system_admin_screen.dart';
+// import 'package:pick_location/screens/user_screen.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../network/remote/dio_network_repos.dart';
-import '../screens/address_to_coordinates_web.dart';
+// import '../screens/address_to_coordinates_web.dart';
 // import '../screens/address_to_coordinates_web_other.dart';
 
 class CustomizLoginScreenBody extends StatefulWidget {
@@ -173,29 +175,34 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
 
     switch (DataStatic.userRole) {
       case 0:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SystemAdminScreen()));
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => const SystemAdminScreen()));
+        context.go('/system-admin');
         break;
       case 1:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const AddressToCoordinates()));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => const AddressToCoordinates()));
+        context.go('/emergency');
         break;
       case 2:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HandasahScreen()));
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => const HandasahScreen()));
+        context.go('/handasah');
         break;
       case 3:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const UserScreen()));
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => const UserScreen()));
+        context.go('/technician');
         break;
       case 4:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const MobileEmergencyRoomScreen()));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => const MobileEmergencyRoomScreen()));
         // builder: (context) => const AddressToCoordinatesOther()));
+        context.go('/mobile-emergency-room');
         break;
       default:
         showSnackBar('فضلا, أدخل البيانات الصحيحة');

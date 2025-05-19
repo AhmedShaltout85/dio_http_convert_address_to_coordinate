@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pick_location/screens/receiver_screen.dart';
+import 'package:go_router/go_router.dart';
+// import 'package:pick_location/screens/receiver_screen.dart';
 
 class MobileEmergencyRoomScreen extends StatefulWidget {
   const MobileEmergencyRoomScreen({super.key});
@@ -28,12 +29,13 @@ class _MobileEmergencyRoomScreenState extends State<MobileEmergencyRoomScreen> {
           tooltip: "فضلا, قم بالضغط على الايقون للتمكن من بث الفيديو",
           hoverColor: Colors.yellow,
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ReceiverScreen(),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => const ReceiverScreen(),
+            //   ),
+            // );
+            context.go('/receiver');
           },
           icon: const Icon(
             Icons.videocam_outlined,

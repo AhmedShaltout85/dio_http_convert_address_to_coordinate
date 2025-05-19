@@ -3,8 +3,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide CarouselController;
+import 'package:go_router/go_router.dart';
 import 'package:pick_location/model/carousel_list_items.dart';
-import 'package:pick_location/screens/login_screen.dart';
+// import 'package:pick_location/screens/login_screen.dart';
+// import 'package:pick_location/utils/go_router.dart';
 
 import '../themes/themes.dart';
 
@@ -113,10 +115,11 @@ class CustomLandingBody extends StatelessWidget {
                                   WidgetStatePropertyAll(AppTheme.primColor),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const LoginScreen()));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (_) => const LoginScreen()));
+                              context.go('/login');
                             },
                             child: const Text(
                               'Login Screen',
@@ -221,10 +224,11 @@ class CustomLandingBody extends StatelessWidget {
                             WidgetStatePropertyAll(AppTheme.primColor),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const LoginScreen()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (_) => const LoginScreen()));
+                        context.go('/login');
                       },
                       child: const Text(
                         'Login Screen',

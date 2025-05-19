@@ -42,15 +42,15 @@ final router = GoRouter(
       builder: (context, state) => const UserScreen(),
     ),
     GoRoute(
-      path: '/system_admin',
+      path: '/system-admin',
       builder: (context, state) => const SystemAdminScreen(),
     ),
     GoRoute(
-      path: '/mobile_emergency_room',
+      path: '/mobile-emergency-room',
       builder: (context, state) => const MobileEmergencyRoomScreen(),
     ),
     GoRoute(
-      path: '/gis_map',
+      path: '/gis-map',
       builder: (context, state) => const GisMap(),
     ),
     GoRoute(
@@ -70,14 +70,14 @@ final router = GoRouter(
       builder: (context, state) => const ReceiverScreen(),
     ),
     GoRoute(
-      path: '/mobile_caller/:addressTitle',
+      path: '/mobile-caller/:addressTitle',
       builder: (context, state) {
         final addressTitle = state.pathParameters['addressTitle']!;
         return CallerMobileScreen(addressTitle: addressTitle);
       },
     ),
     GoRoute(
-      path: '/mobile_receiver/:addressTitle',
+      path: '/mobile-receiver/:addressTitle',
       builder: (context, state) {
         final addressTitle = state.pathParameters['addressTitle']!;
         return ReceiverMobileScreen(
@@ -101,7 +101,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/user_request_tool/:handasahName/:address/:technicianName',
+      path: '/user-request-tool/:handasahName/:address/:technicianName',
       builder: (context, state) {
         final handasahName = state.pathParameters['handasahName']!;
         final address = state.pathParameters['address']!;
@@ -114,7 +114,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/request_tool_address/:address/:handasahName',
+      path: '/request-tool-address/:address/:handasahName',
       builder: (context, state) {
         final address = state.pathParameters['address']!;
         final handasahName = state.pathParameters['handasahName']!;
@@ -125,7 +125,7 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/intigrate_stores/:storeName',
+      path: '/integrate-with-stores/:storeName',
       builder: (context, state) {
         final storeName = state.pathParameters['storeName']!;
         return IntegrationWithStoresGetAllQty(

@@ -65,8 +65,8 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 7,
-        foregroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
+        // foregroundColor: Colors.white,
+        // iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
         title: const Text(
           'مدير النظام',
           style: TextStyle(color: Colors.indigo),

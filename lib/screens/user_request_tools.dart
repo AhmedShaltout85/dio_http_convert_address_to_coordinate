@@ -206,11 +206,12 @@ class _UserRequestToolsState extends State<UserRequestTools> {
           style: TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: Colors.indigo,
-          size: 17,
-        ),
+        elevation: 7,
+        // backgroundColor: Colors.white,
+        // iconTheme: const IconThemeData(
+        //   color: Colors.indigo,
+        //   size: 17,
+        // ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),

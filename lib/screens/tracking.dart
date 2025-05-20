@@ -123,8 +123,8 @@ class _TrackingState extends State<Tracking> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
+        elevation: 7,
+        // backgroundColor: Colors.white,
         // iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
         title: Text(
           'تتبع عنوان : ${widget.address}',

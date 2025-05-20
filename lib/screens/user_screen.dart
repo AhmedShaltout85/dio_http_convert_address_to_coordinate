@@ -296,8 +296,8 @@ class _UserScreenState extends State<UserScreen> {
         title: Text('الاعطال المخصصة للمستخدم : ${DataStatic.username}',
             style: const TextStyle(color: Colors.indigo, fontSize: 15)),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
+        elevation: 7.0,
+        // backgroundColor: Colors.white,
         // leading: IconButton(
         //   onPressed: () => Navigator.of(context).pop(true),
         //   icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -348,12 +348,12 @@ class _UserScreenState extends State<UserScreen> {
                         title: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text(item['handasah_name'],
                                   style: const TextStyle(color: Colors.green)),
-                              Text(item['technical_name'],
-                                  style: const TextStyle(color: Colors.green)),
+                              // Text(item['technical_name'],
+                              //     style: const TextStyle(color: Colors.green)),
                               isApproved == 0
                                   ? TextButton(
                                       style: const ButtonStyle(
@@ -523,7 +523,7 @@ class _UserScreenState extends State<UserScreen> {
       //   ),
       // );
       //Video call using online server
-      context.go('/mobile-receiver/$address');
+      context.push('/mobile-receiver/$address');
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(
@@ -544,7 +544,7 @@ class _UserScreenState extends State<UserScreen> {
     //     ),
     //   ),
     // );
-    context.go(
+    context.push(
         '/user-request-tool/${item['handasah_name'] ?? DataStatic.handasahName}/${item['address']}/${item['technical_name']}');
   }
 
@@ -560,7 +560,8 @@ class _UserScreenState extends State<UserScreen> {
 
       debugPrint("Store Name after get: $storeName");
 
-      await DioNetworkRepos().excuteTempStoreQty(storeName);
+      DioNetworkRepos().excuteTempStoreQty(storeName);
+      // await DioNetworkRepos().excuteTempStoreQty(storeName);
 
       // Navigator.push(
       //   context,
@@ -571,7 +572,7 @@ class _UserScreenState extends State<UserScreen> {
       //   ),
       // );
 
-      context.go('/integrate-with-stores/$storeName');
+      context.push('/integrate-with-stores/$storeName');
     } catch (e) {
       debugPrint("Error handling inventory: $e");
     }

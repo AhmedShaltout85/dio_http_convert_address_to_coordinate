@@ -110,11 +110,11 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
         ),
         centerTitle: true,
         elevation: 7,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: Colors.indigo,
-          size: 17,
-        ),
+        // backgroundColor: Colors.white,
+        // iconTheme: const IconThemeData(
+        //   color: Colors.indigo,
+        //   size: 17,
+        // ),
       ),
       body: _buildBody(),
     );

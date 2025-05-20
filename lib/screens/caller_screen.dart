@@ -404,9 +404,9 @@ class _CallerScreenState extends State<CallerScreen> {
           style: TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.indigo),
+        elevation: 7.0,
+        // backgroundColor: Colors.white,
+        // iconTheme: const IconThemeData(color: Colors.indigo),
         actions: [
           if (_roomId != null)
             Padding(

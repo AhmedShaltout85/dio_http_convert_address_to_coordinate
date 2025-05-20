@@ -20,9 +20,9 @@ class _MobileEmergencyRoomScreenState extends State<MobileEmergencyRoomScreen> {
           style: TextStyle(color: Colors.indigo),
         ),
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
+        elevation: 7,
+        // backgroundColor: Colors.white,
+        // iconTheme: const IconThemeData(color: Colors.indigo, size: 17),
       ),
       body: Center(
         child: IconButton(

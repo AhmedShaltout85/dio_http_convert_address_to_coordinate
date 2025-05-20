@@ -50,11 +50,11 @@ class _StationsDashboardState extends State<StationsDashboard> {
         ],
         centerTitle: true,
         elevation: 7,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: Colors.indigo,
-          size: 17,
-        ),
+        // backgroundColor: Colors.white,
+        // iconTheme: const IconThemeData(
+        //   color: Colors.indigo,
+        //   size: 17,
+        // ),
         // leading: IconButton(
         //   icon: const Icon(Icons.arrow_back, color: Colors.indigo),
         //   onPressed: () => Navigator.of(context).pop(),

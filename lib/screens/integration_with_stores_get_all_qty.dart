@@ -57,10 +57,10 @@ class _IntegrationWithStoresGetAllQtyState
         centerTitle: true,
         elevation: 7,
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: Colors.indigo,
-          size: 17,
-        ),
+        // iconTheme: const IconThemeData(
+        //   color: Colors.indigo,
+        //   size: 17,
+        // ),
       ),
       body: Row(
         children: [

@@ -44,6 +44,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
     _initializeData();
     _startPeriodicFetch();
     _loadSound(); // Preload the sound
+    _loadStoreQty(); //Load store qty
   }
 
   Future<void> _loadSound() async {
@@ -135,6 +136,15 @@ class _HandasahScreenState extends State<HandasahScreen> {
         );
       },
     );
+  }
+
+  Future<void> _loadStoreQty() async {
+    await DioNetworkRepos()
+        .getStoreNameByHandasahName(handasahName)
+        .then((value) {
+      storeName = value['storeName'];
+    });
+    DioNetworkRepos().excuteTempStoreQty(storeName);
   }
 
   @override
@@ -552,7 +562,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                               //     ),
                                               //   ),
                                               // );
-                                              context.go(
+                                              context.push(
                                                   '/request-tool-address/${snapshot.data![index]['address']}/${snapshot.data![index]['handasah_name']}');
                                             },
                                             icon: const Icon(Icons.store_sharp,
@@ -562,16 +572,18 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                             tooltip: 'جرد مخزن',
                                             hoverColor: Colors.yellow,
                                             onPressed: () async {
-                                              await DioNetworkRepos()
-                                                  .getStoreNameByHandasahName(
-                                                      snapshot.data![index]
-                                                          ['handasah_name'])
-                                                  .then((value) {
-                                                storeName = value['storeName'];
-                                              });
-                                              DioNetworkRepos()
-                                                  .excuteTempStoreQty(
-                                                      storeName);
+                                              //  TODO://update store qty not tested
+
+                                              // await DioNetworkRepos()
+                                              //     .getStoreNameByHandasahName(
+                                              //         snapshot.data![index]
+                                              //             ['handasah_name'])
+                                              //     .then((value) {
+                                              //   storeName = value['storeName'];
+                                              // });
+                                              // DioNetworkRepos()
+                                              //     .excuteTempStoreQty(
+                                              //         storeName);
                                               // Navigator.push(
                                               //   context,
                                               //   MaterialPageRoute(
@@ -581,7 +593,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                               //     ),
                                               //   ),
                                               // );
-                                              context.go(
+                                              context.push(
                                                   '/integrate-with-stores/$storeName');
                                             },
                                             icon: const Icon(

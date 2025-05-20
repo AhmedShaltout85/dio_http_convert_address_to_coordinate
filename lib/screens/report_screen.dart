@@ -97,11 +97,11 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: Colors.indigo,
-        ),
-        elevation: 0,
+        // backgroundColor: Colors.white,
+        // iconTheme: const IconThemeData(
+        //   color: Colors.indigo,
+        // ),
+        elevation: 7.0,
         // leading: IconButton(
         //   icon: const Icon(Icons.arrow_back, color: Colors.indigo),
         //   onPressed: () => Navigator.of(context).pop(),

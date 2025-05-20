@@ -343,7 +343,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       //     builder: (context) => const ReportScreen(),
       // ),
       // );
-      context.push('/report');
+      context.go('/report');
     } else if (value == 'الربط مع الاسكادا') {
       CustomBrowserRedirect.openInBrowser(
         'http://41.33.226.211:8070/roundpoint',
@@ -360,7 +360,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       //     builder: (context) => const StationsDashboard(),
       //   ),
       // );
-      context.push('/dashboard');
+      context.go('/dashboard');
     }
   }
 
@@ -1132,7 +1132,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     // );
 
                                                     //open Video Call from online server
-                                                    context.push(
+                                                    context.go(
                                                         '/mobile-caller/${snapshot.data![index]['address']}');
 
                                                     // Navigator.push(
@@ -1191,7 +1191,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     //     ),
                                                     //   ),
                                                     // );
-                                                    context.push(
+                                                    context.go(
                                                         '/tracking/${snapshot.data![index]['address']}/${snapshot.data![index]['latitude']}/${snapshot.data![index]['longitude']}/${snapshot.data![index]['technical_name']}');
                                                   }
                                                 },
@@ -1260,7 +1260,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     //     ),
                                                     //   ),
                                                     // );
-                                                    context.push(
+                                                    context.go(
                                                         '/integrate-with-stores/$storeName');
                                                   }
                                                 },
@@ -1305,7 +1305,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                   //         const CallerScreen(),
                                                   //   ),
                                                   // );
-                                                  context.push('/caller');
+                                                  context.go('/caller');
                                                 },
                                                 icon: const Icon(
                                                   Icons.car_crash,

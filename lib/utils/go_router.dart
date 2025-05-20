@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 import 'package:pick_location/screens/caller_mobile_screen.dart';
@@ -79,11 +80,15 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/mobile-receiver/:addressTitle',
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final addressTitle = state.pathParameters['addressTitle']!;
-        return ReceiverMobileScreen(
-          addressTitle: addressTitle,
+        return MaterialPage(
+          key: state.pageKey,
+          child: ReceiverMobileScreen(
+            addressTitle: addressTitle,
+          ),
         );
+       
       },
     ),
     GoRoute(
@@ -116,24 +121,31 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/request-tool-address/:address/:handasahName',
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final address = state.pathParameters['address']!;
         final handasahName = state.pathParameters['handasahName']!;
-        return RequestToolForAddressScreen(
-          address: address,
-          handasahName: handasahName,
+        return MaterialPage(
+          key: state.pageKey, //this way to preserve the state of the page to be updated
+          child: RequestToolForAddressScreen(
+              address: address, handasahName: handasahName),
         );
       },
     ),
+   
     GoRoute(
       path: '/integrate-with-stores/:storeName',
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final storeName = state.pathParameters['storeName']!;
-        return IntegrationWithStoresGetAllQty(
-          storeName: storeName,
+        return MaterialPage(
+          key: state.pageKey,
+          child: IntegrationWithStoresGetAllQty(
+            storeName: storeName,
+          ),
         );
+      
       },
     ),
+  
     GoRoute(
       path: '/web-view-iframe/:url',
       builder: (context, state) {

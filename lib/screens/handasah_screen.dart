@@ -562,7 +562,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                               //     ),
                                               //   ),
                                               // );
-                                              context.push(
+                                              context.go(
                                                   '/request-tool-address/${snapshot.data![index]['address']}/${snapshot.data![index]['handasah_name']}');
                                             },
                                             icon: const Icon(Icons.store_sharp,
@@ -593,7 +593,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                                               //     ),
                                               //   ),
                                               // );
-                                              context.push(
+                                              context.go(
                                                   '/integrate-with-stores/$storeName');
                                             },
                                             icon: const Icon(

@@ -1,4 +1,3 @@
-
 // ignore_for_file: unnecessary_type_check
 
 import 'package:flutter/material.dart';
@@ -32,13 +31,12 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
     super.initState();
     _fetchUserRequestForAddress();
   }
-  
-    @override
+
+  @override
   void dispose() {
     qtyController.dispose();
     super.dispose();
   }
-
 
   Future<void> _fetchUserRequestForAddress() async {
     try {
@@ -126,7 +124,13 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
     }
 
     if (_errorMessage != null) {
-      return Center(child: Text("Error: $_errorMessage"));
+      return const Center(
+          child: Text(
+        "لم يتم طلب مهات حتى الان",
+        style: TextStyle(
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo),
+      ));
+      // return Center(child: Text("Error: $_errorMessage"));
     }
 
     return Row(
@@ -142,11 +146,11 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
               }
 
               if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
+                return const Center(child: Text("لم يتم طلب مهات حتى الان"));
               }
 
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text("No tools available"));
+                return const Center(child: Text("لم يتم طلب مهمات حتى الان"));
               }
 
               return ListView.builder(

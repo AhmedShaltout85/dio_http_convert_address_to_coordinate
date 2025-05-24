@@ -68,7 +68,7 @@ dependencies:
   # agroa_for_web
   # flutter_webrtc: ^0.9.10  # Required for rendering for agora
   flutter_webrtc: ^0.14.0  # This version is known to work with web
-  # # flutter_webrtc: ^0.9.29  # This version is known to work with android
+  # flutter_webrtc: ^0.9.29  # This version is known to work with android
 
 
   # # curved_navigation_bar

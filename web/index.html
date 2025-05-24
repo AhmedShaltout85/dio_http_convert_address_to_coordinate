@@ -107,8 +107,31 @@
     }
   </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk&callback=initMap&v=weekly&libraries=marker"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk&callback=initMap&v=weekly&libraries=marker"></script> -->
+
     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk"></script> -->
+<!-- TODO://update 24-05-2025 -not tested -->
+    <!-- to get location from web browser -->
+    <!-- <script src="https://unpkg.com/@ionic-native/geolocation/5.36.0/dist/geolocation.js"></script>  -->
+    <script>
+      // Function to load all external scripts
+      function loadScripts() {
+        // Load Google Maps
+        const mapsScript = document.createElement('script');
+        mapsScript.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDRaJJnyvmDSU8OgI8M20C5nmwHNc_AMvk&libraries=places&callback=initMap';
+        mapsScript.async = true;
+        mapsScript.defer = true;
+        document.head.appendChild(mapsScript);
+
+        // Load Geolocation polyfill if needed
+        const geoScript = document.createElement('script');
+        geoScript.src = 'https://unpkg.com/@ionic-native/geolocation/5.36.0/dist/geolocation.js';
+        geoScript.async = true;
+        document.head.appendChild(geoScript);
+      }
+
+      window.addEventListener('load', loadScripts);
+    </script>
 
 </head>
 
@@ -125,7 +148,7 @@
 
   <script src="flutter_bootstrap.js" async=""></script>
 
-  <script src="https://download.agora.io/sdk/release/iris-web-rtc_n450_w4220_0.8.6.js"></script>
+  <!-- <script src="https://download.agora.io/sdk/release/iris-web-rtc_n450_w4220_0.8.6.js"></script> -->
 
 </body>
 

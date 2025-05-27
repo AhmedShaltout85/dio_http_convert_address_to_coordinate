@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:pick_location/screens/draggable_scrollable_sheet_screen.dart';
 
-import '../custom_widget/custom_drawer.dart';
+// import '../custom_widget/custom_drawer.dart';
 import '../custom_widget/custom_end_drawer.dart';
 import '../network/remote/dio_network_repos.dart';
 
@@ -347,10 +347,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
           //CustomDraggableSheet
         ],
       ),
-      drawer: CustomDrawer(
-        title: 'العناوين الواردة من الخط الساخن',
-        getLocs: getLocs,
-      ),
+      // drawer: CustomDrawer(
+      //   title: 'العناوين الواردة من الخط الساخن',
+      //   getLocs: getLocs,
+      // ),
       endDrawer: CustomEndDrawer(
         title: 'تخصيص الهندسة',
         getLocs: getLocsByHandasahNameAndTechinicianName,

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:pick_location/custom_widget/custom_drawer.dart';
+// import 'package:pick_location/custom_widget/custom_drawer.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -323,10 +323,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           //CustomDraggableSheet
         ],
       ),
-      drawer: CustomDrawer(
-        title: 'العناوين الواردة من الخط الساخن',
-        getLocs: getLocs,
-      ),
+      // drawer: CustomDrawer(
+      //   title: 'العناوين الواردة من الخط الساخن',
+      //   getLocs: getLocs,
+      // ),
       endDrawer: CustomEndDrawer(
         title: 'تخصيص الهندسة',
         getLocs: getLocsByHandasahNameAndTechinicianName,

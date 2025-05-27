@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// import 'package:permission_handler/permission_handler.dart';
+
 import 'package:go_router/go_router.dart';
 // import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 import 'package:pick_location/screens/caller_mobile_screen.dart';
@@ -88,7 +90,6 @@ final router = GoRouter(
             addressTitle: addressTitle,
           ),
         );
-       
       },
     ),
     GoRoute(
@@ -125,13 +126,14 @@ final router = GoRouter(
         final address = state.pathParameters['address']!;
         final handasahName = state.pathParameters['handasahName']!;
         return MaterialPage(
-          key: state.pageKey, //this way to preserve the state of the page to be updated
+          key: state
+              .pageKey, //this way to preserve the state of the page to be updated
           child: RequestToolForAddressScreen(
               address: address, handasahName: handasahName),
         );
       },
     ),
-   
+
     GoRoute(
       path: '/integrate-with-stores/:storeName',
       pageBuilder: (context, state) {
@@ -142,10 +144,9 @@ final router = GoRouter(
             storeName: storeName,
           ),
         );
-      
       },
     ),
-  
+
     // GoRoute(
     //   path: '/web-view-iframe/:url',
     //   builder: (context, state) {

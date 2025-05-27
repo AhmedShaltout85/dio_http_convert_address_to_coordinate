@@ -3,18 +3,19 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, unused_field
 
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
 // import 'package:pick_location/custom_widget/custom_landing_body.dart';
 // import 'package:pick_location/screens/agora_video_call.dart';
-// import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
-// import 'package:pick_location/screens/receiver_mobile_screen.dart';
-// import 'package:pick_location/screens/user_request_tools.dart';
+import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
+import 'package:pick_location/screens/receiver_mobile_screen.dart';
+import 'package:pick_location/screens/user_request_tools.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 import '../custom_widget/custom_alert_dialog_with_sound.dart';
 import '../custom_widget/custom_web_view.dart';
@@ -491,7 +492,9 @@ class _UserScreenState extends State<UserScreen> {
     debugPrint("Start Gis Map $url");
     if (kIsWeb) {
       CustomBrowserRedirect.openInBrowser(url);
-    } else {
+    } else if(Platform.isAndroid) {
+       CustomBrowserRedirect.openInBrowser(url);
+    }else if (Platform.isWindows){
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -523,29 +526,29 @@ class _UserScreenState extends State<UserScreen> {
       //   ),
       // );
       //Video call using online server
-      context.push('/mobile-receiver/$address');
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ReceiverMobileScreen(addressTitle: address),
-      //   ),
-      // );
+      // context.push('/mobile-receiver/$address');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ReceiverMobileScreen(addressTitle: address),
+        ),
+      );
     }
   }
 
   void _navigateToRequestTools(Map<String, dynamic> item) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => UserRequestTools(
-    //       handasahName: item['handasah_name'] ?? DataStatic.handasahName,
-    //       address: item['address'],
-    //       technicianName: item['technical_name'],
-    //     ),
-    //   ),
-    // );
-    context.push(
-        '/user-request-tool/${item['handasah_name'] ?? DataStatic.handasahName}/${item['address']}/${item['technical_name']}');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserRequestTools(
+          handasahName: item['handasah_name'] ?? DataStatic.handasahName,
+          address: item['address'],
+          technicianName: item['technical_name'],
+        ),
+      ),
+    );
+    // context.push(
+    //     '/user-request-tool/${item['handasah_name'] ?? DataStatic.handasahName}/${item['address']}/${item['technical_name']}');
   }
 
   Future<void> _handleInventory(Map<String, dynamic> item) async {
@@ -563,16 +566,16 @@ class _UserScreenState extends State<UserScreen> {
       DioNetworkRepos().excuteTempStoreQty(storeName);
       // await DioNetworkRepos().excuteTempStoreQty(storeName);
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => IntegrationWithStoresGetAllQty(
-      //       storeName: storeName,
-      //     ),
-      //   ),
-      // );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => IntegrationWithStoresGetAllQty(
+            storeName: storeName,
+          ),
+        ),
+      );
 
-      context.push('/integrate-with-stores/$storeName');
+      // context.push('/integrate-with-stores/$storeName');
     } catch (e) {
       debugPrint("Error handling inventory: $e");
     }

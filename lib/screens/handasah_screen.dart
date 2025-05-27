@@ -236,6 +236,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         style: TextStyle(fontSize: 20, color: Colors.indigo),
                       ),
                     )
+                  // : Container(),
                   : IframeScreen(url: gisHandasahUrl),
             ),
           ),
@@ -271,7 +272,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
                         if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
+                          return const Text('لايوجد شكاوى مفتوحة');
                         } else if (snapshot.hasData) {
                           length = snapshot.data!.length;
                           return ListView.builder(

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:pick_location/utils/dio_http_constants.dart';
 // import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/caller_mobile_screen.dart';
 // import 'package:pick_location/screens/caller_screen.dart';
@@ -1250,7 +1251,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     DioNetworkRepos()
                                                         .excuteTempStoreQty(
                                                             storeName);
-                                                    //navigate to IntegrationWithStoresGetAllQty
+                                                    // navigate to IntegrationWithStoresGetAllQty
                                                     // Navigator.push(
                                                     //   context,
                                                     //   MaterialPageRoute(
@@ -1437,6 +1438,49 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       drawer: CustomDrawer(
         title: 'الاعطال الواردة من الخط الساخن',
         getLocs: getAllHotLineAddresses,
+  
+        onTap: (itemData) {
+          try {
+              // Set the static values here
+            DataStatic.hotlineAddress = itemData['address'];
+            DataStatic.hotlineId = itemData['id'];
+            DataStatic.hotlineX = itemData['x'];
+            DataStatic.hotlineY = itemData['y'];
+            DataStatic.hotlinecaseReportDateTime =
+                itemData['caseReportDateTime'];
+            DataStatic.hotlinefinalClosed = itemData['finalClosed'];
+            DataStatic.hotlinereporterName = itemData['reporterName'];
+            DataStatic.hotlinemainStreet = itemData['mainStreet'];
+            DataStatic.hotlineStreet = itemData['street'];
+            DataStatic.hotlinecaseType = itemData['caseType'];
+            //
+            DioNetworkRepos().postHotLineDataList(
+              id: DataStatic.hotlineId,
+              caseReportDateTime: DataStatic.hotlinecaseReportDateTime,
+              caseType: DataStatic.hotlinecaseType,
+              finalClosed: DataStatic.hotlinefinalClosed,
+              mainStreet: DataStatic.hotlinemainStreet,
+              reporterName: DataStatic.hotlinereporterName,
+              street: DataStatic.hotlineStreet,
+              x: DataStatic.hotlineX,
+              y: DataStatic.hotlineY,
+              address: DataStatic.hotlineAddress,
+            );
+            _getCoordinatesFromAddress(DataStatic.hotlineAddress);
+
+            //update locations after getting coordinates and gis link
+            getLocsAfterGetCoordinatesAndGis =
+                DioNetworkRepos().getLocByFlagAndIsFinished();
+            getLocsByHandasahNameAndTechinicianName =
+                DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+            
+          }catch (e) {
+            debugPrint(e.toString());
+          }
+        
+          // Then perform any other actions needed
+          Navigator.of(context).pop(); // Close the drawer
+        },
       ),
     );
   }

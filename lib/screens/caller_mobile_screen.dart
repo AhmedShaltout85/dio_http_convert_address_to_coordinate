@@ -335,6 +335,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
          //TODO: update video call NOT TESTED
       DioNetworkRepos()
           .updateLocationBrokenByAddressUpdateVideoCall(widget.addressTitle, 0);
+          // Navigator.pop(context);
     } catch (e) {
       debugPrint('Error ending call: $e');
     }

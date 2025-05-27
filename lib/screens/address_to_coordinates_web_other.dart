@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
-import '../custom_widget/custom_drawer.dart';
+// import '../custom_widget/custom_drawer.dart';
 import '../network/remote/dio_network_repos.dart';
 
 class AddressToCoordinatesOther extends StatefulWidget {
@@ -321,10 +321,10 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
           ),
         ],
       ),
-      drawer: CustomDrawer(
-        title: 'الاعطال الواردة من الخط الساخن',
-        getLocs: getAllHotLineAddresses,
-      ),
+      // drawer: CustomDrawer(
+      //   title: 'الاعطال الواردة من الخط الساخن',
+      //   getLocs: getAllHotLineAddresses,
+      // ),
     );
   }
 }

@@ -81,4 +81,15 @@ class DataStatic {
   static String password = '';
   static int userRole = 0;
   static String token = '';
+
+  static String hotlineAddress = '';
+  static int hotlineId = 0;
+  static String hotlinecaseReportDateTime = '';
+  static bool hotlinefinalClosed = false;
+  static String hotlinereporterName = '';
+  static String hotlineX = '';
+  static String hotlineY = '';
+  static String hotlinecaseType = '';
+  static String hotlinemainStreet = '';
+  static String hotlineStreet = '';
 }

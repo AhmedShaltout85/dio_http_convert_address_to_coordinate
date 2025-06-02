@@ -647,17 +647,30 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                         onSubmit: (values) {
                                                           debugPrint(
                                                               "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
-                                                          DioNetworkRepos()
-                                                              .updateLocationBrokenByAddress(
-                                                                  snapshot.data![
-                                                                          index]
-                                                                      [
-                                                                      'address'],
-                                                                  values[0],
-                                                                  values[1],
-                                                                  values[2]);
+                                                          if (values[0] == "" &&
+                                                              values[1] == "" &&
+                                                              values[2] == "") {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                content: Text(
+                                                                    "يرجى ملء جميع الحقول"),
+                                                              ),
+                                                            );
+                                                          } else {
+                                                            DioNetworkRepos()
+                                                                .updateLocationBrokenByAddress(
+                                                                    snapshot.data![
+                                                                            index]
+                                                                        [
+                                                                        'address'],
+                                                                    values[0],
+                                                                    values[1],
+                                                                    values[2]);
                                                           debugPrint(
                                                               "User Input: updated Caller Name, Phone, And Borken Number");
+                                                          }
                                                         },
                                                       ),
                                                     );
@@ -1438,10 +1451,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       drawer: CustomDrawer(
         title: 'الاعطال الواردة من الخط الساخن',
         getLocs: getAllHotLineAddresses,
-  
         onTap: (itemData) {
           try {
-              // Set the static values here
+            // Set the static values here
             DataStatic.hotlineAddress = itemData['address'];
             DataStatic.hotlineId = itemData['id'];
             DataStatic.hotlineX = itemData['x'];
@@ -1473,11 +1485,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                 DioNetworkRepos().getLocByFlagAndIsFinished();
             getLocsByHandasahNameAndTechinicianName =
                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
-            
-          }catch (e) {
+          } catch (e) {
             debugPrint(e.toString());
           }
-        
+
           // Then perform any other actions needed
           Navigator.of(context).pop(); // Close the drawer
         },

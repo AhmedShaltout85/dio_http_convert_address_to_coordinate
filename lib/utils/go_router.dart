@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:pick_location/common_services/video_call_screen.dart';
 // import 'package:pick_location/custom_widget/custom_web_view_iframe.dart';
 import 'package:pick_location/screens/caller_mobile_screen.dart';
 import 'package:pick_location/screens/caller_screen.dart';
@@ -89,6 +90,16 @@ final router = GoRouter(
           child: ReceiverMobileScreen(
             addressTitle: addressTitle,
           ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/webrtc-mob/:roomId',
+      pageBuilder: (context, state) {
+        final roomId = state.pathParameters['roomId']!;
+        return MaterialPage(
+          key: state.pageKey,
+          child: VideoCallScreen(roomId: roomId),
         );
       },
     ),

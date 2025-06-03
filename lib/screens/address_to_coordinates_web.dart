@@ -16,6 +16,7 @@ import 'package:pick_location/utils/dio_http_constants.dart';
 // import 'package:pick_location/screens/report_screen.dart';
 // import 'package:pick_location/screens/tracking.dart';
 
+import '../common_services/video_call_service.dart';
 import '../custom_widget/custom_reusable_alert_dailog.dart';
 import '../custom_widget/custom_bottom_sheet.dart';
 import '../custom_widget/custom_browser_redirect.dart';
@@ -647,15 +648,22 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                         onSubmit: (values) {
                                                           debugPrint(
                                                               "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
-                                                          if (values[0] == "" &&
-                                                              values[1] == "" &&
+                                                          if (values[0] == "" ||
+                                                              values[1] == "" ||
                                                               values[2] == "") {
                                                             ScaffoldMessenger
                                                                     .of(context)
                                                                 .showSnackBar(
                                                               const SnackBar(
                                                                 content: Text(
-                                                                    "يرجى ملء جميع الحقول"),
+                                                                  "يرجى ملء جميع الحقول",
+                                                                  textDirection:
+                                                                      TextDirection
+                                                                          .rtl,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
                                                               ),
                                                             );
                                                           } else {
@@ -668,8 +676,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                     values[0],
                                                                     values[1],
                                                                     values[2]);
-                                                          debugPrint(
-                                                              "User Input: updated Caller Name, Phone, And Borken Number");
+                                                            debugPrint(
+                                                                "User Input: updated Caller Name, Phone, And Borken Number");
                                                           }
                                                         },
                                                       ),
@@ -1105,6 +1113,28 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                             ),
                                             Expanded(
                                               child: IconButton(
+                                                tooltip: 'اجراء مكالمة صوتية',
+                                                hoverColor: Colors.yellow,
+                                                onPressed: () =>
+                                                    VideoCallService
+                                                        .startVideoCall(
+                                                  context: context,
+                                                  userEmail:
+                                                      'awcoah@example.com',
+                                                  isInitiator: true,
+                                                  userName: 'ahmed',
+                                                  customRoomName: snapshot
+                                                      .data![index]['address'],
+                                                ),
+                                                // 'EmergencyRoom'),
+                                                icon: const Icon(
+                                                  Icons.call,
+                                                  color: Colors.green,
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: IconButton(
                                                 tooltip: 'أجراء مكالمة فيديو',
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
@@ -1146,8 +1176,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     // );
 
                                                     //open Video Call from online server
+                                                    // context.go(
+                                                    //     '/mobile-caller/${snapshot.data![index]['address']}');
                                                     context.go(
-                                                        '/mobile-caller/${snapshot.data![index]['address']}');
+                                                        '/webrtc-mob/${snapshot.data![index]['address']}');
 
                                                     // Navigator.push(
                                                     //   context,

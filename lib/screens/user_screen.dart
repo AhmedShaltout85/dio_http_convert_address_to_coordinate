@@ -18,6 +18,7 @@ import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 // import 'package:pick_location/screens/receiver_mobile_screen.dart';
 import 'package:pick_location/screens/user_request_tools.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
+import '../common_services/video_call_service.dart';
 import '../custom_widget/custom_alert_dialog_with_sound.dart';
 // import '../custom_widget/custom_web_view.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -446,15 +447,13 @@ class _UserScreenState extends State<UserScreen> {
                           Icons.phone,
                           Colors.green,
                           'إجراء مكالمة صوتية',
-                          () => _handleSoundCall(
-                             item['address']),
-                              // 'EmergencyRoom'),
+                          () => _handleSoundCall(item['address']),
+                          // 'EmergencyRoom'),
                         ),
                         _buildIconButton(
                           Icons.video_call,
                           Colors.green,
                           'إجراء مكالمة فيديو',
-                          
                           () => _handleVideoCall(
                               item['video_call'], item['address']),
                         ),
@@ -501,7 +500,7 @@ class _UserScreenState extends State<UserScreen> {
   void _openGisMap(String url, String title) {
     debugPrint("Start Gis Map $url");
     // if (kIsWeb) {
-      CustomBrowserRedirect.openInBrowser(url);
+    CustomBrowserRedirect.openInBrowser(url);
     // } else if(Platform.isAndroid) {
     //    CustomBrowserRedirect.openInBrowser(url);
     // }else if (Platform.isWindows){
@@ -513,12 +512,19 @@ class _UserScreenState extends State<UserScreen> {
     //   );
     // }
   }
-  void _handleSoundCall( String roomName) {
-  
-      _stopAllSounds();
-    CustomBrowserRedirect.openInBrowser("https://meet.jit.si/$roomName");
 
+  void _handleSoundCall(String roomName) {
+    _stopAllSounds();
+    VideoCallService.startVideoCall(
+      context: context,
+      userEmail: 'awcoah@example.com',
+      isInitiator: true,
+      userName: 'ahmed',
+      customRoomName: roomName,
+    );
+    // CustomBrowserRedirect.openInBrowser("https://meet.jit.si/$roomName");
   }
+
   void _handleVideoCall(int videoCallStatus, String address) {
     debugPrint("Start Video Call");
     if (videoCallStatus == 0) {
@@ -551,15 +557,13 @@ class _UserScreenState extends State<UserScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => VideoCallScreen(roomId: address,),
+          builder: (context) => VideoCallScreen(
+            roomId: address,
+          ),
         ),
       );
-
     }
   }
-  
-
-
 
   void _navigateToRequestTools(Map<String, dynamic> item) {
     Navigator.push(
@@ -620,8 +624,3 @@ class _UserScreenState extends State<UserScreen> {
     });
   }
 }
-
-
-
-
-

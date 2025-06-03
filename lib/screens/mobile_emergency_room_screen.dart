@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
+
+import '../common_services/video_call_service.dart';
 // import 'package:pick_location/screens/receiver_screen.dart';
 
 class MobileEmergencyRoomScreen extends StatefulWidget {
@@ -35,7 +37,14 @@ class _MobileEmergencyRoomScreenState extends State<MobileEmergencyRoomScreen> {
             //     builder: (context) => const ReceiverScreen(),
             //   ),
             // );
-            context.go('/receiver');
+            // context.go('/receiver');
+             VideoCallService.startVideoCall(
+              context: context,
+              userEmail: 'awcoah@example.com',
+              isInitiator: true,
+              userName: 'ahmed',
+              customRoomName: 'mobileEmergencyRoom',
+            );
           },
           icon: const Icon(
             Icons.videocam_outlined,

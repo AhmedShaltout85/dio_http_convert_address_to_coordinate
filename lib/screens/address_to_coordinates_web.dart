@@ -16,7 +16,7 @@ import 'package:pick_location/utils/dio_http_constants.dart';
 // import 'package:pick_location/screens/report_screen.dart';
 // import 'package:pick_location/screens/tracking.dart';
 
-import '../common_services/video_call_service.dart';
+// import '../common_services/video_call_service.dart';
 import '../custom_widget/custom_reusable_alert_dailog.dart';
 import '../custom_widget/custom_bottom_sheet.dart';
 import '../custom_widget/custom_browser_redirect.dart';
@@ -1116,17 +1116,21 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 tooltip: 'اجراء مكالمة صوتية',
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () =>
-                                                    VideoCallService
-                                                        .startVideoCall(
-                                                  context: context,
-                                                  userEmail:
-                                                      'awcoah@example.com',
-                                                  isInitiator: true,
-                                                  userName: 'ahmed',
-                                                  customRoomName: snapshot
-                                                      .data![index]['address'],
-                                                ),
-                                                // 'EmergencyRoom'),
+                                                    //     VideoCallService
+                                                    //         .startVideoCall(
+                                                    //   context: context,
+                                                    //   userEmail:
+                                                    //       'awcoah@example.com',
+                                                    //   isInitiator: true,
+                                                    //   userName: 'ahmed',
+                                                    //   customRoomName: snapshot
+                                                    //       .data![index]['address'],
+                                                    // ),
+
+                                                    // 'EmergencyRoom'),
+                                                    CustomBrowserRedirect
+                                                        .openInBrowser(
+                                                            "https://meet.jit.si/${snapshot.data![index]['address']}"),
                                                 icon: const Icon(
                                                   Icons.call,
                                                   color: Colors.green,
@@ -1351,7 +1355,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                   //         const CallerScreen(),
                                                   //   ),
                                                   // );
-                                                  context.go('/caller');
+                                                  // context.go('/caller');
+                                                  CustomBrowserRedirect
+                                                      .openInBrowser(
+                                                          "https://meet.jit.si/mobileEmergencyRoom");
                                                 },
                                                 icon: const Icon(
                                                   Icons.car_crash,

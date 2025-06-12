@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:pick_location/custom_widget/custom_reusable_alter_dialog_drop_down_textfield.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 // import 'package:pick_location/screens/agora_video_call.dart';
 // import 'package:pick_location/screens/caller_mobile_screen.dart';
@@ -57,6 +58,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
   double fontSize = 12.0;
   Timer? _timer; // Timer for periodic fetching
   // BitmapDescriptor? pinLocationIcon;
+  int numberOfAffectedPeople = 4;
+  double aproxTimeFixing = 1;
+  String pipDim = '4 mm';
 
   @override
   void dispose() {
@@ -637,51 +641,194 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     showDialog(
                                                       context: context,
                                                       builder: (context) =>
-                                                          CustomReusableAlertDialog(
-                                                        title:
-                                                            "تحديث بيانات الشكوى",
-                                                        fieldLabels: const [
-                                                          "إسم المبلغ",
-                                                          "نوع الكسر",
-                                                          "رقم الموبيل"
-                                                        ],
-                                                        onSubmit: (values) {
-                                                          debugPrint(
-                                                              "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
-                                                          if (values[0] == "" ||
-                                                              values[1] == "" ||
-                                                              values[2] == "") {
-                                                            ScaffoldMessenger
-                                                                    .of(context)
-                                                                .showSnackBar(
-                                                              const SnackBar(
-                                                                content: Text(
-                                                                  "يرجى ملء جميع الحقول",
-                                                                  textDirection:
-                                                                      TextDirection
-                                                                          .rtl,
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
+                                                          CustomReusableAlertDialogWithDropdown(
+                                                              title:
+                                                                  "تحديث بيانات الشكوى",
+                                                              fieldConfigs: const [
+                                                                FieldConfig(
+                                                                  label:
+                                                                      "إسم المبلغ",
+                                                                  type: FieldType
+                                                                      .textField,
                                                                 ),
-                                                              ),
-                                                            );
-                                                          } else {
-                                                            DioNetworkRepos()
-                                                                .updateLocationBrokenByAddress(
-                                                                    snapshot.data![
-                                                                            index]
-                                                                        [
-                                                                        'address'],
-                                                                    values[0],
-                                                                    values[1],
-                                                                    values[2]);
-                                                            debugPrint(
-                                                                "User Input: updated Caller Name, Phone, And Borken Number");
-                                                          }
-                                                        },
-                                                      ),
+                                                                FieldConfig(
+                                                                  label:
+                                                                      "قطر الماسورة",
+                                                                  type: FieldType
+                                                                      .dropdown,
+                                                                  dropdownItems: [
+                                                                    "``4",
+                                                                    "``6",
+                                                                    "``8",
+                                                                    "``10",
+                                                                    "``12",
+                                                                    "``20",
+                                                                    "``28",
+                                                                    "``40",
+                                                                    "``60",
+                                                                  ],
+                                                                ),
+                                                                FieldConfig(
+                                                                  label:
+                                                                      "رقم الموبيل",
+                                                                  type: FieldType
+                                                                      .textField,
+                                                                ),
+                                                              ],
+                                                              onSubmit:
+                                                                  (values) {
+                                                                debugPrint(
+                                                                    "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
+                                                                if (values[0] == "" ||
+                                                                    values[1] ==
+                                                                        "" ||
+                                                                    values[2] ==
+                                                                        "") {
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(
+                                                                    const SnackBar(
+                                                                      content:
+                                                                          Text(
+                                                                        "يرجى ملء جميع الحقول",
+                                                                        textDirection:
+                                                                            TextDirection.rtl,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                } else {
+                                                                  DioNetworkRepos().updateLocationBrokenByAddress(
+                                                                      snapshot.data![
+                                                                              index]
+                                                                          [
+                                                                          'address'],
+                                                                      values[0],
+                                                                      values[1],
+                                                                      values[
+                                                                          2]);
+                                                                  debugPrint(
+                                                                      "User Input: updated Caller Name, Phone, And Borken Number");
+
+                                                                  //add number of affected people
+                                                                  pipDim =
+                                                                      values[1];
+                                                                  if (values[
+                                                                          1] ==
+                                                                      "``4") {
+                                                                    numberOfAffectedPeople =
+                                                                        2000;
+                                                                    aproxTimeFixing =
+                                                                        2;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``6") {
+                                                                    numberOfAffectedPeople =
+                                                                        2500;
+                                                                    aproxTimeFixing =
+                                                                        2;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``8") {
+                                                                    numberOfAffectedPeople =
+                                                                        4000;
+                                                                    aproxTimeFixing =
+                                                                        3;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``10") {
+                                                                    numberOfAffectedPeople =
+                                                                        4200;
+                                                                    aproxTimeFixing =
+                                                                        3;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``12") {
+                                                                    numberOfAffectedPeople =
+                                                                        5000;
+                                                                    aproxTimeFixing =
+                                                                        4;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``20") {
+                                                                    numberOfAffectedPeople =
+                                                                        10000;
+                                                                    aproxTimeFixing =
+                                                                        5;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``28") {
+                                                                    numberOfAffectedPeople =
+                                                                        15000;
+                                                                    aproxTimeFixing =
+                                                                        6;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``40") {
+                                                                    numberOfAffectedPeople =
+                                                                        50000;
+                                                                    aproxTimeFixing =
+                                                                        8;
+                                                                  } else if (values[
+                                                                          1] ==
+                                                                      "``60") {
+                                                                    numberOfAffectedPeople =
+                                                                        100000;
+                                                                    aproxTimeFixing =
+                                                                        24;
+                                                                  }
+                                                                }
+                                                              }),
                                                     );
+                                                    // showDialog(
+                                                    //   context: context,
+                                                    //   builder: (context) =>
+                                                    //       CustomReusableAlertDialog(
+                                                    //     title:
+                                                    //         "تحديث بيانات الشكوى",
+                                                    //     fieldLabels: const [
+                                                    //       "إسم المبلغ",
+                                                    //       "نوع الكسر",
+                                                    //       "رقم الموبيل"
+                                                    //     ],
+                                                    //     onSubmit: (values) {
+                                                    //       debugPrint(
+                                                    //           "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
+                                                    //       if (values[0] == "" ||
+                                                    //           values[1] == "" ||
+                                                    //           values[2] == "") {
+                                                    //         ScaffoldMessenger
+                                                    //                 .of(context)
+                                                    //             .showSnackBar(
+                                                    //           const SnackBar(
+                                                    //             content: Text(
+                                                    //               "يرجى ملء جميع الحقول",
+                                                    //               textDirection:
+                                                    //                   TextDirection
+                                                    //                       .rtl,
+                                                    //               textAlign:
+                                                    //                   TextAlign
+                                                    //                       .center,
+                                                    //             ),
+                                                    //           ),
+                                                    //         );
+                                                    //       } else {
+                                                    //         DioNetworkRepos()
+                                                    //             .updateLocationBrokenByAddress(
+                                                    //                 snapshot.data![
+                                                    //                         index]
+                                                    //                     [
+                                                    //                     'address'],
+                                                    //                 values[0],
+                                                    //                 values[1],
+                                                    //                 values[2]);
+                                                    //         debugPrint(
+                                                    //             "User Input: updated Caller Name, Phone, And Borken Number");
+                                                    //       }
+                                                    //     },
+                                                    //   ),
+                                                    // );
                                                   },
                                                   icon: const Icon(
                                                     Icons.add_circle_outlined,
@@ -1180,10 +1327,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     // );
 
                                                     //open Video Call from online server
-                                                    // context.go(
-                                                    //     '/mobile-caller/${snapshot.data![index]['address']}');
                                                     context.go(
-                                                        '/webrtc-mob/${snapshot.data![index]['address']}');
+                                                        '/mobile-caller/${snapshot.data![index]['address']}');
+                                                    // context.go(
+                                                    //     '/webrtc-mob/${snapshot.data![index]['address']}');
 
                                                     // Navigator.push(
                                                     //   context,
@@ -1427,6 +1574,17 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                       title: 'بيانات العطل',
                                                       messages: [
                                                         'العنوان :  ${snapshot.data![index]['address']}',
+                                                        'قطر الماسورة: ${snapshot.data![index]['broker_type']} ',
+                                                        snapshot.data![index][
+                                                                    'broker_type'] ==
+                                                                pipDim
+                                                            ? 'عدد السكان المتوقع تأثرهم بالكسر: $numberOfAffectedPeople نسمة'
+                                                            : 'عدد السكان المتوقع تأثرهم بالكسر: لم يتم تعيين قطر الماسورة',
+                                                        snapshot.data![index][
+                                                                    'broker_type'] ==
+                                                                pipDim
+                                                            ? 'زمن الاصلاح المتوقع: $aproxTimeFixing ساعة'
+                                                            : 'زمن الاصلاح المتوقع: عفوا لم يتم تعيين قطر الماسورة',
                                                         'الاحداثئات :  ${snapshot.data![index]['latitude']} , ${snapshot.data[index]['longitude']}',
                                                         snapshot.data![index][
                                                                     'handasah_name'] ==
@@ -1441,7 +1599,6 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                         'Gis-Link :  ${snapshot.data![index]['gis_url']}',
                                                         'إسم المبلغ :  ${snapshot.data![index]['caller_name']}',
                                                         ' رقم هاتف المبلغ:  ${snapshot.data![index]['caller_phone']}',
-                                                        'نوع الكسر :  ${snapshot.data![index]['broker_type']}',
                                                       ],
                                                       actions: [
                                                         Align(

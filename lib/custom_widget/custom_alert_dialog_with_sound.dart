@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:pick_location/common_services/video_call_screen.dart';
-// import 'package:pick_location/screens/receiver_mobile_screen.dart';
+// import 'package:pick_location/common_services/webrtc_config/video_call_screen.dart';
+import 'package:pick_location/screens/receiver_mobile_screen.dart';
 
 // import '../screens/agora_video_call.dart';
 
@@ -85,8 +85,8 @@ class _CustomAlertDialogWithSoundState
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => VideoCallScreen(roomId: widget.address,),
-                  // builder: (context) => ReceiverMobileScreen(addressTitle: widget.address,),
+                  // builder: (context) => VideoCallScreen(roomId: widget.address,),
+                  builder: (context) => ReceiverMobileScreen(addressTitle: widget.address,),
                   // AgoraVideoCall(
                   //   title: widget.address,
                   // ),

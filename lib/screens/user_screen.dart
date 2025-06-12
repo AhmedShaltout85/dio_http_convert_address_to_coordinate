@@ -6,10 +6,11 @@ import 'dart:async';
 // import 'dart:io';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:pick_location/common_services/video_call_screen.dart';
+// import 'package:pick_location/common_services/webrtc_config/video_call_screen.dart';
 
 import 'package:pick_location/custom_widget/custom_browser_redirect.dart';
 // import 'package:pick_location/custom_widget/custom_landing_body.dart';
@@ -18,7 +19,7 @@ import 'package:pick_location/screens/integration_with_stores_get_all_qty.dart';
 // import 'package:pick_location/screens/receiver_mobile_screen.dart';
 import 'package:pick_location/screens/user_request_tools.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
-import '../common_services/video_call_service.dart';
+// import '../common_services/video_call_service.dart';
 import '../custom_widget/custom_alert_dialog_with_sound.dart';
 // import '../custom_widget/custom_web_view.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -515,14 +516,14 @@ class _UserScreenState extends State<UserScreen> {
 
   void _handleSoundCall(String roomName) {
     _stopAllSounds();
-    VideoCallService.startVideoCall(
-      context: context,
-      userEmail: 'awcoah@example.com',
-      isInitiator: true,
-      userName: 'ahmed',
-      customRoomName: roomName,
-    );
-    // CustomBrowserRedirect.openInBrowser("https://meet.jit.si/$roomName");
+    // VideoCallService.startVideoCall(
+    //   context: context,
+    //   userEmail: 'awcoah@example.com',
+    //   isInitiator: true,
+    //   userName: 'ahmed',
+    //   customRoomName: roomName,
+    // );
+    CustomBrowserRedirect.openInBrowser("https://meet.jit.si/$roomName");
   }
 
   void _handleVideoCall(int videoCallStatus, String address) {
@@ -547,21 +548,22 @@ class _UserScreenState extends State<UserScreen> {
       //   ),
       // );
       //Video call using online server
-      // context.push('/mobile-receiver/$address');
+      context.push('/mobile-receiver/$address');
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(
       //     builder: (context) => ReceiverMobileScreen(addressTitle: address),
       //   ),
       // );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => VideoCallScreen(
-            roomId: address,
-          ),
-        ),
-      );
+      ///////////11-06-2025
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => VideoCallScreen(
+      //       roomId: address,
+      //     ),
+      //   ),
+      // );
     }
   }
 

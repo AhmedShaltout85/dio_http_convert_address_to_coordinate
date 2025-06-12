@@ -272,7 +272,9 @@ class _HandasahScreenState extends State<HandasahScreen> {
                       } else if (snapshot.connectionState ==
                           ConnectionState.done) {
                         if (snapshot.hasError) {
-                          return const Text('لايوجد شكاوى مفتوحة');
+                          return const Center(
+                              child: Text(
+                                  'لا يوجد شكاوى مفتوحة'));
                         } else if (snapshot.hasData) {
                           length = snapshot.data!.length;
                           return ListView.builder(

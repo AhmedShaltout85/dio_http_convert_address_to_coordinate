@@ -1471,7 +1471,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                               child: IconButton(
                                                 tooltip: 'الربط مع المعامل',
                                                 hoverColor: Colors.yellow,
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  //
+                                                  
+                                                    // const fileUrl = '';
+                                                    //     await FileOpener.openFile(
+                                                    //   context, fileUrl);
+
+                                                },
                                                 icon: const Icon(
                                                   Icons.report_gmailerrorred,
                                                   color: Colors.cyan,
@@ -1571,7 +1578,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     context: context,
                                                     builder: (context) =>
                                                         CustomReusableTextAlertDialog(
-                                                      title: 'بيانات العطل',
+                                                      title: 'بيانات الشكوى',
                                                       messages: [
                                                         'العنوان :  ${snapshot.data![index]['address']}',
                                                         'قطر الماسورة: ${snapshot.data![index]['broker_type']} ',

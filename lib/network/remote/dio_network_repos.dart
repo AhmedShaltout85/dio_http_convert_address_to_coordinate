@@ -1117,6 +1117,38 @@ class DioNetworkRepos {
     }
   }
 
+//45-- Get LABS testValue with date By labCode And testCode  (FETCH- for 7 days)
+// http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/11/84
+  Future<List<Map<String, dynamic>>>
+      getAllLabsItemsByTestValueAndDate(
+          String labCode, String testCode) async {
+    final url =
+        'http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
+
+    try {
+      final response = await dio.get(url);
+
+      if (response.statusCode == 200) {
+        debugPrint("API Response: ${response.data}");
+
+        // Handle different response formats
+        if (response.data is List) {
+          return List<Map<String, dynamic>>.from(response.data);
+        } else if (response.data is Map<String, dynamic>) {
+          return [response.data as Map<String, dynamic>];
+        } else {
+          debugPrint('Unexpected response format');
+          return [];
+        }
+      } else {
+        debugPrint('Request failed with status: ${response.statusCode}');
+        return [];
+      }
+    } catch (e) {
+      debugPrint('Error fetching tools: $e');
+      throw Exception('Failed to load tools: $e');
+    }
+  }
 
 }
 

@@ -632,7 +632,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
                 child: SingleChildScrollView(
                   child: LabTestLineChart(
                     labData: labData,
-                    chartTitle: 'Lab Test Results Trend',
+                    chartTitle: 'Lab Test Results',
                     valueKey: _findValueKey(labData),
                     labelKey: _findDateKey(labData),
                   ),

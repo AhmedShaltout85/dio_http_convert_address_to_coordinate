@@ -40,6 +40,7 @@ dependencies:
 #  chart for labs
   mrx_charts: ^0.1.3
   syncfusion_flutter_charts: ^27.1.48
+  graphic: ^2.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

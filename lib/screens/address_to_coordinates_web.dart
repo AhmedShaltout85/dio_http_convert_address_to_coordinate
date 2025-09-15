@@ -28,12 +28,12 @@ import '../custom_widget/custom_text_button_drop_down_menu.dart';
 import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
 /////////////
-import '../labs/rose_chart.dart';
-// import '../labs/radial_chart.dart';
-// import '../labs/bar_chart.dart';
-// import '../labs/line_chart.dart';
-// import '../labs/pie_chart.dart';
-// import '../labs/doughnut_chart.dart';
+import '../labs/charts/rose_chart.dart';
+// import '../labs/charts/radial_chart.dart';
+// import '.../labs/charts/bar_chart.dart';
+// import '../labs/charts/line_chart.dart';
+// import '../labs/charts/pie_chart.dart';
+// import '../labs/charts/doughnut_chart.dart';
 
 
 class AddressToCoordinates extends StatefulWidget {

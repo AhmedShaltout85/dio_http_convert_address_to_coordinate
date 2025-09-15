@@ -91,6 +91,7 @@ class DataStatic {
   static int userRole = 0;
   static String token = '';
 
+//hotline info
   static String hotlineAddress = '';
   static int hotlineId = 0;
   static String hotlinecaseReportDateTime = '';
@@ -101,4 +102,7 @@ class DataStatic {
   static String hotlinecaseType = '';
   static String hotlinemainStreet = '';
   static String hotlineStreet = '';
+
+  //labs info
+  static int labCode = 0;
 }

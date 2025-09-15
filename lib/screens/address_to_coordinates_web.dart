@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pick_location/custom_widget/custom_reusable_alter_dialog_drop_down_textfield.dart';
+import 'package:pick_location/labs/widget/convert_handasah_to_lab_code.dart';
 
 import 'package:pick_location/utils/dio_http_constants.dart';
 // import 'package:pick_location/screens/agora_video_call.dart';
@@ -34,7 +35,6 @@ import '../labs/charts/rose_chart.dart';
 // import '../labs/charts/line_chart.dart';
 // import '../labs/charts/pie_chart.dart';
 // import '../labs/charts/doughnut_chart.dart';
-
 
 class AddressToCoordinates extends StatefulWidget {
   const AddressToCoordinates({super.key});
@@ -1482,7 +1482,15 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
                                                   //TODO:07-09-2025
-
+                                                 DataStatic.labCode =  convertHandasahToLabCode(
+                                                      snapshot.data![index]
+                                                          ['handasah_name']);
+                                                  debugPrint(snapshot
+                                                              .data![index]
+                                                          ['handasah_name'] +
+                                                      " ==========> before charts");
+                                                      
+                                                  debugPrint("LAB_CODE: ${DataStatic.labCode}");
                                                   // DioNetworkRepos()
                                                   //     .getAllLabsItemsByTestValueAndDate(
                                                   //         '11', '84');
@@ -1492,9 +1500,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                           builder: (BuildContext
                                                                   context) =>
                                                               const LabTestScreen(
-                                                                 labCode:  '11', testCode: '84')));
-                                                 
-                                                 
+                                                                  labCode: '11',
+                                                                  testCode:
+                                                                      '84')));
                                                 },
                                                 icon: const Icon(
                                                   Icons.report_gmailerrorred,

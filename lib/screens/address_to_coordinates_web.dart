@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pick_location/custom_widget/custom_reusable_alter_dialog_drop_down_textfield.dart';
 import 'package:pick_location/labs/widget/convert_handasah_to_lab_code.dart';
+import 'package:pick_location/labs/widget/convert_lab_code_to_lab_name.dart';
 
 import 'package:pick_location/utils/dio_http_constants.dart';
 // import 'package:pick_location/screens/agora_video_call.dart';
@@ -1482,15 +1483,24 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
                                                   //TODO:07-09-2025
-                                                 DataStatic.labCode =  convertHandasahToLabCode(
-                                                      snapshot.data![index]
-                                                          ['handasah_name']);
+                                                  DataStatic.labCode =
+                                                      convertHandasahToLabCode(
+                                                          snapshot.data![index][
+                                                              'handasah_name']);
+                                                  //
+                                                  DataStatic.labName =
+                                                      convertLabCodeToLabName(
+                                                          DataStatic.labCode);
+                                                          //
                                                   debugPrint(snapshot
                                                               .data![index]
                                                           ['handasah_name'] +
                                                       " ==========> before charts");
-                                                      
-                                                  debugPrint("LAB_CODE: ${DataStatic.labCode}");
+
+                                                  debugPrint(
+                                                      "LAB_CODE: ${DataStatic.labCode}");
+                                                  debugPrint(
+                                                      "LAB_NAME: ${DataStatic.labName}");
                                                   // DioNetworkRepos()
                                                   //     .getAllLabsItemsByTestValueAndDate(
                                                   //         '11', '84');

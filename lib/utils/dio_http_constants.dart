@@ -105,4 +105,5 @@ class DataStatic {
 
   //labs info
   static int labCode = 0;
+  static String labName = "";
 }

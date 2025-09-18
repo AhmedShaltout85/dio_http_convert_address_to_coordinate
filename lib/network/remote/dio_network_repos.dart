@@ -1121,7 +1121,7 @@ class DioNetworkRepos {
 // http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/11/84
   Future<List<Map<String, dynamic>>>
       getAllLabsItemsByTestValueAndDate(
-          String labCode, String testCode) async {
+          int labCode, String testCode) async {
     final url =
         'http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
 

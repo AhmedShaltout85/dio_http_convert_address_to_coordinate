@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../utils/dio_http_constants.dart';
+
 class LabTestRadialChart extends StatelessWidget {
   final List<Map<String, dynamic>> labData;
   final String chartTitle;
@@ -251,11 +253,13 @@ class ChartRadialData {
 
 //UI
 class LabTestScreen extends StatefulWidget {
-  final String labCode, testCode;
+  final String testName, testCode;
+  final int labCode;
   const LabTestScreen({
     Key? key,
     required this.labCode,
     required this.testCode,
+    required this.testName,
   }) : super(key: key);
 
   @override
@@ -366,9 +370,9 @@ class _LabTestScreenState extends State<LabTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Lab Test Results - Radial Chart',
-          style: TextStyle(color: Colors.indigo),
+        title: Text(
+          widget.testName,
+          style: const TextStyle(color: Colors.indigo),
         ),
         actions: [
           IconButton(
@@ -450,7 +454,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
               Expanded(
                 child: LabTestRadialChart(
                   labData: labData,
-                  chartTitle: 'Lab Test Results Distribution',
+                  chartTitle: DataStatic.labName,
                   valueKey: _findValueKey(labData),
                   labelKey: _findDateKey(labData),
                 ),

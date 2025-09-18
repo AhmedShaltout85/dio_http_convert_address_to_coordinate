@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 
+import '../../utils/dio_http_constants.dart';
+
 class LabTestLineChart extends StatefulWidget {
   final List<Map<String, dynamic>> labData;
   final String chartTitle;
@@ -420,10 +422,15 @@ class ChartLineData {
 //UI
 
 class LabTestScreen extends StatefulWidget {
-  final String labCode, testCode;
+  final String testName, testCode;
+  final int labCode;
 
-  const LabTestScreen({Key? key, required this.labCode, required this.testCode})
-      : super(key: key);
+  const LabTestScreen({
+    Key? key,
+    required this.labCode,
+    required this.testCode,
+    required this.testName,
+  }) : super(key: key);
 
   @override
   _LabTestScreenState createState() => _LabTestScreenState();
@@ -533,9 +540,9 @@ class _LabTestScreenState extends State<LabTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Lab Test Results ',
-          style: TextStyle(
+        title: Text(
+          widget.testName,
+          style: const TextStyle(
             color: Colors.indigo,
           ),
         ),
@@ -632,7 +639,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
                 child: SingleChildScrollView(
                   child: LabTestLineChart(
                     labData: labData,
-                    chartTitle: 'Lab Test Results',
+                    chartTitle: DataStatic.labName,
                     valueKey: _findValueKey(labData),
                     labelKey: _findDateKey(labData),
                   ),

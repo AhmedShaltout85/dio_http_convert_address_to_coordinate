@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mrx_charts/mrx_charts.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
+import 'package:pick_location/utils/dio_http_constants.dart';
 
 // Helper class to store chart data
 class ChartBarData {
@@ -221,9 +222,14 @@ class LabTestBarChart extends StatelessWidget {
 
 //UI and chart Page
 class LabTestScreen extends StatefulWidget {
-  final String labCode, testCode;
-  const LabTestScreen({Key? key, required this.labCode, required this.testCode})
-      : super(key: key);
+  final String testName, testCode;
+  final int labCode;
+  const LabTestScreen({
+    Key? key,
+    required this.labCode,
+    required this.testCode,
+    required this.testName,
+  }) : super(key: key);
 
   @override
   _LabTestScreenState createState() => _LabTestScreenState();
@@ -338,9 +344,9 @@ class _LabTestScreenState extends State<LabTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Lab Test Results',
-          style: TextStyle(color: Colors.indigo),
+        title: Text(
+          widget.testName,
+          style: const TextStyle(color: Colors.indigo),
         ),
         actions: [
           IconButton(
@@ -391,7 +397,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
                 flex: 2,
                 child: LabTestBarChart(
                   labData: labData,
-                  chartTitle: 'Lab Test Results',
+                  chartTitle: DataStatic.labName,
                   valueKey: _findValueKey(labData),
                   labelKey: _findDateKey(labData),
                 ),

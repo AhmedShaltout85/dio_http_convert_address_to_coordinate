@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:pick_location/custom_widget/custom_reusable_alter_dialog_drop_down_textfield.dart';
+import 'package:pick_location/labs/view/dashboard_charts_list.dart';
 import 'package:pick_location/labs/widget/convert_handasah_to_lab_code.dart';
 import 'package:pick_location/labs/widget/convert_lab_code_to_lab_name.dart';
 
@@ -30,7 +31,7 @@ import '../custom_widget/custom_text_button_drop_down_menu.dart';
 import '../custom_widget/cutom_texts_alert_dailog.dart';
 import '../network/remote/dio_network_repos.dart';
 /////////////
-import '../labs/charts/rose_chart.dart';
+// import '../labs/charts/rose_chart.dart';
 // import '../labs/charts/radial_chart.dart';
 // import '.../labs/charts/bar_chart.dart';
 // import '../labs/charts/line_chart.dart';
@@ -1491,7 +1492,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                   DataStatic.labName =
                                                       convertLabCodeToLabName(
                                                           DataStatic.labCode);
-                                                          //
+                                                  //
                                                   debugPrint(snapshot
                                                               .data![index]
                                                           ['handasah_name'] +
@@ -1501,18 +1502,14 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                       "LAB_CODE: ${DataStatic.labCode}");
                                                   debugPrint(
                                                       "LAB_NAME: ${DataStatic.labName}");
-                                                  // DioNetworkRepos()
-                                                  //     .getAllLabsItemsByTestValueAndDate(
-                                                  //         '11', '84');
+                                                 
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (BuildContext
                                                                   context) =>
-                                                              const LabTestScreen(
-                                                                  labCode: '11',
-                                                                  testCode:
-                                                                      '84')));
+                                                            
+                                                              DashboardChartsList()));
                                                 },
                                                 icon: const Icon(
                                                   Icons.report_gmailerrorred,

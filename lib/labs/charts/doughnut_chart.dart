@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../utils/dio_http_constants.dart';
+
 class LabTestDoughnutChart extends StatelessWidget {
   final List<Map<String, dynamic>> labData;
   final String chartTitle;
@@ -245,7 +247,10 @@ class LabTestDoughnutChart extends StatelessWidget {
         children: [
           const Text(
             'Statistics:',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14,color: Colors.indigo),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: Colors.indigo),
           ),
           const SizedBox(height: 8),
           Row(
@@ -302,10 +307,14 @@ class ChartDoughnutData {
 //UI
 
 class LabTestScreen extends StatefulWidget {
-  final String labCode, testCode;
-
-  const LabTestScreen({Key? key, required this.labCode, required this.testCode})
-      : super(key: key);
+  final String testName, testCode;
+  final int labCode;
+  const LabTestScreen({
+    Key? key,
+    required this.labCode,
+    required this.testCode,
+    required this.testName,
+  }) : super(key: key);
 
   @override
   _LabTestScreenState createState() => _LabTestScreenState();
@@ -415,9 +424,9 @@ class _LabTestScreenState extends State<LabTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Lab Test Results - Doughnut Chart',
-          style: TextStyle(color: Colors.indigo),
+        title: Text(
+          widget.testName,
+          style: const TextStyle(color: Colors.indigo),
         ),
         // backgroundColor: Colors.purple[700],
         // foregroundColor: Colors.white,
@@ -516,7 +525,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
                 child: SingleChildScrollView(
                   child: LabTestDoughnutChart(
                     labData: labData,
-                    chartTitle: 'Lab Test Results Distribution',
+                    chartTitle: DataStatic.labName,
                     valueKey: _findValueKey(labData),
                     labelKey: _findDateKey(labData),
                   ),

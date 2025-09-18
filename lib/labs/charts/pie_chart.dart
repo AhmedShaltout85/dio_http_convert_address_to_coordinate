@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../utils/dio_http_constants.dart';
+
 class LabTestPieChart extends StatelessWidget {
   final List<Map<String, dynamic>> labData;
   final String chartTitle;
@@ -370,19 +372,21 @@ class ChartPieData {
 
 //UI
 
-
-
 class LabTestScreen extends StatefulWidget {
-    final String labCode, testCode;
-
-  const LabTestScreen({Key? key, required this.labCode, required this.testCode}) : super(key: key);
+  final String testName, testCode;
+  final int labCode;
+  const LabTestScreen({
+    Key? key,
+    required this.labCode,
+    required this.testCode,
+    required this.testName,
+  }) : super(key: key);
 
   @override
   _LabTestScreenState createState() => _LabTestScreenState();
 }
 
 class _LabTestScreenState extends State<LabTestScreen> {
-  
   List<Map<String, dynamic>> labData = [];
   bool isLoading = false;
   String? errorMessage;
@@ -393,8 +397,6 @@ class _LabTestScreenState extends State<LabTestScreen> {
     _loadLabData();
   }
 
-
-
   Future<void> _loadLabData() async {
     setState(() {
       isLoading = true;
@@ -402,7 +404,8 @@ class _LabTestScreenState extends State<LabTestScreen> {
     });
 
     try {
-      final data = await DioNetworkRepos(). getAllLabsItemsByTestValueAndDate(widget.labCode, widget.testCode);
+      final data = await DioNetworkRepos()
+          .getAllLabsItemsByTestValueAndDate(widget.labCode, widget.testCode);
       setState(() {
         labData = data;
         isLoading = false;
@@ -417,70 +420,87 @@ class _LabTestScreenState extends State<LabTestScreen> {
 
   String _findValueKey(List<Map<String, dynamic>> data) {
     if (data.isEmpty) return 'testValue';
-    
+
     final firstItem = data.first;
-    
+
     final possibleKeys = [
-      'actualTestValue', 'testValue', 'value', 'resultValue', 
-      'measurement', 'numericValue', 'labValue', 'testResult'
+      'actualTestValue',
+      'testValue',
+      'value',
+      'resultValue',
+      'measurement',
+      'numericValue',
+      'labValue',
+      'testResult'
     ];
-    
+
     for (var key in possibleKeys) {
       if (firstItem.containsKey(key)) {
         return key;
       }
     }
-    
+
     for (var key in firstItem.keys) {
       if (firstItem[key] is num) {
         return key;
       }
     }
-    
+
     return 'testValue';
   }
 
   String _findDateKey(List<Map<String, dynamic>> data) {
     if (data.isEmpty) return 'testDate';
-    
+
     final firstItem = data.first;
-    
+
     final possibleKeys = [
-      'testDate', 'date', 'collectionDate', 'resultDate', 
-      'testTime', 'timestamp', 'createdAt', 'collectionTime'
+      'testDate',
+      'date',
+      'collectionDate',
+      'resultDate',
+      'testTime',
+      'timestamp',
+      'createdAt',
+      'collectionTime'
     ];
-    
+
     for (var key in possibleKeys) {
       if (firstItem.containsKey(key)) {
         return key;
       }
     }
-    
+
     for (var key in firstItem.keys) {
       final value = firstItem[key];
       if (value is String && _looksLikeDate(value)) {
         return key;
       }
     }
-    
+
     return 'testDate';
   }
 
   bool _looksLikeDate(String value) {
     return RegExp(r'\d{4}[-/]\d{2}[-/]\d{2}').hasMatch(value) ||
-           RegExp(r'\d{2}[-/]\d{2}[-/]\d{4}').hasMatch(value);
+        RegExp(r'\d{2}[-/]\d{2}[-/]\d{4}').hasMatch(value);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lab Test Results ',style: TextStyle(color: Colors.indigo),),
-       
+        title: Text(
+          widget.testName,
+          style: const TextStyle(color: Colors.indigo),
+        ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.indigo,),
+            icon: const Icon(
+              Icons.refresh,
+              color: Colors.indigo,
+            ),
             onPressed: _loadLabData,
             tooltip: 'Refresh Data',
           ),
@@ -512,14 +532,16 @@ class _LabTestScreenState extends State<LabTestScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                      const Icon(Icons.error_outline,
+                          size: 64, color: Colors.red),
                       const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 32.0),
                         child: Text(
                           errorMessage!,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.red, fontSize: 16),
+                          style:
+                              const TextStyle(color: Colors.red, fontSize: 16),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -528,7 +550,8 @@ class _LabTestScreenState extends State<LabTestScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 12),
                         ),
                         icon: const Icon(Icons.refresh),
                         label: const Text('Retry Loading'),
@@ -543,7 +566,8 @@ class _LabTestScreenState extends State<LabTestScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.pie_chart_outline, size: 64, color: Colors.grey),
+                      Icon(Icons.pie_chart_outline,
+                          size: 64, color: Colors.grey),
                       SizedBox(height: 16),
                       Text(
                         'No lab test data available',
@@ -564,7 +588,7 @@ class _LabTestScreenState extends State<LabTestScreen> {
                 child: SingleChildScrollView(
                   child: LabTestPieChart(
                     labData: labData,
-                    chartTitle: 'Lab Test Results Distribution',
+                    chartTitle: DataStatic.labName,
                     valueKey: _findValueKey(labData),
                     labelKey: _findDateKey(labData),
                   ),

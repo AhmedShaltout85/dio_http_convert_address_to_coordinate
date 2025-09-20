@@ -19,11 +19,11 @@ class ChartGridViewItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              gridItem.icon,
-              size: 80,
-              color: Theme.of(context).primaryColor,
-            ),
+            // Icon(
+            //   gridItem.icon,
+            //   size: 80,
+            //   color: Theme.of(context).primaryColor,
+            // ),
             const SizedBox(height: 20),
             Text(
               gridItem.title,

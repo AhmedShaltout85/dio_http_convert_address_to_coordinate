@@ -49,7 +49,7 @@ class CustomGridView extends StatelessWidget {
         }
       },
       child: Card(
-        elevation: 3,
+        elevation: 7,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
@@ -59,12 +59,12 @@ class CustomGridView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                item.icon,
-                size: 40,
-                color: Theme.of(context).primaryColor,
-              ),
-              const SizedBox(width: 8),
+              // Icon(
+              //   item.icon,
+              //   size: 40,
+              //   color: Theme.of(context).primaryColor,
+              // ),
+              // const SizedBox(width: 8),
               Text(
                 item.title,
                 textAlign: TextAlign.center,

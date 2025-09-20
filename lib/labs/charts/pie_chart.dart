@@ -372,10 +372,10 @@ class ChartPieData {
 
 //UI
 
-class LabTestScreen extends StatefulWidget {
+class LabTestScreenPie extends StatefulWidget {
   final String testName, testCode;
   final int labCode;
-  const LabTestScreen({
+  const LabTestScreenPie({
     Key? key,
     required this.labCode,
     required this.testCode,
@@ -386,7 +386,7 @@ class LabTestScreen extends StatefulWidget {
   _LabTestScreenState createState() => _LabTestScreenState();
 }
 
-class _LabTestScreenState extends State<LabTestScreen> {
+class _LabTestScreenState extends State<LabTestScreenPie> {
   List<Map<String, dynamic>> labData = [];
   bool isLoading = false;
   String? errorMessage;

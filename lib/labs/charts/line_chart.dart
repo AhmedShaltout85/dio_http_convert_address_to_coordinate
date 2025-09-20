@@ -421,11 +421,11 @@ class ChartLineData {
 
 //UI
 
-class LabTestScreen extends StatefulWidget {
+class LabTestScreenLine extends StatefulWidget {
   final String testName, testCode;
   final int labCode;
 
-  const LabTestScreen({
+  const LabTestScreenLine({
     Key? key,
     required this.labCode,
     required this.testCode,
@@ -436,7 +436,7 @@ class LabTestScreen extends StatefulWidget {
   _LabTestScreenState createState() => _LabTestScreenState();
 }
 
-class _LabTestScreenState extends State<LabTestScreen> {
+class _LabTestScreenState extends State<LabTestScreenLine> {
   List<Map<String, dynamic>> labData = [];
   bool isLoading = false;
   String? errorMessage;

@@ -321,10 +321,10 @@ class LabTestRoseChart extends StatelessWidget {
 
 //UI
 
-class LabTestScreen extends StatefulWidget {
+class LabTestScreenRose extends StatefulWidget {
   final String testName, testCode;
   final int labCode;
-  const LabTestScreen({
+  const LabTestScreenRose({
     Key? key,
     required this.labCode,
     required this.testCode,
@@ -335,7 +335,7 @@ class LabTestScreen extends StatefulWidget {
   _LabTestScreenState createState() => _LabTestScreenState();
 }
 
-class _LabTestScreenState extends State<LabTestScreen> {
+class _LabTestScreenState extends State<LabTestScreenRose> {
   List<Map<String, dynamic>> labData = [];
   bool isLoading = false;
   String? errorMessage;

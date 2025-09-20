@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pick_location/labs/charts/bar_chart.dart';
+import 'package:pick_location/labs/charts/doughnut_chart.dart';
+import 'package:pick_location/labs/charts/line_chart.dart';
+import 'package:pick_location/labs/charts/pie_chart.dart';
+import 'package:pick_location/labs/charts/radial_chart.dart';
 import 'package:pick_location/labs/charts/rose_chart.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 
@@ -9,47 +14,47 @@ class DashboardChartsList extends StatelessWidget {
   final List<GridItem> gridItems = [
     GridItem(
       title: 'العكارة',
-      testCode: 1,
+      testCode: 1.toString(),
       icon: Icons.terrain,
     ),
     GridItem(
       title: 'المنسوب',
-      testCode: 1045,
+      testCode: 1045.toString(),
       icon: Icons.person,
     ),
     GridItem(
       title: 'الأس الهيدروجيني',
-      testCode: 3,
+      testCode: 3.toString(),
       icon: Icons.person,
     ),
     GridItem(
       title: 'الكلور الحر',
-      testCode: 82,
+      testCode: 82.toString(),
       icon: Icons.person,
     ),
     GridItem(
       title: 'الأمونيا الحرة',
-      testCode: 88,
+      testCode: 88.toString(),
       icon: Icons.person,
     ),
     GridItem(
       title: 'جرعة المروب المعملية',
-      testCode: 1050,
+      testCode: 1050.toString(),
       icon: Icons.person,
     ),
     GridItem(
       title: 'التوصيل الكهربي',
-      testCode: 87,
+      testCode: 87.toString(),
       icon: Icons.person,
     ),
     GridItem(
       title: 'الكلور المتبقى',
-      testCode: 82,
+      testCode: 82.toString(),
       icon: Icons.person,
     ),
     GridItem(
       title: 'جرعة الكلور النهائي المعملية',
-      testCode: 1052,
+      testCode: 1052.toString(),
       icon: Icons.person,
     ),
   ];
@@ -66,31 +71,118 @@ class DashboardChartsList extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(40),
-        child: CustomGridView(
-          items: gridItems,
-          crossAxisCount: 2,
-          childAspectRatio: 7.0,
-          mainAxisSpacing: 15.0,
-          crossAxisSpacing: 15.0,
-          // Optional: Custom onItemTap handler
-          onItemTap: (item) {
-            debugPrint('Custom handler for: ${item.title}');
-            debugPrint('Custom handler for: ${item.testCode}');
-            // Add custom navigation logic here
+      body: CustomGridView(
+        items: gridItems,
+        crossAxisCount: 3,
+        childAspectRatio: 7.0,
+        mainAxisSpacing: 15.0,
+        crossAxisSpacing: 15.0,
+        // Optional: Custom onItemTap handler
+        onItemTap: (item) {
+          debugPrint('Custom handler for: ${item.title}');
+          debugPrint('Custom handler for: ${item.testCode}');
+          // Add custom navigation logic here
+          if (item.title == "العكارة") {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => LabTestScreen(
+                builder: (BuildContext context) => LabTestScreenBar(
                   labCode: DataStatic.labCode,
-                  testCode: '84',
+                  testCode: item.testCode,
                   testName: item.title,
                 ),
               ),
             );
-          },
-        ),
+          } else if (item.title == "المنسوب") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenDoughnut(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          } else if (item.title == 'الأس الهيدروجيني') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenLine(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          } else if (item.title == 'الكلور الحر') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenPie(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          } else if (item.title == 'الأمونيا الحرة') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenRadial(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          } else if (item.title == 'جرعة المروب المعملية') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenRose(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          } else if (item.title == 'التوصيل الكهربي') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenBar(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          } else if (item.title == 'الكلور المتبقى') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenDoughnut(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          } else if (item.title == 'جرعة الكلور النهائي المعملية') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => LabTestScreenRose(
+                  labCode: DataStatic.labCode,
+                  testCode: item.testCode,
+                  testName: item.title,
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }

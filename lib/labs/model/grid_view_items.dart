@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class GridItem {
   final String title;
-  final int testCode;
+  final String testCode;
   final IconData icon;
 
   GridItem( {

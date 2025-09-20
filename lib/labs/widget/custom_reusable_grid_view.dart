@@ -55,34 +55,25 @@ class CustomGridView extends StatelessWidget {
         ),
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
                 item.icon,
                 size: 40,
                 color: Theme.of(context).primaryColor,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(width: 8),
               Text(
                 item.title,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
+                  color: Colors.indigo,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 24,
                 ),
               ),
-              // if (item.subtitle != null) ...[
-              //   const SizedBox(height: 4),
-              //   Text(
-              //     item.subtitle!,
-              //     textAlign: TextAlign.center,
-              //     style: TextStyle(
-              //       color: Colors.grey[600],
-              //       fontSize: 12,
-              //     ),
-              //   ),
-              // ],
             ],
           ),
         ),

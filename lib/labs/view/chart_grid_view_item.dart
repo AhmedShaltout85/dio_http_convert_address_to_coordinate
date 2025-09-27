@@ -32,26 +32,7 @@ class ChartGridViewItem extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            // if (gridItem.subtitle != null) ...[
-            //   const SizedBox(height: 10),
-            //   Text(
-            //     gridItem.subtitle!,
-            //     style: const TextStyle(
-            //       fontSize: 16,
-            //       color: Colors.grey,
-            //     ),
-            //   ),
-            // ],
-            // const SizedBox(height: 30),
-            // if (gridItem.extraData != null) ...[
-            //   ...gridItem.extraData!.entries.map((entry) => Padding(
-            //         padding: const EdgeInsets.symmetric(vertical: 8.0),
-            //         child: Text(
-            //           '${entry.key}: ${entry.value}',
-            //           style: const TextStyle(fontSize: 16),
-            //         ),
-            //       )),
-            // ],
+            
           ],
         ),
       ),

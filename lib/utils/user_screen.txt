@@ -61,7 +61,7 @@
 //               DataStatic.handasahName, DataStatic.username, 0);
 //     });
 //     getUsersBrokenPointsList.then((value) {
-//       debugPrint("PRINTED DATA FROM UI: $value");
+//       log("PRINTED DATA FROM UI: $value");
 //       if (value[0]['video_call'] == 1) {
 //         _showDialog(context, value[0]['address']);
 //         _timer2?.cancel();
@@ -69,7 +69,7 @@
 //         _updateUI(); // Update UI
 //       }
 //       if (value.isEmpty) {
-//         debugPrint("Data is empty, will retry...");
+//         log("Data is empty, will retry...");
 //       }
 //     });
 //   }
@@ -103,7 +103,7 @@
 //         currentLocation = userLocation;
 //       });
 //     } catch (e) {
-//       debugPrint("Error getting location: $e");
+//       log("Error getting location: $e");
 //     }
 
 //     locationSubscription = //not tested
@@ -135,7 +135,7 @@
 //     _timer = Timer.periodic(fetchInterval, (Timer timer) {
 //       getUsersBrokenPointsList.then((data) {
 //         if (data.isEmpty) {
-//           debugPrint("Data is empty, fetching again...");
+//           log("Data is empty, fetching again...");
 //           _fetchData(); // Fetch data again if it's empty
 //         }
 //       });
@@ -257,14 +257,14 @@
 //                                                       await DioNetworkRepos()
 //                                                           .checkAddressExistsInTracking(
 //                                                               address);
-//                                                   debugPrint(
+//                                                   log(
 //                                                       "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExistsInTracking(address)}");
-//                                                   debugPrint(
+//                                                   log(
 //                                                       "PRINTED BY USING VAR: $addressInList");
 
 //                                                   if (addressInList == true) {
 //                                                     //  call the function to update locations in database
-//                                                     debugPrint(
+//                                                     log(
 //                                                         "address already exist >>>>>> $addressInList");
 
 //                                                     //  call the function to update locations in database
@@ -318,10 +318,10 @@
 //                                                                 ?.latitude,
 //                                                             currentLocation
 //                                                                 ?.longitude);
-//                                                     debugPrint(
+//                                                     log(
 //                                                         'address: ${snapshot.data![index]['address']}, latitude: ${snapshot.data![index]['latitude']},longitude: ${snapshot.data![index]['longitude']},currentLocation?.latitude: ${currentLocation?.latitude},currentLocation?.longitude: ${currentLocation?.longitude}, technical_name: ${snapshot.data![index]['technical_name']}');
 
-//                                                     debugPrint(
+//                                                     log(
 //                                                         'Updated status to approved and refreshed UI.');
 //                                                     // //updated Location
 //                                                     _startFetchingLocation();
@@ -409,7 +409,7 @@
 //                                 tooltip: 'اظهار الموقع على الخريطة GIS Map',
 //                                 hoverColor: Colors.yellow,
 //                                 onPressed: () {
-//                                   debugPrint(
+//                                   log(
 //                                       "Start Gis Map ${snapshot.data![index]['gis_url']}");
 //                                   if (kIsWeb) {
 //                                     CustomBrowserRedirect.openInBrowser(
@@ -436,7 +436,7 @@
 //                                 tooltip: 'إجراء مكالمة فيديو',
 //                                 hoverColor: Colors.yellow,
 //                                 onPressed: () {
-//                                   debugPrint(
+//                                   log(
 //                                       "Start Video Call ${snapshot.data![index]['id']}");
 //                                   if (snapshot.data![index]['video_call'] ==
 //                                       0) {
@@ -504,20 +504,20 @@
 //                                 onPressed: () async {
 //                                   //
 //                                   //get store name by handasah
-//                                   debugPrint(
+//                                   log(
 //                                       "Store Name before get: $storeName");
-//                                   debugPrint(
+//                                   log(
 //                                       "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
 //                                   await DioNetworkRepos()
 //                                       .getStoreNameByHandasahName(snapshot
 //                                           .data![index]['handasah_name'])
 //                                       .then((value) {
 //                                     // setState(() {
-//                                     debugPrint(value['storeName']);
+//                                     log(value['storeName']);
 //                                     storeName = value['storeName'];
 //                                     // });
 //                                   });
-//                                   debugPrint(
+//                                   log(
 //                                       "Store Name after get: $storeName");
 //                                   //excute tempStoredProcedure
 //                                   DioNetworkRepos()

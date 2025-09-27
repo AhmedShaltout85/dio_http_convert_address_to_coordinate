@@ -1,6 +1,6 @@
-
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
@@ -58,10 +58,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
     });
 
-    getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
+    getLocs.then((value) => log("GET ALL HOTlINE LOCATIONS: $value"));
 
-    getLocsByHandasahNameAndTechinicianName.then((value) =>
-        debugPrint("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
+    getLocsByHandasahNameAndTechinicianName.then(
+        (value) => log("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
 
     //get handasat items dropdown menu from db
     getHandasatItemsDropdownMenu =
@@ -75,9 +75,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
         handasatItemsDropdownMenu.add(element);
       });
       //debug print
-      debugPrint(
-          "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
-      debugPrint(value.toString());
+      log("handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+      log(value.toString());
     });
   }
 
@@ -116,10 +115,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
               ),
             );
             //
-            debugPrint(address);
-            debugPrint(coordinates);
-            debugPrint(longitude.toString());
-            debugPrint(latitude.toString());
+            log(address);
+            log(coordinates);
+            log(longitude.toString());
+            log(latitude.toString());
 
             //update locations after getting coordinates
             getLocs = DioNetworkRepos().getLoc();
@@ -131,10 +130,11 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
           });
 
           //get last gis record from GIS server
-          int lastRecordNumber = await DioNetworkRepos().getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
-          debugPrint("lastRecordNumber :>> $lastRecordNumber");
+          int lastRecordNumber = await DioNetworkRepos()
+              .getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
+          log("lastRecordNumber :>> $lastRecordNumber");
           int newRecordNumber = lastRecordNumber + 1;
-          debugPrint("newRecordNumber :>> $newRecordNumber");
+          log("newRecordNumber :>> $newRecordNumber");
           //
           //create new gis point
           String mapLink =
@@ -143,22 +143,21 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
             longitude.toString(),
             latitude.toString(),
           );
-          debugPrint("gis_longitude :>> $longitude");
-          debugPrint("gis_latitude :>> $latitude");
-          debugPrint("GIS MAP LINK :>> $mapLink");
+          log("gis_longitude :>> $longitude");
+          log("gis_latitude :>> $latitude");
+          log("GIS MAP LINK :>> $mapLink");
 
           // check if address already exist(UPDATED-IN-29-01-2025)
           var addressInList =
               await DioNetworkRepos().checkAddressExists(address);
-          debugPrint(
-              "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)}");
-          debugPrint("PRINTED BY USING VAR: $addressInList");
-          // debugPrint("PRINTED BY USING STRING: $addressInListString");
+          log("PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)}");
+          log("PRINTED BY USING VAR: $addressInList");
+          // log("PRINTED BY USING STRING: $addressInListString");
           //
           //
           if (addressInList == true) {
             //  call the function to update locations in database
-            debugPrint("address already exist >>>>>> $addressInList");
+            log("address already exist >>>>>> $addressInList");
 
             //  call the function to update locations in database
             //update Locations list after getting coordinates and gis link
@@ -169,11 +168,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
               mapLink,
             );
             //
-            debugPrint(
-                "updated Locations list after getting coordinates and gis link");
+            log("updated Locations list after getting coordinates and gis link");
           } else {
             //  call the function to post locations in database
-            debugPrint("address not exist >>>>>>>>> $addressInList");
+            log("address not exist >>>>>>>>> $addressInList");
 
             //  call the function to post locations in database
             await DioNetworkRepos().createNewLocation(
@@ -183,8 +181,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
               mapLink,
             );
             //
-            debugPrint(
-                "POSTED new Location In Locations list after getting coordinates and gis link");
+            log("POSTED new Location In Locations list after getting coordinates and gis link");
           }
 
           //update Locations list after getting coordinates
@@ -324,7 +321,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinatesOSM> {
                         getLocsAfterGetCoordinatesAndGis =
                             DioNetworkRepos().getLocByFlagAndIsFinished();
                         getLocsByHandasahNameAndTechinicianName =
-                            DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
+                            DioNetworkRepos()
+                                .getLocByHandasahAndTechnician("free", "free");
                       });
                     },
                     icon: const CircleAvatar(

@@ -54,11 +54,11 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //       //
 //     });
 //     getLocsByHandasahNameAndIsFinished.then((value) {
-//       debugPrint("PRINTED FROM GETLOC FUTURE(value): $value");
-//       debugPrint(
+//       log("PRINTED FROM GETLOC FUTURE(value): $value");
+//       log(
 //           "PRINTED FROM GETLOC FUTURE(value[0]): ${value[0]['handasah_name']}");
 //       value.forEach((element) {
-//         debugPrint(
+//         log(
 //             "PRINTED FROM GETLOC FUTURE(element['handasah_name']): ${element['handasah_name']}");
 //       });
 //     });
@@ -75,9 +75,9 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //         handasatUsersItemsDropdownMenu.add(element);
 //       });
 //       //debug print
-//       debugPrint(
+//       log(
 //           "handasatItemsDropdownMenu from UI: $handasatUsersItemsDropdownMenu");
-//       debugPrint(value.toString());
+//       log(value.toString());
 //     });
 //     //
 //     _startPeriodicFetch();
@@ -156,11 +156,11 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //                             DioNetworkRepos().createNewHandasahTools(
 //                                 handasahName, values[0], int.parse(values[1]));
 //                           } catch (e) {
-//                             debugPrint(e.toString());
+//                             log(e.toString());
 //                           }
 //                         });
 //                   });
-//               debugPrint("$handasahName admin : Added new tool");
+//               log("$handasahName admin : Added new tool");
 //             },
 //           ),
 //         ],
@@ -256,11 +256,11 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //                   //                 onTap: () {
 //                   //                   // This assigns the selected item to gisHandasahUrl
 //                   //                   setState(() {
-//                   //                     debugPrint(
+//                   //                     log(
 //                   //                         "Previous URL: $gisHandasahUrl"); // Debugging
 //                   //                     gisHandasahUrl =
 //                   //                         snapshot.data![index]['gis_url'];
-//                   //                     debugPrint(
+//                   //                     log(
 //                   //                         "New URL: $gisHandasahUrl"); // Debugging
 //                   //                   });
 //                   //                 },
@@ -514,9 +514,9 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //                   //                               hoverColor: Colors.yellow,
 //                   //                               onPressed: () async {
 //                   //                                 //get store name by handasah
-//                   //                                 debugPrint(
+//                   //                                 log(
 //                   //                                     "Store Name before get: $storeName");
-//                   //                                 debugPrint(
+//                   //                                 log(
 //                   //                                     "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
 //                   //                                 await DioNetworkRepos()
 //                   //                                     .getStoreNameByHandasahName(
@@ -524,13 +524,13 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //                   //                                             ['handasah_name'])
 //                   //                                     .then((value) {
 //                   //                                   // setState(() {
-//                   //                                   debugPrint(
+//                   //                                   log(
 //                   //                                       value['storeName']);
 //                   //                                   storeName =
 //                   //                                       value['storeName'];
 //                   //                                   // });
 //                   //                                 });
-//                   //                                 debugPrint(
+//                   //                                 log(
 //                   //                                     "Store Name after get: $storeName");
 //                   //                                 //excute tempStoredProcedure
 //                   //                                 DioNetworkRepos()
@@ -632,10 +632,10 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //                               return InkWell(
 //                                 onTap: () {
 //                                   setState(() {
-//                                     debugPrint("Previous URL: $gisHandasahUrl");
+//                                     log("Previous URL: $gisHandasahUrl");
 //                                     gisHandasahUrl =
 //                                         snapshot.data![index]['gis_url'];
-//                                     debugPrint("New URL: $gisHandasahUrl");
+//                                     log("New URL: $gisHandasahUrl");
 //                                   });
 //                                 },
 //                                 child: Card(
@@ -926,19 +926,19 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //                                             hoverColor: Colors.yellow,
 //                                             onPressed: () async {
 //                                               //get store name by handasah
-//                                               debugPrint(
+//                                               log(
 //                                                   "Store Name before get: $storeName");
-//                                               debugPrint(
+//                                               log(
 //                                                   "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
 //                                               await DioNetworkRepos()
 //                                                   .getStoreNameByHandasahName(
 //                                                       snapshot.data![index]
 //                                                           ['handasah_name'])
 //                                                   .then((value) {
-//                                                 debugPrint(value['storeName']);
+//                                                 log(value['storeName']);
 //                                                 storeName = value['storeName'];
 //                                               });
-//                                               debugPrint(
+//                                               log(
 //                                                   "Store Name after get: $storeName");
 //                                               //excute tempStoredProcedure
 //                                               DioNetworkRepos()
@@ -1068,12 +1068,12 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
   //     if (response.statusCode == 200) {
   //       return response.data;
   //     } else {
-  //       debugPrint('List is empty');
+  //       log('List is empty');
   //       return [];
   //       // throw Exception('List is empty');
   //     }
   //   } catch (e) {
-  //     debugPrint(e.toString());
+  //     log(e.toString());
   //     throw Exception(e);
   //   }
   // }
@@ -1089,12 +1089,12 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
       if (response.statusCode == 200) {
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -1106,16 +1106,16 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
     try {
       var response = await dio.get(getHnadasatUsersUrl);
       if (response.statusCode == 200) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        // log(dataList);
+        log("PRINTED DATA FROM API:  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -1227,19 +1227,19 @@ TODO: Handasah Screen modified 30-04-2025(Not tested)
 //                                   items: stringListItems,
 //                                   onChanged: (value) {
 //                                     if (value != null) {
-//                                       debugPrint('Selected item: $value');
+//                                       log('Selected item: $value');
 //                                       //updateLocAddHandasah
 //                                       DioNetworkRepos().updateLocAddTechnician(
 //                                         data['address'] ?? '',
 //                                         value,
 //                                       );
-//                                       debugPrint('updated item: $value');
+//                                       log('updated item: $value');
 //                                       //
 //                                     }
 //                                     // else if (data['handasah_name'] == value) {
 
 //                                     //   snapshot.data.remove(data['address']);
-//                                     //   debugPrint('removed item: $value');
+//                                     //   log('removed item: $value');
 //                                     // }
 //                                   },
 //                                   // onChanged: onChanged,

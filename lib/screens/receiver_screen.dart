@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -64,7 +65,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
         }
       });
     } catch (e) {
-      debugPrint('Initialization error: $e');
+      log('Initialization error: $e');
       _showError('Initialization failed');
     }
   }
@@ -94,13 +95,13 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
               headers: {'Content-Type': 'application/json'},
             );
           } catch (e) {
-            debugPrint('Error sending ICE candidate: $e');
+            log('Error sending ICE candidate: $e');
           }
         }
       };
 
       _peerConnection?.onIceConnectionState = (state) {
-        debugPrint('ICE connection state: $state');
+        log('ICE connection state: $state');
         if (_isDisposed) return;
         if (mounted) {
           setState(() {
@@ -127,10 +128,10 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
       };
 
       _peerConnection?.onConnectionState = (state) {
-        debugPrint('Peer connection state: $state');
+        log('Peer connection state: $state');
       };
     } catch (e) {
-      debugPrint('Peer connection creation error: $e');
+      log('Peer connection creation error: $e');
       _showError('Failed to create connection');
     }
   }
@@ -173,7 +174,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
           }
         }
       } catch (e) {
-        debugPrint('Notification error: $e');
+        log('Notification error: $e');
       }
     });
   }
@@ -185,7 +186,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
       await _audioPlayer.setReleaseMode(ReleaseMode.loop);
       await _audioPlayer.resume();
     } catch (e) {
-      debugPrint('Ringtone error: $e');
+      log('Ringtone error: $e');
     }
   }
 
@@ -198,7 +199,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
         });
       }
     } catch (e) {
-      debugPrint('Stop ringtone error: $e');
+      log('Stop ringtone error: $e');
     }
   }
 
@@ -256,7 +257,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
 
       Navigator.of(context).pop();
     } catch (e) {
-      debugPrint('Call response error: $e');
+      log('Call response error: $e');
       if (mounted) {
         _showError('Failed to handle call response');
       }
@@ -320,7 +321,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
         headers: {'Content-Type': 'application/json'},
       );
     } catch (e) {
-      debugPrint('Join room error: $e');
+      log('Join room error: $e');
       if (mounted && !_isDisposed) {
         setState(() {
           _isLoading = false;
@@ -348,7 +349,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
         await Future.delayed(const Duration(seconds: 1));
       }
     } catch (e) {
-      debugPrint('Wait for offer error: $e');
+      log('Wait for offer error: $e');
     }
     return null;
   }
@@ -384,7 +385,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
             try {
               await _peerConnection?.addCandidate(iceCandidate);
             } catch (e) {
-              debugPrint('Add candidate error: $e');
+              log('Add candidate error: $e');
               if (!_isDisposed) {
                 _pendingRemoteCandidates.add(iceCandidate);
               }
@@ -395,7 +396,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
         }
       }
     } catch (e) {
-      debugPrint('Check candidates error: $e');
+      log('Check candidates error: $e');
     }
   }
 
@@ -405,7 +406,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
       try {
         await _peerConnection?.addCandidate(candidate);
       } catch (e) {
-        debugPrint('Process candidate error: $e');
+        log('Process candidate error: $e');
         if (!_isDisposed) {
           _pendingRemoteCandidates.insert(0, candidate);
           await Future.delayed(const Duration(milliseconds: 100));
@@ -454,7 +455,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
 
       await _createPeerConnection();
     } catch (e) {
-      debugPrint('Disconnect error: $e');
+      log('Disconnect error: $e');
     }
   }
 
@@ -494,7 +495,7 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
         });
       }
     } catch (e) {
-      debugPrint('Switch camera error: $e');
+      log('Switch camera error: $e');
       _showError('Failed to switch camera');
     }
   }
@@ -685,26 +686,3 @@ class _ReceiverScreenState extends State<ReceiverScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

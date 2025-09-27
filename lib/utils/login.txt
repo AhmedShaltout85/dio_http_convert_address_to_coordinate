@@ -145,10 +145,10 @@
 //       setState(() {
 //         handasatItemsDropdownMenu = items.map((e) => e.toString()).toList();
 //       });
-//       debugPrint(
+//       log(
 //           "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
 //     } catch (e) {
-//       debugPrint("Error fetching dropdown items: $e");
+//       log("Error fetching dropdown items: $e");
 //     }
 //   }
 
@@ -357,7 +357,7 @@
 //                                             ? userItemsDropdownMenu.first
 //                                             : null);
 //                                   });
-//                                   debugPrint(
+//                                   log(
 //                                       'Selected Handasah item: $roleValue');
 //                                 },
 //                               ),
@@ -375,7 +375,7 @@
 //                                 selectedOption = value!;
 //                                 roleValue = 'فنى هندسة';
 //                               });
-//                               debugPrint("Selected ROLE: $selectedOption");
+//                               log("Selected ROLE: $selectedOption");
 //                             },
 //                             direction: Axis.horizontal,
 //                             spacing: 13.0,
@@ -422,7 +422,7 @@
 //                                     break;
 //                                 }
 //                               });
-//                               debugPrint("Selected ROLE: $selectedOption");
+//                               log("Selected ROLE: $selectedOption");
 //                             },
 //                             direction: Axis.horizontal,
 //                             spacing: 13.0,
@@ -473,7 +473,7 @@
 //                                             ? userItemsDropdownMenu.first
 //                                             : null);
 //                               });
-//                               debugPrint('Selected Handasah item: $roleValue');
+//                               log('Selected Handasah item: $roleValue');
 //                             },
 //                           ),
 //                         ),
@@ -659,10 +659,10 @@
 //       setState(() {
 //         handasatItemsDropdownMenu = items.map((e) => e.toString()).toList();
 //       });
-//       debugPrint(
+//       log(
 //           "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
 //     } catch (e) {
-//       debugPrint("Error fetching dropdown items: $e");
+//       log("Error fetching dropdown items: $e");
 //     }
 //   }
 
@@ -866,7 +866,7 @@
 //                               break;
 //                           }
 //                         });
-//                         debugPrint("Selected ROLE: $selectedOption");
+//                         log("Selected ROLE: $selectedOption");
 //                       },
 //                       direction: Axis.horizontal,
 //                       spacing: 13.0,
@@ -898,14 +898,14 @@
 //                                 .fetchLoginUsersItemsDropdownMenu(2, value!);
 //                             //
 
-//                             debugPrint(userList.toString());
+//                             log(userList.toString());
 //                             break;
 //                           case '3':
 //                             userList = await DioNetworkRepos()
 //                                 .fetchLoginUsersItemsDropdownMenu(3, value!);
 //                             //
 
-//                             debugPrint(userList.toString());
+//                             log(userList.toString());
 //                             break;
 //                         }
 //                         if (!mounted) return;
@@ -923,7 +923,7 @@
 //                                       : null);
 //                         });
 
-//                         debugPrint('Selected Handasah item: $roleValue');
+//                         log('Selected Handasah item: $roleValue');
 //                         //
 //                       },
 //                     ),

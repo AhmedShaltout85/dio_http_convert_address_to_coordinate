@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 
@@ -80,9 +82,9 @@ class _ReportScreenState extends State<ReportScreen> {
         _isLoading = false;
       });
 
-      debugPrint("GET ALL HOTLINE LOCATIONS: $value");
+      log("GET ALL HOTLINE LOCATIONS: $value");
     } catch (e) {
-      debugPrint("Error fetching data: $e");
+      log("Error fetching data: $e");
     }
   }
 

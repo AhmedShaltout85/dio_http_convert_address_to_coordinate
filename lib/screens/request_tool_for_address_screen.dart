@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_type_check
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../custom_widget/custom_text_field.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -58,13 +60,13 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
         _isLoading = false;
       });
 
-      debugPrint("Fetched tools: ${toolsList.length} items");
+      log("Fetched tools: ${toolsList.length} items");
     } catch (e) {
       setState(() {
         _errorMessage = e.toString();
         _isLoading = false;
       });
-      debugPrint("Error fetching tools: $e");
+      log("Error fetching tools: $e");
     }
   }
 
@@ -87,9 +89,9 @@ class _RequestToolForAddressState extends State<RequestToolForAddressScreen> {
       // Refresh the data after update
       await _fetchUserRequestForAddress();
 
-      debugPrint('User request updated successfully');
+      log('User request updated successfully');
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error updating quantity: ${e.toString()}')),
       );

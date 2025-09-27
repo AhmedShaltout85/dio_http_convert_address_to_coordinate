@@ -1,9 +1,9 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -51,7 +51,7 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
         getAllHotLineAddresses = _loadHotlineData();
       });
     } catch (e) {
-      debugPrint("Error initializing app: $e");
+      log("Error initializing app: $e");
       _showErrorSnackbar("Failed to initialize application");
     }
   }
@@ -61,7 +61,7 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
       final token = await DioNetworkRepos().getHotLineTokenByUserAndPassword();
       return DioNetworkRepos().getHotLineData(token);
     } catch (e) {
-      debugPrint("Error loading hotline data: $e");
+      log("Error loading hotline data: $e");
       _showErrorSnackbar("Failed to load hotline data");
       return [];
     }
@@ -103,7 +103,7 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
       });
     } catch (e) {
       _showErrorSnackbar("Error: ${e.toString()}");
-      debugPrint("Error getting coordinates: $e");
+      log("Error getting coordinates: $e");
     } finally {
       setState(() => isLoading = false);
     }
@@ -168,7 +168,7 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
         );
       }
     } catch (e) {
-      debugPrint("Error processing GIS data: $e");
+      log("Error processing GIS data: $e");
       rethrow;
     }
   }
@@ -184,7 +184,6 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +201,7 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
           size: 17,
         ),
         actions: [
-           IconButton(
+          IconButton(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             tooltip: "تحديث شكاوى الخط الساخن",
             hoverColor: Colors.yellow,
@@ -228,7 +227,6 @@ class AddressToCoordinatesOtherState extends State<AddressToCoordinatesOther> {
             },
             markers: pickMarkers,
             zoomControlsEnabled: true,
- 
           ),
           if (isLoading) const Center(child: CircularProgressIndicator()),
           Padding(

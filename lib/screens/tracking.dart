@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -73,22 +74,22 @@ class _TrackingState extends State<Tracking> {
 
   /// current and start latitude and longitude.
   Future<void> _getCurrentLocation() async {
-    debugPrint(widget.address);
-    debugPrint(widget.technicianName);
+    log(widget.address);
+    log(widget.technicianName);
 
     getCurrentLocation = DioNetworkRepos().getLocationByAddressAndTechnician(
         widget.address, widget.technicianName);
 
     getCurrentLocation.then((value) {
-      debugPrint("print from ui: in Location Tracking $value");
-      debugPrint("Address: ${value['address']}");
-      debugPrint("Latitude: ${value['latitude']}");
-      debugPrint("Longitude: ${value['longitude']}");
-      debugPrint("Technical Name: ${value['technicalName']}");
-      debugPrint("Start Latitude: ${value['startLatitude']}");
-      debugPrint("Start Longitude: ${value['startLongitude']}");
-      debugPrint("Current Latitude: ${value['currentLatitude']}");
-      debugPrint("Current Longitude: ${value['currentLongitude']}");
+      log("print from ui: in Location Tracking $value");
+      log("Address: ${value['address']}");
+      log("Latitude: ${value['latitude']}");
+      log("Longitude: ${value['longitude']}");
+      log("Technical Name: ${value['technicalName']}");
+      log("Start Latitude: ${value['startLatitude']}");
+      log("Start Longitude: ${value['startLongitude']}");
+      log("Current Latitude: ${value['currentLatitude']}");
+      log("Current Longitude: ${value['currentLongitude']}");
       setState(() {
         currentLatitude = double.parse(value['currentLatitude']);
         currentLongitude = double.parse(value['currentLongitude']);
@@ -243,7 +244,7 @@ class _TrackingState extends State<Tracking> {
 //         await _fetchRoute();
 //       }
 //     } catch (e) {
-//       debugPrint("Error fetching location: $e");
+//       log("Error fetching location: $e");
 //     }
 //   }
 
@@ -271,13 +272,13 @@ class _TrackingState extends State<Tracking> {
 //             ));
 //           });
 //         } else {
-//           debugPrint("Failed to fetch route: ${data['status']}");
+//           log("Failed to fetch route: ${data['status']}");
 //         }
 //       } else {
-//         debugPrint("Failed to fetch route: ${response.body}");
+//         log("Failed to fetch route: ${response.body}");
 //       }
 //     } catch (e) {
-//       debugPrint("Error fetching route: $e");
+//       log("Error fetching route: $e");
 //     }
 //   }
 

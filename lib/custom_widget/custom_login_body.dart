@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable, library_private_types_in_public_api
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pick_location/custom_widget/custom_circle_avatar.dart';
@@ -81,7 +83,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
         }
       });
     } catch (e) {
-      debugPrint("Error fetching dropdown items: $e");
+      log("Error fetching dropdown items: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error loading engineering departments: $e')),
       );
@@ -113,7 +115,7 @@ class _CustomizLoginScreenBodyState extends State<CustomizLoginScreenBody> {
             : null;
       });
     } catch (e) {
-      debugPrint('Error fetching users: $e');
+      log('Error fetching users: $e');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error loading users: $e')),

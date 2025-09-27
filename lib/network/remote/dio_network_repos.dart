@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
-import 'package:flutter/material.dart';
 
 class DioNetworkRepos {
   final dio = Dio();
@@ -13,12 +13,12 @@ class DioNetworkRepos {
       if (response.statusCode == 200) {
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       // throw Exception(e);
     }
   }
@@ -30,19 +30,18 @@ class DioNetworkRepos {
       if (response.statusCode == 200) {
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       // throw Exception(e);
     }
   }
 
 //3-- GET locationsBy handasah(GET by handasah (handasah) and  isFinished 0)
-  Future getLocByHandasahAndIsFinished(
-      String handasah, int isFinished) async {
+  Future getLocByHandasahAndIsFinished(String handasah, int isFinished) async {
     var urlGetAllByHandasahAndIsFinished =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/handasah/$handasah/is-finished/$isFinished';
     try {
@@ -50,12 +49,12 @@ class DioNetworkRepos {
       if (response.statusCode == 200) {
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -80,15 +79,14 @@ class DioNetworkRepos {
       if (response.statusCode == 200) {
         return response.data;
       } else if (response.statusCode == 404) {
-        debugPrint(
-            'No locations found for handasah: $handasah and technician: $technician');
+        log('No locations found for handasah: $handasah and technician: $technician');
         return []; // Return empty list for 404
       } else {
-        debugPrint('Unexpected status code: ${response.statusCode}');
+        log('Unexpected status code: ${response.statusCode}');
         return []; // Return empty list for other non-200 status codes
       }
     } catch (e) {
-      debugPrint('Error fetching locations: $e');
+      log('Error fetching locations: $e');
       return []; // Return empty list on any other error
     }
   }
@@ -105,7 +103,7 @@ class DioNetworkRepos {
           });
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -118,11 +116,11 @@ class DioNetworkRepos {
           data: {
             "handasah_name": handasahName,
           });
-      debugPrint(response.data.toString());
+      log(response.data.toString());
 
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -135,11 +133,11 @@ class DioNetworkRepos {
           data: {
             "technical_name": technicianName,
           });
-      debugPrint(response.data.toString());
+      log(response.data.toString());
 
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -152,11 +150,11 @@ class DioNetworkRepos {
           data: {
             "is_finished": isFinished,
           });
-      debugPrint(response.data.toString());
+      log(response.data.toString());
 
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -179,7 +177,7 @@ class DioNetworkRepos {
           });
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -208,7 +206,7 @@ class DioNetworkRepos {
         throw Exception('Failed to post data');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -221,23 +219,22 @@ class DioNetworkRepos {
       final response = await dio.get(
           "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/$username/$password");
       if (response.statusCode == 200) {
-        debugPrint("${response.data} from loginByUsernameAndPassword");
+        log("${response.data} from loginByUsernameAndPassword");
         final usernameResponse = response.data['username'];
         final passwordResponse = response.data['password'];
         DataStatic.userRole = response.data['role'];
         DataStatic.handasahName = response.data['handasah_name'];
-        debugPrint(
-            'Login successful! Username: $usernameResponse, Password: $passwordResponse , ID: $DataStatic.userRole');
+        log('Login successful! Username: $usernameResponse, Password: $passwordResponse , ID: $DataStatic.userRole');
         return true;
       } else {
-        debugPrint('Login failed: ${response.data}');
+        log('Login failed: ${response.data}');
         return false;
       }
     } on DioException catch (e) {
-      debugPrint('Error: ${e.response?.data ?? e.message}');
+      log('Error: ${e.response?.data ?? e.message}');
       return false;
     } catch (e) {
-      debugPrint('Unexpected error: $e');
+      log('Unexpected error: $e');
       return false;
     }
   }
@@ -258,9 +255,9 @@ class DioNetworkRepos {
         DataStatic.username = response.data['username'];
         // handasahName = response.data['controlUnit'];
         // userName = response.data['username'];
-        debugPrint("PRINTED DATA FROM API: ${response.data['role']}");
-        debugPrint("PRINTED DATA FROM API: ${response.data['controlUnit']}");
-        debugPrint("PRINTED DATA FROM API: ${response.data['username']}");
+        log("PRINTED DATA FROM API: ${response.data['role']}");
+        log("PRINTED DATA FROM API: ${response.data['controlUnit']}");
+        log("PRINTED DATA FROM API: ${response.data['username']}");
         return {
           'success': true,
           'data': response.data,
@@ -297,17 +294,17 @@ class DioNetworkRepos {
       var response = await dio.get(getAddressUrl);
 
       if (response.statusCode == 200) {
-        debugPrint("PRINTED DATA FROM API: ${response.data}");
+        log("PRINTED DATA FROM API: ${response.data}");
         return true;
       } else {
-        debugPrint('Address not found');
+        log('Address not found');
         return false;
       }
     } on DioException catch (e) {
-      debugPrint("Dio error: ${e.response?.statusCode} - ${e.message}");
+      log("Dio error: ${e.response?.statusCode} - ${e.message}");
       return false;
     } catch (e) {
-      debugPrint("Unexpected error: $e");
+      log("Unexpected error: $e");
       return false;
     }
   }
@@ -323,17 +320,17 @@ class DioNetworkRepos {
       var response = await dio.get(getAddressUrl);
 
       if (response.statusCode == 200) {
-        debugPrint("PRINTED DATA FROM API: ${response.data}");
+        log("PRINTED DATA FROM API: ${response.data}");
         return true;
       } else {
-        debugPrint('Address not found');
+        log('Address not found');
         return false;
       }
     } on DioException catch (e) {
-      debugPrint("Dio error: ${e.response?.statusCode} - ${e.message}");
+      log("Dio error: ${e.response?.statusCode} - ${e.message}");
       return false;
     } catch (e) {
-      debugPrint("Unexpected error: $e");
+      log("Unexpected error: $e");
       return false;
     }
   }
@@ -364,7 +361,7 @@ class DioNetworkRepos {
         throw Exception('Failed to post data');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -376,38 +373,37 @@ class DioNetworkRepos {
     try {
       var response = await dio.get(getHandasatUrl);
       if (response.statusCode == 200) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        // log(dataList);
+        log("PRINTED DATA FROM API:  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
 
   //17-- FETCH Data from the Database(GET dropdown items for handasat users)
-  Future fetchHandasatUsersItemsDropdownMenu(
-      String handasahName) async {
+  Future fetchHandasatUsersItemsDropdownMenu(String handasahName) async {
     var getHnadasatUsersUrl =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/role/3/control-unit/$handasahName';
     try {
       var response = await dio.get(getHnadasatUsersUrl);
       if (response.statusCode == 200) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        // log(dataList);
+        log("PRINTED DATA FROM API:  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -424,22 +420,22 @@ class DioNetworkRepos {
       if (response.statusCode == 200 && response.data != null) {
         if (response.data is List) {
           // If it's already a List, return it directly
-          // debugPrint(dataList);
-          debugPrint("PRINTED DATA FROM API:  ${[response.data]}");
+          // log(dataList);
+          log("PRINTED DATA FROM API:  ${[response.data]}");
           return List<Map<String, dynamic>>.from(response.data);
         } else if (response.data is Map<String, dynamic>) {
           // If it's a single Map, wrap it in a List
           return [response.data];
         } else {
-          debugPrint("Unexpected response format: ${response.data}");
+          log("Unexpected response format: ${response.data}");
           return []; // Return an empty list if the format is unexpected
         }
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
       }
     } catch (e) {
-      debugPrint("API Error: $e");
+      log("API Error: $e");
       return []; // Return empty list on error
     }
   }
@@ -460,17 +456,17 @@ class DioNetworkRepos {
         ),
       );
       if (response.statusCode == 201) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        // log(dataList);
+        log("PRINTED DATA FROM API:  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return 0;
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -491,17 +487,17 @@ class DioNetworkRepos {
         ),
       );
       if (response.statusCode == 201) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        // log(dataList);
+        log("PRINTED DATA FROM API:  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return 0;
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -514,11 +510,11 @@ class DioNetworkRepos {
           data: {
             "is_approved": isApproved,
           });
-      debugPrint(response.data.toString());
+      log(response.data.toString());
 
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -546,9 +542,9 @@ class DioNetworkRepos {
     );
 
     if (response.statusCode == 200) {
-      debugPrint('Location sent successfully');
+      log('Location sent successfully');
     } else {
-      debugPrint('Failed to send location');
+      log('Failed to send location');
     }
   }
 
@@ -564,9 +560,9 @@ class DioNetworkRepos {
     );
 
     if (response.statusCode == 200) {
-      debugPrint('Location sent successfully');
+      log('Location sent successfully');
     } else {
-      debugPrint('Failed to send location');
+      log('Failed to send location');
     }
   }
 
@@ -578,14 +574,14 @@ class DioNetworkRepos {
     try {
       var response = await dio.get(urlGetCertainLocationByAddressAndTechnician);
       if (response.statusCode == 200) {
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        log("PRINTED DATA FROM API:  ${response.data}");
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       // throw Exception(e);
     }
   }
@@ -600,17 +596,17 @@ class DioNetworkRepos {
       var response = await dio.get(getAddressUrl);
 
       if (response.statusCode == 200) {
-        debugPrint("PRINTED DATA FROM API: ${response.data}");
+        log("PRINTED DATA FROM API: ${response.data}");
         return true;
       } else {
-        debugPrint('Address not found');
+        log('Address not found');
         return false;
       }
     } on DioException catch (e) {
-      debugPrint("Dio error: ${e.response?.statusCode} - ${e.message}");
+      log("Dio error: ${e.response?.statusCode} - ${e.message}");
       return false;
     } catch (e) {
-      debugPrint("Unexpected error: $e");
+      log("Unexpected error: $e");
       return false;
     }
   }
@@ -640,7 +636,7 @@ class DioNetworkRepos {
           });
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -652,15 +648,15 @@ class DioNetworkRepos {
     try {
       var response = await dio.get(storesNameByHandasahUrl);
       if (response.statusCode == 200) {
-        debugPrint("PRINTED DATA FROM API :  ${response.data}");
+        log("PRINTED DATA FROM API :  ${response.data}");
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       // throw Exception(e);
     }
   }
@@ -672,16 +668,16 @@ class DioNetworkRepos {
     try {
       var response = await dio.get(tempStoresQtyUrl);
       if (response.statusCode == 200) {
-        debugPrint("PRINTED STORE ALL DATA FROM API :  ${response.data}");
+        log("PRINTED STORE ALL DATA FROM API :  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       // throw Exception(e);
     }
   }
@@ -693,16 +689,16 @@ class DioNetworkRepos {
     try {
       var response = await dio.get(storesQtyUrl);
       if (response.statusCode == 200) {
-        debugPrint("PRINTED STORE ALL DATA FROM API :  ${response.data}");
+        log("PRINTED STORE ALL DATA FROM API :  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       // throw Exception(e);
     }
   }
@@ -719,10 +715,10 @@ class DioNetworkRepos {
             "caller_phone": callerPhone,
             "broker_type": brokenType
           });
-      debugPrint(response.data.toString());
+      log(response.data.toString());
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -734,10 +730,10 @@ class DioNetworkRepos {
       final response = await dio.put(
           "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/update-video-call/$address",
           data: {"video_call": videoCall});
-      debugPrint(response.data.toString());
+      log(response.data.toString());
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -761,7 +757,7 @@ class DioNetworkRepos {
         throw Exception('Failed to post data');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -774,16 +770,16 @@ class DioNetworkRepos {
     try {
       var response = await dio.get(getLoginUsersUrl);
       if (response.statusCode == 200) {
-        // debugPrint(dataList);
-        debugPrint("PRINTED DATA FROM API:  ${response.data}");
+        // log(dataList);
+        log("PRINTED DATA FROM API:  ${response.data}");
 
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -797,12 +793,12 @@ class DioNetworkRepos {
       if (response.statusCode == 200) {
         return response.data;
       } else {
-        debugPrint('List is empty');
+        log('List is empty');
         return [];
         // throw Exception('List is empty');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       // throw Exception(e);
     }
   }
@@ -824,7 +820,7 @@ class DioNetworkRepos {
         throw Exception('Failed to post data');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -840,7 +836,7 @@ class DioNetworkRepos {
       final response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        debugPrint("API Response: ${response.data}");
+        log("API Response: ${response.data}");
 
         // Handle different response formats
         if (response.data is List) {
@@ -848,15 +844,15 @@ class DioNetworkRepos {
         } else if (response.data is Map<String, dynamic>) {
           return [response.data as Map<String, dynamic>];
         } else {
-          debugPrint('Unexpected response format');
+          log('Unexpected response format');
           return [];
         }
       } else {
-        debugPrint('Request failed with status: ${response.statusCode}');
+        log('Request failed with status: ${response.statusCode}');
         return [];
       }
     } catch (e) {
-      debugPrint('Error fetching tools: $e');
+      log('Error fetching tools: $e');
       throw Exception('Failed to load tools: $e');
     }
   }
@@ -873,16 +869,16 @@ class DioNetworkRepos {
       if (response.statusCode == 200) {
         // Ensure we have a List and convert each item to String
         final List<dynamic> data = response.data;
-        debugPrint("API Response: ${data.toString()}");
+        log("API Response: ${data.toString()}");
 
         // Convert each item to String safely
         return data.map((item) => item.toString()).toList();
       } else {
-        debugPrint('Request failed with status: ${response.statusCode}');
+        log('Request failed with status: ${response.statusCode}');
         return []; // Return empty list for non-200 status
       }
     } catch (e) {
-      debugPrint('Error fetching tools: $e');
+      log('Error fetching tools: $e');
       throw Exception('Failed to load tools: $e'); // More descriptive error
     }
   }
@@ -914,11 +910,11 @@ class DioNetworkRepos {
       if (response.statusCode == 201) {
         return response.data;
       } else {
-        // debugPrint('List is empty');
+        // log('List is empty');
         throw Exception('Failed to post data');
       }
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -934,10 +930,10 @@ class DioNetworkRepos {
             "toolQty": toolQty,
             "isApproved": isApproved,
           });
-      debugPrint(response.data.toString());
+      log(response.data.toString());
       return response.data;
     } catch (e) {
-      debugPrint(e.toString());
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -946,28 +942,28 @@ class DioNetworkRepos {
   Future<List<Map<String, dynamic>>> getHotlineAllAddress() async {
     var url =
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/all';
-    debugPrint('Calling API: $url');
+    log('Calling API: $url');
 
     try {
       final response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        debugPrint("API Response: ${response.data}");
+        log("API Response: ${response.data}");
 
         if (response.data is List) {
           return List<Map<String, dynamic>>.from(response.data);
         } else if (response.data is Map<String, dynamic>) {
           return [response.data as Map<String, dynamic>];
         } else {
-          debugPrint('Unexpected response format');
+          log('Unexpected response format');
           return [];
         }
       } else {
-        debugPrint('Request failed with status: ${response.statusCode}');
+        log('Request failed with status: ${response.statusCode}');
         return [];
       }
     } catch (e) {
-      debugPrint('Error fetching hot addresses: $e');
+      log('Error fetching hot addresses: $e');
       return [];
     }
   }
@@ -991,15 +987,15 @@ class DioNetworkRepos {
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Extract token from response data
         final token = response.data['token'] as String;
-        debugPrint("EXTRACTED HOTLINE TOKEN: $token");
+        log("EXTRACTED HOTLINE TOKEN: $token");
         return token;
       } else {
-        debugPrint('Failed to get token. Status code: ${response.statusCode}');
+        log('Failed to get token. Status code: ${response.statusCode}');
         throw Exception(
             'Failed to get token. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error getting hotline token: $e');
+      log('Error getting hotline token: $e');
       throw Exception('Error getting hotline token: $e');
     }
   }
@@ -1021,7 +1017,7 @@ class DioNetworkRepos {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint("API Response: ${response.data}");
+        log("API Response: ${response.data}");
 
         // Check if the response data is a List
         if (response.data is List) {
@@ -1032,7 +1028,7 @@ class DioNetworkRepos {
               return item;
             } else {
               // If items aren't Maps, convert them or handle accordingly
-              debugPrint('Item is not a Map: $item');
+              log('Item is not a Map: $item');
               return {'data': item}; // Fallback conversion
             }
           }).toList();
@@ -1040,16 +1036,15 @@ class DioNetworkRepos {
           // If the API returns a single object instead of array, wrap it in a list
           return [response.data as Map<String, dynamic>];
         } else {
-          debugPrint(
-              'Unexpected response format: ${response.data.runtimeType}');
+          log('Unexpected response format: ${response.data.runtimeType}');
           return [];
         }
       } else {
-        debugPrint('Request failed with status: ${response.statusCode}');
+        log('Request failed with status: ${response.statusCode}');
         return [];
       }
     } catch (e) {
-      debugPrint('Error in getHotLineData: ${e.toString()}');
+      log('Error in getHotLineData: ${e.toString()}');
       return [];
     }
   }
@@ -1091,7 +1086,7 @@ class DioNetworkRepos {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('Data posted successfully');
+        log('Data posted successfully');
       } else {
         throw Exception('Failed to post data: ${response.statusCode}');
       }
@@ -1101,6 +1096,7 @@ class DioNetworkRepos {
       throw Exception('Error: $e');
     }
   }
+
 //44-- remove address from Locations
   // http: //localhost:9999/pick-location/api/v1/get-loc/remove-address/{id}
   Future<void> deleteAddressFromLocations(int id) async {
@@ -1108,8 +1104,8 @@ class DioNetworkRepos {
       await dio.delete(
         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/get-loc/remove-address/$id',
       );
-    
-      debugPrint('Address deleted successfully');
+
+      log('Address deleted successfully');
     } on DioException catch (e) {
       throw Exception('Dio error: ${e.message}');
     } catch (e) {
@@ -1119,9 +1115,8 @@ class DioNetworkRepos {
 
 //45-- Get LABS testValue with date By labCode And testCode  (FETCH- for 7 days)
 // http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/11/84
-  Future<List<Map<String, dynamic>>>
-      getAllLabsItemsByTestValueAndDate(
-          int labCode, String testCode) async {
+  Future<List<Map<String, dynamic>>> getAllLabsItemsByTestValueAndDate(
+      int labCode, String testCode) async {
     final url =
         'http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
 
@@ -1129,7 +1124,7 @@ class DioNetworkRepos {
       final response = await dio.get(url);
 
       if (response.statusCode == 200) {
-        debugPrint("API Response: ${response.data}");
+        log("API Response: ${response.data}");
 
         // Handle different response formats
         if (response.data is List) {
@@ -1137,19 +1132,18 @@ class DioNetworkRepos {
         } else if (response.data is Map<String, dynamic>) {
           return [response.data as Map<String, dynamic>];
         } else {
-          debugPrint('Unexpected response format');
+          log('Unexpected response format');
           return [];
         }
       } else {
-        debugPrint('Request failed with status: ${response.statusCode}');
+        log('Request failed with status: ${response.statusCode}');
         return [];
       }
     } catch (e) {
-      debugPrint('Error fetching tools: $e');
+      log('Error fetching tools: $e');
       throw Exception('Failed to load tools: $e');
     }
   }
-
 }
 
 // import 'dart:convert';
@@ -1165,11 +1159,11 @@ class DioNetworkRepos {
 //       if (response.statusCode == 200) {
 //         return (json.decode(utf8.decode(response.bodyBytes)));
 //       } else {
-//         debugPrint('List is empty');
+//         log('List is empty');
 //         return [];
 //       }
 //     } catch (e) {
-//       debugPrint(e.toString());
+//       log(e.toString());
 //       return [];
 //     }
 //   }
@@ -1182,10 +1176,10 @@ class DioNetworkRepos {
 //         headers: {'Content-Type': 'application/json'},
 //         body: json.encode(data),
 //       );
-//       debugPrint(response.body.toString());
+//       log(response.body.toString());
 //       return (json.decode(utf8.decode(response.bodyBytes)));
 //     } catch (e) {
-//       debugPrint(e.toString());
+//       log(e.toString());
 //       throw Exception(e);
 //     }
 //   }
@@ -1204,7 +1198,7 @@ class DioNetworkRepos {
 //         throw Exception('Failed to post data');
 //       }
 //     } catch (e) {
-//       debugPrint(e.toString());
+//       log(e.toString());
 //       throw Exception(e);
 //     }
 //   }
@@ -1312,7 +1306,7 @@ class DioNetworkRepos {
 //         throw Exception('Failed to post data');
 //       }
 //     } catch (e) {
-//       debugPrint(e.toString());
+//       log(e.toString());
 //       throw Exception(e);
 //     }
 //   }
@@ -1325,20 +1319,20 @@ class DioNetworkRepos {
 //           "$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/users/$username/$password"));
 //       if (response.statusCode == 200) {
 //         final data = json.decode(response.body);
-//         debugPrint("$data from loginByUsernameAndPassword");
+//         log("$data from loginByUsernameAndPassword");
 //         final usernameResponse = data['username'];
 //         final passwordResponse = data['password'];
 //         DataStatic.userRole = data['role'];
 //         DataStatic.handasahName = data['handasah_name'];
-//         debugPrint(
+//         log(
 //             'Login successful! Username: $usernameResponse, Password: $passwordResponse , ID: ${DataStatic.userRole}');
 //         return true;
 //       } else {
-//         debugPrint('Login failed: ${response.body}');
+//         log('Login failed: ${response.body}');
 //         return false;
 //       }
 //     } catch (e) {
-//       debugPrint('Unexpected error: $e');
+//       log('Unexpected error: $e');
 //       return false;
 //     }
 //   }
@@ -1354,9 +1348,9 @@ class DioNetworkRepos {
 //         DataStatic.userRole = data['role'];
 //         DataStatic.handasahName = data['controlUnit'];
 //         DataStatic.username = data['username'];
-//         debugPrint("PRINTED DATA FROM API: ${data['role']}");
-//         debugPrint("PRINTED DATA FROM API: ${data['controlUnit']}");
-//         debugPrint("PRINTED DATA FROM API: ${data['username']}");
+//         log("PRINTED DATA FROM API: ${data['role']}");
+//         log("PRINTED DATA FROM API: ${data['controlUnit']}");
+//         log("PRINTED DATA FROM API: ${data['username']}");
 //         return {
 //           'success': true,
 //           'data': data,
@@ -1385,14 +1379,14 @@ class DioNetworkRepos {
 //       var response = await http.get(Uri.parse(getAddressUrl));
 
 //       if (response.statusCode == 200) {
-//         debugPrint("PRINTED DATA FROM API: ${response.body}");
+//         log("PRINTED DATA FROM API: ${response.body}");
 //         return true;
 //       } else {
-//         debugPrint('Address not found');
+//         log('Address not found');
 //         return false;
 //       }
 //     } catch (e) {
-//       debugPrint("Unexpected error: $e");
+//       log("Unexpected error: $e");
 //       return false;
 //     }
 //   }
@@ -1408,14 +1402,14 @@ class DioNetworkRepos {
 //       var response = await http.get(Uri.parse(getAddressUrl));
 
 //       if (response.statusCode == 200) {
-//         debugPrint("PRINTED DATA FROM API: ${response.body}");
+//         log("PRINTED DATA FROM API: ${response.body}");
 //         return true;
 //       } else {
-//         debugPrint('Address not found');
+//         log('Address not found');
 //         return false;
 //       }
 //     } catch (e) {
-//       debugPrint("Unexpected error: $e");
+//       log("Unexpected error: $e");
 //       return false;
 //     }
 //   }
@@ -1469,15 +1463,15 @@ class DioNetworkRepos {
 //         } else if (data is Map<String, dynamic>) {
 //           return [data];
 //         } else {
-//           debugPrint("Unexpected response format: $data");
+//           log("Unexpected response format: $data");
 //           return [];
 //         }
 //       } else {
-//         debugPrint('List is empty');
+//         log('List is empty');
 //         return [];
 //       }
 //     } catch (e) {
-//       debugPrint("API Error: $e");
+//       log("API Error: $e");
 //       return [];
 //     }
 //   }
@@ -1497,14 +1491,14 @@ class DioNetworkRepos {
 //         body: json.encode({"category": "gis_lab_api"}),
 //       );
 //       if (response.statusCode == 201) {
-//         debugPrint("PRINTED DATA FROM API:  ${response.body}");
+//         log("PRINTED DATA FROM API:  ${response.body}");
 //         return json.decode(response.body);
 //       } else {
-//         debugPrint('List is empty');
+//         log('List is empty');
 //         return 0;
 //       }
 //     } catch (e) {
-//       debugPrint(e.toString());
+//       log(e.toString());
 //       throw Exception(e);
 //     }
 //   }
@@ -1522,14 +1516,14 @@ class DioNetworkRepos {
 //         },
 //       );
 //       if (response.statusCode == 201) {
-//         debugPrint("PRINTED DATA FROM API:  ${response.body}");
+//         log("PRINTED DATA FROM API:  ${response.body}");
 //         return json.decode(response.body);
 //       } else {
-//         debugPrint('List is empty');
+//         log('List is empty');
 //         return 0;
 //       }
 //     } catch (e) {
-//       debugPrint(e.toString());
+//       log(e.toString());
 //       throw Exception(e);
 //     }
 //   }
@@ -1594,14 +1588,14 @@ class DioNetworkRepos {
 //       var response = await http.get(Uri.parse(getAddressUrl));
 
 //       if (response.statusCode == 200) {
-//         debugPrint("PRINTED DATA FROM API: ${response.body}");
+//         log("PRINTED DATA FROM API: ${response.body}");
 //         return true;
 //       } else {
-//         debugPrint('Address not found');
+//         log('Address not found');
 //         return false;
 //       }
 //     } catch (e) {
-//       debugPrint("Unexpected error: $e");
+//       log("Unexpected error: $e");
 //       return false;
 //     }
 //   }
@@ -1692,14 +1686,14 @@ class DioNetworkRepos {
 //     try {
 //       var response = await http.get(Uri.parse(getLoginUsersUrl));
 //       if (response.statusCode == 200) {
-//         debugPrint("PRINTED DATA FROM API:  ${response.body}");
+//         log("PRINTED DATA FROM API:  ${response.body}");
 //         return json.decode(response.body);
 //       } else {
-//         debugPrint('List is empty');
+//         log('List is empty');
 //         return [];
 //       }
 //     } catch (e) {
-//       debugPrint(e.toString());
+//       log(e.toString());
 //       throw Exception(e);
 //     }
 //   }
@@ -1734,22 +1728,22 @@ class DioNetworkRepos {
 //       final response = await http.get(Uri.parse(url));
 
 //       if (response.statusCode == 200) {
-//         debugPrint("API Response: ${response.body}");
+//         log("API Response: ${response.body}");
 //         final data = json.decode(response.body);
 //         if (data is List) {
 //           return List<Map<String, dynamic>>.from(data);
 //         } else if (data is Map<String, dynamic>) {
 //           return [data];
 //         } else {
-//           debugPrint('Unexpected response format');
+//           log('Unexpected response format');
 //           return [];
 //         }
 //       } else {
-//         debugPrint('Request failed with status: ${response.statusCode}');
+//         log('Request failed with status: ${response.statusCode}');
 //         return [];
 //       }
 //     } catch (e) {
-//       debugPrint('Error fetching tools: $e');
+//       log('Error fetching tools: $e');
 //       throw Exception('Failed to load tools: $e');
 //     }
 //   }
@@ -1765,14 +1759,14 @@ class DioNetworkRepos {
 
 //       if (response.statusCode == 200) {
 //         final List<dynamic> data = json.decode(response.body);
-//         debugPrint("API Response: ${data.toString()}");
+//         log("API Response: ${data.toString()}");
 //         return data.map((item) => item.toString()).toList();
 //       } else {
-//         debugPrint('Request failed with status: ${response.statusCode}');
+//         log('Request failed with status: ${response.statusCode}');
 //         return [];
 //       }
 //     } catch (e) {
-//       debugPrint('Error fetching tools: $e');
+//       log('Error fetching tools: $e');
 //       throw Exception('Failed to load tools: $e');
 //     }
 //   }
@@ -1817,28 +1811,28 @@ class DioNetworkRepos {
 //   Future<List<Map<String, dynamic>>> getHotlineAllAddress() async {
 //     var url =
 //         '$BASE_URI_IP_ADDRESS_LOCAL_HOST/pick-location/api/v1/hot-address/all';
-//     debugPrint('Calling API: $url');
+//     log('Calling API: $url');
 
 //     try {
 //       final response = await http.get(Uri.parse(url));
 
 //       if (response.statusCode == 200) {
-//         debugPrint("API Response: ${response.body}");
+//         log("API Response: ${response.body}");
 //         final data = json.decode(response.body);
 //         if (data is List) {
 //           return List<Map<String, dynamic>>.from(data);
 //         } else if (data is Map<String, dynamic>) {
 //           return [data];
 //         } else {
-//           debugPrint('Unexpected response format');
+//           log('Unexpected response format');
 //           return [];
 //         }
 //       } else {
-//         debugPrint('Request failed with status: ${response.statusCode}');
+//         log('Request failed with status: ${response.statusCode}');
 //         return [];
 //       }
 //     } catch (e) {
-//       debugPrint('Error fetching hot addresses: $e');
+//       log('Error fetching hot addresses: $e');
 //       return [];
 //     }
 //   }
@@ -1860,15 +1854,15 @@ class DioNetworkRepos {
 //       if (response.statusCode == 200 || response.statusCode == 201) {
 //         final data = json.decode(response.body);
 //         final token = data['token'] as String;
-//         debugPrint("EXTRACTED HOTLINE TOKEN: $token");
+//         log("EXTRACTED HOTLINE TOKEN: $token");
 //         return token;
 //       } else {
-//         debugPrint('Failed to get token. Status code: ${response.statusCode}');
+//         log('Failed to get token. Status code: ${response.statusCode}');
 //         throw Exception(
 //             'Failed to get token. Status code: ${response.statusCode}');
 //       }
 //     } catch (e) {
-//       debugPrint('Error getting hotline token: $e');
+//       log('Error getting hotline token: $e');
 //       throw Exception('Error getting hotline token: $e');
 //     }
 //   }
@@ -1885,22 +1879,22 @@ class DioNetworkRepos {
 //       );
 
 //       if (response.statusCode == 200 || response.statusCode == 201) {
-//         debugPrint("API Response: ${response.body}");
+//         log("API Response: ${response.body}");
 //         final data = json.decode(response.body);
 //         if (data is List) {
 //           return List<Map<String, dynamic>>.from(data);
 //         } else if (data is Map<String, dynamic>) {
 //           return [data];
 //         } else {
-//           debugPrint('Unexpected response format: ${data.runtimeType}');
+//           log('Unexpected response format: ${data.runtimeType}');
 //           return [];
 //         }
 //       } else {
-//         debugPrint('Request failed with status: ${response.statusCode}');
+//         log('Request failed with status: ${response.statusCode}');
 //         return [];
 //       }
 //     } catch (e) {
-//       debugPrint('Error in getHotLineData: ${e.toString()}');
+//       log('Error in getHotLineData: ${e.toString()}');
 //       return [];
 //     }
 //   }
@@ -1940,7 +1934,7 @@ class DioNetworkRepos {
 //       );
 
 //       if (response.statusCode == 200 || response.statusCode == 201) {
-//         debugPrint('Data posted successfully');
+//         log('Data posted successfully');
 //       } else {
 //         throw Exception('Failed to post data: ${response.statusCode}');
 //       }

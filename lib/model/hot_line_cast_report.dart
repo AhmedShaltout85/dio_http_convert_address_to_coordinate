@@ -1,6 +1,3 @@
-
-
-
 class CaseReport {
   final int id;
   final String caseReportDateTime;
@@ -90,8 +87,8 @@ class CaseReport {
 
 //   try {
 //     // await DioNetworkRepos().postHotLineDataList(reports);
-//     debugPrint('Data posted successfully');
+//     log('Data posted successfully');
 //   } catch (e) {
-//     debugPrint('Error posting data: $e');
+//     log('Error posting data: $e');
 //   }
 // }

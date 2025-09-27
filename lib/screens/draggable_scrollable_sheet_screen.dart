@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/network/remote/dio_network_repos.dart';
 import 'package:pick_location/screens/address_details.dart';
@@ -67,8 +69,7 @@ class _DraggableScrollableSheetScreenState
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          debugPrint(
-                                              "Start Gis Map ${snapshot.data![index]['gis_url']}");
+                                          log("Start Gis Map ${snapshot.data![index]['gis_url']}");
                                           //open in iframe webview in web app
                                           // Navigator.push(
                                           //   context,
@@ -105,8 +106,7 @@ class _DraggableScrollableSheetScreenState
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          debugPrint(
-                                              "Start Video Call ${snapshot.data![index]['id']}");
+                                          log("Start Video Call ${snapshot.data![index]['id']}");
                                           //open video call
                                           // Navigator.push(
                                           //   context,
@@ -126,8 +126,7 @@ class _DraggableScrollableSheetScreenState
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          debugPrint(
-                                              "Start Traking ${snapshot.data![index]['id']}");
+                                          log("Start Traking ${snapshot.data![index]['id']}");
                                           // Navigator.push(
                                           //   context,
                                           //   MaterialPageRoute(
@@ -151,7 +150,7 @@ class _DraggableScrollableSheetScreenState
                                                         ['address'],
                                                     1);
                                           });
-                                          // debugPrint(
+                                          // log(
                                           //     "Start Traking ${snapshot.data![index]['id']}");
                                           // Navigator.push(
                                           //   context,
@@ -172,7 +171,7 @@ class _DraggableScrollableSheetScreenState
                               ),
                             ),
                             onTap: () {
-                              debugPrint("${snapshot.data[index]['id']}");
+                              log("${snapshot.data[index]['id']}");
                               // open address details
                               Navigator.push(
                                 context,

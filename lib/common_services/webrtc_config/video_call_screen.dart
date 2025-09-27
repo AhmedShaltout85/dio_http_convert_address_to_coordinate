@@ -798,7 +798,7 @@ class _VideoCallScreenWithStackState extends State<VideoCallScreenWithStack> {
 
 //       await _peerConnection!.addCandidate(candidate);
 //     } catch (e) {
-//       debugPrint('Error adding ICE candidate: $e');
+//       log('Error adding ICE candidate: $e');
 //     }
 //   }
 
@@ -1275,7 +1275,7 @@ class _VideoCallScreenWithStackState extends State<VideoCallScreenWithStack> {
 
 // //       await _peerConnection!.addCandidate(candidate);
 // //     } catch (e) {
-// //       debugPrint('Error adding ICE candidate: $e');
+// //       log('Error adding ICE candidate: $e');
 // //     }
 // //   }
 

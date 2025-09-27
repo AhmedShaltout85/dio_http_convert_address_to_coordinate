@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/labs/charts/bar_chart.dart';
 import 'package:pick_location/labs/charts/doughnut_chart.dart';
@@ -79,8 +81,8 @@ class DashboardChartsList extends StatelessWidget {
         crossAxisSpacing: 15.0,
         // Optional: Custom onItemTap handler
         onItemTap: (item) {
-          debugPrint('Custom handler for: ${item.title}');
-          debugPrint('Custom handler for: ${item.testCode}');
+          log('Custom handler for: ${item.title}');
+          log('Custom handler for: ${item.testCode}');
           // Add custom navigation logic here
           if (item.title == "العكارة") {
             Navigator.push(

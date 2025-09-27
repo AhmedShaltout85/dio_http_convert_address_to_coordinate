@@ -1,4 +1,4 @@
-
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -163,11 +163,10 @@ class VideoCallService {
   static Future<void> leaveMeeting() async {
     try {
       if (!kIsWeb) {
-        debugPrint(
-            "Leave meeting called - implement based on your package version");
+        log("Leave meeting called - implement based on your package version");
       }
     } catch (e) {
-      debugPrint("Error leaving meeting: $e");
+      log("Error leaving meeting: $e");
     }
   }
 

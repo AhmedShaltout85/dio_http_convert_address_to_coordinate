@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_radio_button.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
@@ -97,7 +99,7 @@ class _CustomAlertDailogCreateHandasahUsersState
                 setState(() {
                   selectedOption = value ?? '2'; // Fallback to default if null
                 });
-                debugPrint("Selected: $selectedOption");
+                log("Selected: $selectedOption");
               },
               direction: Axis.horizontal,
               spacing: 7.0,

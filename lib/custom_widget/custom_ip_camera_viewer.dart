@@ -129,10 +129,10 @@ class IPCameraViewer extends StatelessWidget {
 //           _webViewController = webViewController;
 //         },
 //         onPageStarted: (String url) {
-//           debugPrint('Page started loading: $url');
+//           log('Page started loading: $url');
 //         },
 //         onPageFinished: (String url) {
-//           debugPrint('Page finished loading: $url');
+//           log('Page finished loading: $url');
 //         },
 //         gestureNavigationEnabled: true,
 //       ),

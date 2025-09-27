@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 // import '../utils/dio_http_constants.dart';
 
@@ -230,7 +228,7 @@ class CustomDrawer extends StatelessWidget {
 //                           //       address: address,
 //                           //     );
 //                           //   } catch (e) {
-//                           //     debugPrint(e.toString());
+//                           //     log(e.toString());
 //                           //   }
 //                           //   //CALL API TO UPDATE LOCATION
 //                           //   //copy to clipboard

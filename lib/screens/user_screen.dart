@@ -3,6 +3,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, unused_field
 
 import 'dart:async';
+import 'dart:developer';
 // import 'dart:io';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -90,13 +91,13 @@ class _UserScreenState extends State<UserScreen> {
       });
 
       if (data.isEmpty) {
-        debugPrint("Data is empty, will retry in next cycle");
+        log("Data is empty, will retry in next cycle");
         return;
       }
 
       _handleVideoCallStatus(data);
     } catch (error) {
-      debugPrint("Error fetching data: $error");
+      log("Error fetching data: $error");
     }
   }
 
@@ -113,7 +114,7 @@ class _UserScreenState extends State<UserScreen> {
       await _audioPlayer.stop();
       await _audioPlayer.play(AssetSource('sounds/alarm.mp3'));
     } catch (e) {
-      debugPrint("Error playing alarm sound: $e");
+      log("Error playing alarm sound: $e");
     } finally {
       Future.delayed(const Duration(seconds: 5), () {
         _isPlayingAlarm = false;
@@ -129,7 +130,7 @@ class _UserScreenState extends State<UserScreen> {
       await _audioPlayer.stop();
       await _audioPlayer.play(AssetSource('sounds/incoming_call.mp3'));
     } catch (e) {
-      debugPrint("Error playing ringtone sound: $e");
+      log("Error playing ringtone sound: $e");
     }
   }
 
@@ -139,7 +140,7 @@ class _UserScreenState extends State<UserScreen> {
       _isPlayingAlarm = false;
       _isPlayingRingtone = false;
     } catch (e) {
-      debugPrint("Error stopping sounds: $e");
+      log("Error stopping sounds: $e");
     }
   }
 
@@ -186,7 +187,7 @@ class _UserScreenState extends State<UserScreen> {
         });
       });
     } catch (e) {
-      debugPrint("Error getting location: $e");
+      log("Error getting location: $e");
     }
   }
 
@@ -249,7 +250,7 @@ class _UserScreenState extends State<UserScreen> {
       // final addressInList =
       //     await DioNetworkRepos().checkAddressExistsInTracking(item['address']);
 
-      debugPrint("Address exists in tracking: $addressInList");
+      log("Address exists in tracking: $addressInList");
 
       if (addressInList == true) {
         await DioNetworkRepos().updateTrackingLocations(
@@ -275,7 +276,7 @@ class _UserScreenState extends State<UserScreen> {
 
       _startLocationUpdates(item['address']);
     } catch (e) {
-      debugPrint("Error in approval process: $e");
+      log("Error in approval process: $e");
     }
   }
 
@@ -499,7 +500,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   void _openGisMap(String url, String title) {
-    debugPrint("Start Gis Map $url");
+    log("Start Gis Map $url");
     // if (kIsWeb) {
     CustomBrowserRedirect.openInBrowser(url);
     // } else if(Platform.isAndroid) {
@@ -527,7 +528,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   void _handleVideoCall(int videoCallStatus, String address) {
-    debugPrint("Start Video Call");
+    log("Start Video Call");
     if (videoCallStatus == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -584,15 +585,15 @@ class _UserScreenState extends State<UserScreen> {
 
   Future<void> _handleInventory(Map<String, dynamic> item) async {
     try {
-      debugPrint("Store Name before get: $storeName");
-      debugPrint("Handasah Name before get: ${item['handasah_name']}");
+      log("Store Name before get: $storeName");
+      log("Handasah Name before get: ${item['handasah_name']}");
 
       final value = await DioNetworkRepos()
           .getStoreNameByHandasahName(item['handasah_name']);
 
       storeName = value['storeName'];
 
-      debugPrint("Store Name after get: $storeName");
+      log("Store Name after get: $storeName");
 
       DioNetworkRepos().excuteTempStoreQty(storeName);
       // await DioNetworkRepos().excuteTempStoreQty(storeName);
@@ -608,7 +609,7 @@ class _UserScreenState extends State<UserScreen> {
 
       // context.push('/integrate-with-stores/$storeName');
     } catch (e) {
-      debugPrint("Error handling inventory: $e");
+      log("Error handling inventory: $e");
     }
   }
 

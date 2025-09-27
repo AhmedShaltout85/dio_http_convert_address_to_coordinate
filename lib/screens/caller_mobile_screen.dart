@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:http/http.dart' as http;
@@ -74,13 +75,13 @@ class _CallerScreenState extends State<CallerMobileScreen> {
             headers: {'Content-Type': 'application/json'},
           );
         } catch (e) {
-          debugPrint('Error sending ICE candidate: $e');
+          log('Error sending ICE candidate: $e');
         }
       }
     };
 
     _peerConnection.onIceConnectionState = (state) {
-      debugPrint('ICE connection state: $state');
+      log('ICE connection state: $state');
       if (_isDisposed) return;
       if (mounted) {
         setState(() {
@@ -106,7 +107,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
     };
 
     _peerConnection.onConnectionState = (state) {
-      debugPrint('Peer connection state: $state');
+      log('Peer connection state: $state');
     };
 
     _processPendingCandidates();
@@ -128,7 +129,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
         throw Exception('Failed to send notification');
       }
     } catch (e) {
-      debugPrint('Error sending notification: $e');
+      log('Error sending notification: $e');
       _showError('Failed to notify receiver: ${e.toString()}');
     }
   }
@@ -168,7 +169,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
       }
 
       _roomId = json.decode(response.body)['roomId'];
-      debugPrint('Room ID: $_roomId');
+      log('Room ID: $_roomId');
 
       await _notifyReceiver();
 
@@ -187,7 +188,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
       _listenForAnswer();
       _startCandidateTimer();
     } catch (e) {
-      debugPrint('Call error: $e');
+      log('Call error: $e');
       if (mounted && !_isDisposed) {
         setState(() {
           _isCalling = false;
@@ -226,7 +227,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
         await Future.delayed(const Duration(seconds: 1));
       }
     } catch (e) {
-      debugPrint('Error listening for answer: $e');
+      log('Error listening for answer: $e');
       if (mounted && !_isDisposed) {
         _showError('Failed to receive answer: ${e.toString()}');
       }
@@ -264,7 +265,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
             try {
               await _peerConnection.addCandidate(iceCandidate);
             } catch (e) {
-              debugPrint('Error adding candidate: $e');
+              log('Error adding candidate: $e');
               if (!_isDisposed) {
                 _pendingRemoteCandidates.add(iceCandidate);
               }
@@ -275,7 +276,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
         }
       }
     } catch (e) {
-      debugPrint('Error checking for candidates: $e');
+      log('Error checking for candidates: $e');
     }
   }
 
@@ -285,7 +286,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
       try {
         await _peerConnection.addCandidate(candidate);
       } catch (e) {
-        debugPrint('Error adding pending candidate: $e');
+        log('Error adding pending candidate: $e');
         if (!_isDisposed) {
           _pendingRemoteCandidates.insert(0, candidate);
           await Future.delayed(const Duration(milliseconds: 100));
@@ -331,13 +332,13 @@ class _CallerScreenState extends State<CallerMobileScreen> {
           _remoteStream = null;
         });
       }
-         //update video call
-         //TODO: update video call NOT TESTED
+      //update video call
+      //TODO: update video call NOT TESTED
       DioNetworkRepos()
           .updateLocationBrokenByAddressUpdateVideoCall(widget.addressTitle, 0);
-          // Navigator.pop(context);
+      // Navigator.pop(context);
     } catch (e) {
-      debugPrint('Error ending call: $e');
+      log('Error ending call: $e');
     }
   }
 
@@ -377,7 +378,7 @@ class _CallerScreenState extends State<CallerMobileScreen> {
         });
       }
     } catch (e) {
-      debugPrint('Error switching camera: $e');
+      log('Error switching camera: $e');
       _showError('Failed to switch camera: ${e.toString()}');
     }
   }

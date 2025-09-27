@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -87,7 +88,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         getAllHotLineAddresses = _loadHotlineData();
       });
     } catch (e) {
-      debugPrint("Error initializing app: $e");
+      log("Error initializing app: $e");
       _showErrorSnackbar("Failed to initialize application");
     }
   }
@@ -97,7 +98,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
       final token = await DioNetworkRepos().getHotLineTokenByUserAndPassword();
       return DioNetworkRepos().getHotLineData(token);
     } catch (e) {
-      debugPrint("Error loading hotline data: $e");
+      log("Error loading hotline data: $e");
       _showErrorSnackbar("Failed to load hotline data");
       return [];
     }
@@ -151,10 +152,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
     });
 
-    // getLocs.then((value) => debugPrint("GET ALL HOTlINE LOCATIONS: $value"));
+    // getLocs.then((value) => log("GET ALL HOTlINE LOCATIONS: $value"));
 
-    getLocsByHandasahNameAndTechinicianName.then((value) =>
-        debugPrint("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
+    getLocsByHandasahNameAndTechinicianName.then(
+        (value) => log("NO HANDASAH AND TECHNICIAN ARE ASSIGNED: $value"));
 
     //get handasat items dropdown menu from db
     getHandasatItemsDropdownMenu =
@@ -168,9 +169,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
         handasatItemsDropdownMenu.add(element);
       });
       //debug print
-      debugPrint(
-          "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
-      debugPrint(value.toString());
+      log("handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+      log(value.toString());
     });
     //start periodic fetch
     _startPeriodicFetch();
@@ -222,10 +222,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
               ),
             );
             //
-            debugPrint(address);
-            debugPrint(coordinates);
-            debugPrint(longitude.toString());
-            debugPrint(latitude.toString());
+            log(address);
+            log(coordinates);
+            log(longitude.toString());
+            log(latitude.toString());
 
             //update locations after getting coordinates
             // getLocs = DioNetworkRepos().getLoc();
@@ -239,9 +239,9 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           //get last gis record from GIS server
           int lastRecordNumber = await DioNetworkRepos()
               .getLastRecordNumberWeb(); //get last gis record from GIS serverWEB-NO-BODY
-          debugPrint("lastRecordNumber :>> $lastRecordNumber");
+          log("lastRecordNumber :>> $lastRecordNumber");
           int newRecordNumber = lastRecordNumber + 1;
-          debugPrint("newRecordNumber :>> $newRecordNumber");
+          log("newRecordNumber :>> $newRecordNumber");
           //
           //create new gis point
           String mapLink =
@@ -250,22 +250,21 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             longitude.toString(),
             latitude.toString(),
           );
-          debugPrint("gis_longitude :>> $longitude");
-          debugPrint("gis_latitude :>> $latitude");
-          debugPrint("GIS MAP LINK :>> $mapLink");
+          log("gis_longitude :>> $longitude");
+          log("gis_latitude :>> $latitude");
+          log("GIS MAP LINK :>> $mapLink");
 
           // check if address already exist(UPDATED-IN-29-01-2025)
           var addressInList =
               await DioNetworkRepos().checkAddressExists(address);
-          debugPrint(
-              "PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)}");
-          debugPrint("PRINTED BY USING VAR: $addressInList");
-          // debugPrint("PRINTED BY USING STRING: $addressInListString");
+          log("PRINTED DATA FROM UI:  ${await DioNetworkRepos().checkAddressExists(address)}");
+          log("PRINTED BY USING VAR: $addressInList");
+          // log("PRINTED BY USING STRING: $addressInListString");
           //
           //
           if (addressInList == true) {
             //  call the function to update locations in database
-            debugPrint("address already exist >>>>>> $addressInList");
+            log("address already exist >>>>>> $addressInList");
 
             //  call the function to update locations in database
             //update Locations list after getting coordinates and gis link
@@ -276,11 +275,10 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
               mapLink,
             );
             //
-            debugPrint(
-                "updated Locations list after getting coordinates and gis link");
+            log("updated Locations list after getting coordinates and gis link");
           } else {
             //  call the function to post locations in database
-            debugPrint("address not exist >>>>>>>>> $addressInList");
+            log("address not exist >>>>>>>>> $addressInList");
 
             //  call the function to post locations in database
             await DioNetworkRepos().createNewLocation(
@@ -290,8 +288,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
               mapLink,
             );
             //
-            debugPrint(
-                "POSTED new Location In Locations list after getting coordinates and gis link");
+            log("POSTED new Location In Locations list after getting coordinates and gis link");
           }
 
           //update Locations list after getting coordinates
@@ -334,7 +331,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
           hintText: "اختر الهندسة",
           dropdownItems: handasatItemsDropdownMenu,
           onItemSelected: (value) {
-            debugPrint("Selected: $value");
+            log("Selected: $value");
             setState(() {
               DioNetworkRepos().updateLocAddHandasah(address, value);
             });
@@ -352,7 +349,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
 //handle dropdown click
   void handleOptionClick(String value) {
     // You can handle button actions here
-    debugPrint("Clicked: $value");
+    log("Clicked: $value");
     if (value == 'عرض التقارير') {
       // Navigator.push(
       //   context,
@@ -434,8 +431,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                               values[0], values[1], 1, 'غرفة الطوارئ');
                         });
                   });
-              debugPrint(
-                  "User Input: updated Caller Name, Phone, And Borken Number");
+              log("User Input: updated Caller Name, Phone, And Borken Number");
             },
           ),
           TextButtonDropdown(
@@ -688,8 +684,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                               ],
                                                               onSubmit:
                                                                   (values) {
-                                                                debugPrint(
-                                                                    "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
+                                                                log("User Input: $values"); // values[0]=Name, values[1]=Email, etc.
                                                                 if (values[0] == "" ||
                                                                     values[1] ==
                                                                         "" ||
@@ -719,8 +714,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                       values[1],
                                                                       values[
                                                                           2]);
-                                                                  debugPrint(
-                                                                      "User Input: updated Caller Name, Phone, And Borken Number");
+                                                                  log("User Input: updated Caller Name, Phone, And Borken Number");
 
                                                                   //add number of affected people
                                                                   pipDim =
@@ -804,7 +798,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     //       "رقم الموبيل"
                                                     //     ],
                                                     //     onSubmit: (values) {
-                                                    //       debugPrint(
+                                                    //       log(
                                                     //           "User Input: $values"); // values[0]=Name, values[1]=Email, etc.
                                                     //       if (values[0] == "" ||
                                                     //           values[1] == "" ||
@@ -834,7 +828,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     //                 values[0],
                                                     //                 values[1],
                                                     //                 values[2]);
-                                                    //         debugPrint(
+                                                    //         log(
                                                     //             "User Input: updated Caller Name, Phone, And Borken Number");
                                                     //       }
                                                     //     },
@@ -1230,8 +1224,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     'التوجهه للخريطة GIS Map',
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
-                                                  debugPrint(
-                                                      "Start Gis Map ${snapshot.data![index]['gis_url']}");
+                                                  log("Start Gis Map ${snapshot.data![index]['gis_url']}");
                                                   //open in iframe webview in web app
                                                   // Navigator.push(
                                                   //   context,
@@ -1300,8 +1293,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 tooltip: 'أجراء مكالمة فيديو',
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
-                                                  debugPrint(
-                                                      "Start Video Call ${snapshot.data![index]['id']}");
+                                                  log("Start Video Call ${snapshot.data![index]['id']}");
                                                   if (snapshot.data![index]
                                                           ['is_approved'] ==
                                                       0) {
@@ -1365,8 +1357,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                 tooltip: 'بدء تتبع فنى الهندسة',
                                                 hoverColor: Colors.yellow,
                                                 onPressed: () {
-                                                  debugPrint(
-                                                      "Start Traking ${snapshot.data![index]['id']}");
+                                                  log("Start Traking ${snapshot.data![index]['id']}");
                                                   if (snapshot.data![index]
                                                           ['is_approved'] ==
                                                       0) {
@@ -1432,10 +1423,8 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                     );
                                                   } else {
                                                     //get store name by handasah
-                                                    debugPrint(
-                                                        "Store Name before get: $storeName");
-                                                    debugPrint(
-                                                        "Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
+                                                    log("Store Name before get: $storeName");
+                                                    log("Handasah Name before get: ${snapshot.data![index]['handasah_name']}");
 
                                                     //navigate to IntegrationWithStoresGetAllQty
                                                     await DioNetworkRepos()
@@ -1445,14 +1434,12 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                                 'handasah_name'])
                                                         .then((value) {
                                                       // setState(() {
-                                                      debugPrint(
-                                                          value['storeName']);
+                                                      log(value['storeName']);
                                                       storeName =
                                                           value['storeName'];
                                                       // });
                                                     });
-                                                    debugPrint(
-                                                        "Store Name after get: $storeName");
+                                                    log("Store Name after get: $storeName");
 
                                                     //excute tempStoredProcedure
                                                     DioNetworkRepos()
@@ -1493,22 +1480,21 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
                                                       convertLabCodeToLabName(
                                                           DataStatic.labCode);
                                                   //
-                                                  debugPrint(snapshot
-                                                              .data![index]
+                                                  log(snapshot.data![index]
+                                                          ['handasah_name'] +
+                                                      " ==========> before charts");
+                                                  log(snapshot.data![index]
                                                           ['handasah_name'] +
                                                       " ==========> before charts");
 
-                                                  debugPrint(
-                                                      "LAB_CODE: ${DataStatic.labCode}");
-                                                  debugPrint(
-                                                      "LAB_NAME: ${DataStatic.labName}");
-                                                 
+                                                  log("LAB_CODE: ${DataStatic.labCode}");
+                                                  log("LAB_NAME: ${DataStatic.labName}");
+
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (BuildContext
                                                                   context) =>
-                                                            
                                                               DashboardChartsList()));
                                                 },
                                                 icon: const Icon(
@@ -1721,7 +1707,7 @@ class AddressToCoordinatesState extends State<AddressToCoordinates> {
             getLocsByHandasahNameAndTechinicianName =
                 DioNetworkRepos().getLocByHandasahAndTechnician("free", "free");
           } catch (e) {
-            debugPrint(e.toString());
+            log(e.toString());
           }
 
           // Then perform any other actions needed

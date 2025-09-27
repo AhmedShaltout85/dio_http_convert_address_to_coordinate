@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_text_field.dart';
 import '../custom_widget/custom_dropdown_menu.dart';
@@ -52,10 +54,9 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
       setState(() {
         handasatItemsDropdownMenu = items.map((e) => e.toString()).toList();
       });
-      debugPrint(
-          "handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
+      log("handasatItemsDropdownMenu from UI: $handasatItemsDropdownMenu");
     } catch (e) {
-      debugPrint("Error fetching dropdown items: $e");
+      log("Error fetching dropdown items: $e");
     }
   }
 
@@ -149,7 +150,7 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
                                   break;
                               }
                             });
-                            debugPrint("Selected: $selectedOption");
+                            log("Selected: $selectedOption");
                           },
                           direction: Axis.horizontal,
                           spacing: 16.0,
@@ -178,7 +179,7 @@ class _SystemAdminScreenState extends State<SystemAdminScreen> {
                             setState(() {
                               roleValue = value;
                             });
-                            debugPrint('Selected Handasat item: $roleValue');
+                            log('Selected Handasat item: $roleValue');
                           },
                         ),
                       ),

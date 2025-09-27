@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -105,7 +107,7 @@ class _CustomHandasahAssignUserState extends State<CustomHandasahAssignUser> {
                                   value: selectedValue,
                                   onChanged: (newValue) {
                                     if (newValue != null) {
-                                      debugPrint('Selected item: $newValue');
+                                      log('Selected item: $newValue');
                                       setState(() {
                                         selectedValue = newValue;
                                       });
@@ -114,7 +116,7 @@ class _CustomHandasahAssignUserState extends State<CustomHandasahAssignUser> {
                                         data['address'] ?? '',
                                         newValue,
                                       );
-                                      debugPrint('updated item: $newValue');
+                                      log('updated item: $newValue');
                                       //
                                     }
                                   },

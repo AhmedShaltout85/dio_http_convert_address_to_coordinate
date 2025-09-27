@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 // import '../model/store_item_model.dart';
@@ -36,8 +38,7 @@ class _IntegrationWithStoresGetAllQtyState
       getAllStoreItemsQty.then(
         (value) {
           value.forEach((element) {
-            debugPrint(
-                "PRINTED STORE ALL DATA FROM UI single element: $element");
+            log("PRINTED STORE ALL DATA FROM UI single element: $element");
           });
         },
       );

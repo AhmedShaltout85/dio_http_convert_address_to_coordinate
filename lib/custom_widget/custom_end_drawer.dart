@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pick_location/custom_widget/custom_dropdown_menu.dart';
 import '../network/remote/dio_network_repos.dart';
@@ -29,7 +31,7 @@ class CustomEndDrawer extends StatefulWidget {
 class _CustomEndDrawerState extends State<CustomEndDrawer> {
   @override
   Widget build(BuildContext context) {
-      String? selectedValue;
+    String? selectedValue;
 
     return SafeArea(
       child: Drawer(
@@ -95,13 +97,12 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                                   tooltip: 'حذف الشكوى',
                                   hoverColor: Colors.yellow,
                                   onPressed: () {
-                                    
                                     try {
-                                      
-                                    DioNetworkRepos()
-                                        .deleteAddressFromLocations(data['id']);
-                                    }catch(e){
-                                      debugPrint(e.toString());
+                                      DioNetworkRepos()
+                                          .deleteAddressFromLocations(
+                                              data['id']);
+                                    } catch (e) {
+                                      log(e.toString());
                                     }
                                   },
                                   icon: const Icon(
@@ -118,7 +119,6 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              
                               Expanded(
                                 child: Container(
                                   margin: const EdgeInsets.all(3.0),
@@ -133,11 +133,11 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                                     isExpanded: true,
                                     hintText: widget.hintText,
                                     items: widget.stringListItems,
-                                     value: selectedValue,
+                                    value: selectedValue,
                                     onChanged: (newValue) {
                                       if (newValue != null) {
-                                        // debugPrint('Selected item: $newValue');
-                                          setState(() {
+                                        // log('Selected item: $newValue');
+                                        setState(() {
                                           selectedValue = newValue;
                                         });
                                         //updateLocAddHandasah
@@ -145,11 +145,10 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
                                           data['address'] ?? '',
                                           newValue,
                                         );
-                                        // debugPrint('updated item: $newValue');
+                                        // log('updated item: $newValue');
                                         //
                                       }
                                     },
-                                   
                                   ),
                                 ),
                               ),
@@ -278,8 +277,8 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
 //                                     items: stringListItems,
 //                                     onChanged: (value) {
 //                                       // DataStatic.handasahName = value;
-//                                       debugPrint(value);
-//                                       debugPrint('Selected item: $value');
+//                                       log(value);
+//                                       log('Selected item: $value');
 //                                       //updateLocAddHandasah
                                       
 //                                       DioNetworkRepos().updateLocAddHandasah(
@@ -290,7 +289,7 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
 //                                         snapshot.data![index]['gis_url'],
 //                                       );
 //                                       //updateLocAddHandasah
-//                                       // debugPrint(
+//                                       // log(
 //                                       //     'Selected item from Static var: ${DataStatic.handasahName}');
 //                                     },
 //                                   ),
@@ -417,7 +416,7 @@ class _CustomEndDrawerState extends State<CustomEndDrawer> {
 //                                     hintText: hintText,
 //                                     items: stringListItems,
 //                                     onChanged: (value) {
-//                                       debugPrint('Selected item: $value');
+//                                       log('Selected item: $value');
 //                                     },
 //                                   ),
 //                                 )

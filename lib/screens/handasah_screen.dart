@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pick_location/custom_widget/custom_alert_dialog_create_handasah_users.dart';
@@ -100,7 +101,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
       await _audioPlayer.stop(); // Stop any currently playing sound
       await _audioPlayer.resume(); // Play the alert sound
     } catch (e) {
-      debugPrint('Error playing sound: $e');
+      log('Error playing sound: $e');
     }
   }
 
@@ -124,7 +125,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
           hintText: "أختر فنى",
           dropdownItems: handasatUsersItemsDropdownMenu,
           onItemSelected: (value) {
-            debugPrint("Selected: $value");
+            log("Selected: $value");
             setState(() {
               DioNetworkRepos().updateLocAddTechnician(address, value);
             });
@@ -190,7 +191,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                         DioNetworkRepos().createNewHandasahTools(
                             handasahName, values[0], int.parse(values[1]));
                       } catch (e) {
-                        debugPrint(e.toString());
+                        log(e.toString());
                       }
                     },
                   );
@@ -273,8 +274,7 @@ class _HandasahScreenState extends State<HandasahScreen> {
                           ConnectionState.done) {
                         if (snapshot.hasError) {
                           return const Center(
-                              child: Text(
-                                  'لا يوجد شكاوى مفتوحة'));
+                              child: Text('لا يوجد شكاوى مفتوحة'));
                         } else if (snapshot.hasData) {
                           length = snapshot.data!.length;
                           return ListView.builder(

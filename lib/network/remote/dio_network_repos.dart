@@ -5,7 +5,15 @@ import 'package:dio/dio.dart';
 import 'package:pick_location/utils/dio_http_constants.dart';
 
 class DioNetworkRepos {
+  // Singleton
+   DioNetworkRepos._internal();
+
+  static final DioNetworkRepos _instance = DioNetworkRepos._internal();
+
+  factory DioNetworkRepos() => _instance;
+  //
   final dio = Dio();
+
 //1-- GET locations(GET by flag 0 (address not set yet)--HOTLINE)
   Future getLoc() async {
     try {

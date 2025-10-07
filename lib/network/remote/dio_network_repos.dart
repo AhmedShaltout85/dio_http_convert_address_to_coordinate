@@ -1122,10 +1122,12 @@ class DioNetworkRepos {
   }
 
 //45-- Get LABS testValue with date By labCode And testCode  (FETCH- for 7 days)
-// http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/11/84
+// http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/11/84 (LOACL HOST)
+// $BASE_URI_IP_ADDRESS_LOCAL_HOST/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/11/84 (PUBLIC SERVER)
   Future<List<Map<String, dynamic>>> getAllLabsItemsByTestValueAndDate(
       int labCode, String testCode) async {
     final url =
+        // '$BASE_URI_IP_ADDRESS_LOCAL_HOST/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
         'http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
 
     try {

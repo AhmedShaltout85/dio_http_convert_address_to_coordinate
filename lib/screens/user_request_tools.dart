@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pick_location/custom_widget/custom_drop_down_menu_tools.dart';
+import '../custom_widget/custom_drop_down_menu_tools.dart';
 import '../network/remote/dio_network_repos.dart';
 
 class UserRequestTools extends StatefulWidget {
@@ -107,7 +107,15 @@ class _UserRequestToolsState extends State<UserRequestTools> {
   Future<void> _submitRequest() async {
     if (selectedTool == null || selectedTool!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a tool first')),
+        const SnackBar(
+          content: Text(
+            'يرجى تحديد المهمة المطلوبة أولاً',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.amber,
+            ),
+          ),
+        ),
       );
       return;
     }
@@ -186,7 +194,7 @@ class _UserRequestToolsState extends State<UserRequestTools> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
-          'جاري تحديث البيانات...',
+          'جارى تحديث الطلبات',
           textAlign: TextAlign.center,
           textDirection: TextDirection.rtl,
         ),
@@ -214,7 +222,7 @@ class _UserRequestToolsState extends State<UserRequestTools> {
         // ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh, color: Colors.indigo),
             onPressed: _handleRefresh,
           ),
         ],

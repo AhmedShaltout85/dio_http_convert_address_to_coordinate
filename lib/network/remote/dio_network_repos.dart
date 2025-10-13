@@ -1128,7 +1128,7 @@ class DioNetworkRepos {
       int labCode, String testCode) async {
     final url =
         // '$BASE_URI_IP_ADDRESS_LOCAL_HOST/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
-        'http://localhost:9997/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
+        'http://localhost:9999/labs-integration-with-emergency/api/v1/labs-w-emergency/test-values-last/$labCode/$testCode';
 
     try {
       final response = await dio.get(url);

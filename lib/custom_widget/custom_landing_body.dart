@@ -10,10 +10,24 @@ import 'package:pick_location/model/carousel_list_items.dart';
 
 import '../themes/themes.dart';
 
-class CustomLandingBody extends StatelessWidget {
+class CustomLandingBody extends StatefulWidget {
   const CustomLandingBody({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<CustomLandingBody> createState() => _CustomLandingBodyState();
+}
+
+class _CustomLandingBodyState extends State<CustomLandingBody> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    Future.delayed(const Duration(seconds: 5), () {
+      context.go('/login');
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +133,7 @@ class CustomLandingBody extends StatelessWidget {
                               //     context,
                               //     MaterialPageRoute(
                               //         builder: (_) => const LoginScreen()));
+
                               context.go('/login');
                             },
                             child: const Text(
